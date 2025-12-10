@@ -3,6 +3,9 @@
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/about', [IndexController::class, 'about']);
-Route::get('/contact', [IndexController::class, 'contact']);
+
+Route::controller(IndexController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/contact', 'contact')->name('contact');
+    Route::get('/about', 'about')->name('about');
+});
