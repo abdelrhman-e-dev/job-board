@@ -1,0 +1,99 @@
+what is Eloquent:
+    - an object-relational mapper (ORM) that makes it enjoyable to interact with your database.
+    - each database table has a corresponding "Model" that is used to interact with that table.
+    - Eloquent models allow you to insert, update, and delete records from the table.
+what is Fillable:
+    - fillable property is used to specify which attributes are mass assignable (fields that can be updated).
+what is Guarded:
+    - guarded property is used to specify which attributes are not mass assignable (fields that can't be updated).
+
+Migrations - Database schema
+    - php artisan make:migration create_users_table -> create a migration file
+    - php artisan migrate -> run all migrations
+    - php artisan migrate:rollback -> rollback the last migration
+    - php artisan migrate:reset -> rollback all migrations - run down() method for each migration file
+    - php artisan migrate:fresh -> roll back all migrations and run all migrations again - drop and re-create all tables
+
+DataBase Relationships:
+    - one to one -> this is mean that one user has only one profile
+    - one to many -> this is mean that one user can have many posts
+    - many to many -> this is mean that one user can have many roles and one role can have many users
+
+Lazy Loading Problems:
+    - when you load a relationship, the relationship is not loaded immediately. Instead, the relationship is loaded when you access the relationship's property.
+
+Eager Loading:
+    - when you load a relationship, the relationship is loaded immediately.
+
+Example:
+$users = User::all();   // 1 Query
+
+foreach ($users as $user) {
+    echo $user->posts->count(); // Query لكل User
+}
+// N+1 Query
+
+Pagination:
+    - paginate() method is used to paginate the results of a query.
+    -simplePaginate() method is used to paginate the results of a query and return simple pagination links.
+    - cursorPaginate() method is used to paginate the results of a query using cursors.
+
+Factories:
+    - factories are used to generate fake data for testing purposes.
+    Generating Factories:
+        - php artisan make:factory FactoryName
+    How to use Factories:
+        1 - link the factory to the model
+            - in the factory file add use App\Models\ModelName
+    - the model must have use HasFactory trait to use factories
+    - in the controller use factory to generate fake data in create() method
+
+API:
+    - API is an application programming interface that allows two applications to talk to each other.
+
+Routes:
+    - Get: to get data from the server - display data
+    - Post: to send data to the server - create data
+    - Put: to update data on the server - update data
+    - Patch: to update a specific field of a resource - update data
+    - Delete: to delete data from the server - delete data
+
+HTTP Standerd:
+    - GET: to retrieve data from the server
+    - POST: to send data to the server
+    - PUT: to update data on the server
+    - PATCH: to update a specific field of a resource
+    - DELETE: to delete data from the server
+
+HTTPS -> Hypertext Transfer Protocol Secure
+    - example: https://127.0.0.1:80000/home
+        - https -> the protocol
+        - 127.0.0.1 -> the ip address
+        - 80000 - > the port number
+            - what is port number?
+                - a port number is a number that identifies a specific application on a computer network.
+        - home -> the route
+HTTPS Status Codes:
+    - 200 -> OK
+    - 400 -> Bad Request
+    - 401 -> Unauthorized
+        - Unauthorized -> you don't have permission to access this resource
+    - 402 -> Payment Required
+    - 403 -> Forbidden
+    - 404 -> Not Found
+    - 405 -> Method Not Allowed
+    - 406 -> Not Acceptable
+    - 409 -> Conflict
+    - 419 -> Page Expired
+    - 422 -> Unprocessable Entity
+        -> the request was well-formed but was unable to be followed due to semantic errors.
+    - 426 -> Upgrade Required
+    - 429 -> Too Many Requests
+    - 500 -> Internal Server Error
+    - 501 -> Not Implemented
+    - 502 -> Bad Gateway
+    - 503 -> Service Unavailable
+    - 504 -> Gateway Timeout
+    - 505 -> HTTP Version Not Supported
+    - 507 -> Insufficient Storage
+    - 511 -> Network Authentication Required
