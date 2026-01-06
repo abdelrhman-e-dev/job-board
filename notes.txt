@@ -58,7 +58,7 @@ Routes:
     - Patch: to update a specific field of a resource - update data
     - Delete: to delete data from the server - delete data
 
-HTTP Standerd:
+HTTP Standard:
     - GET: to retrieve data from the server
     - POST: to send data to the server
     - PUT: to update data on the server
@@ -75,6 +75,10 @@ HTTPS -> Hypertext Transfer Protocol Secure
         - home -> the route
 HTTPS Status Codes:
     - 200 -> OK
+    - 201 -> Created
+    - 202 -> Accepted
+    - 204 -> No Content
+    - 204 -> updated - deleted successfully
     - 400 -> Bad Request
     - 401 -> Unauthorized
         - Unauthorized -> you don't have permission to access this resource
@@ -84,7 +88,7 @@ HTTPS Status Codes:
     - 405 -> Method Not Allowed
     - 406 -> Not Acceptable
     - 409 -> Conflict
-    - 419 -> Page Expired
+    - 419 -> Page Expired -> unknown status
     - 422 -> Unprocessable Entity
         -> the request was well-formed but was unable to be followed due to semantic errors.
     - 426 -> Upgrade Required
@@ -97,3 +101,12 @@ HTTPS Status Codes:
     - 505 -> HTTP Version Not Supported
     - 507 -> Insufficient Storage
     - 511 -> Network Authentication Required
+
+Resource Controllers:
+    - resource controllers are used to create controllers that handle all the CRUD operations for a specific resource.
+    - CRUD -> Create, Read, Update, Delete
+    - example:
+        - php artisan make:controller PostController --resource
+        - this will create a controller for posts with all the CRUD operations.
+    - How to use it in routes:
+        - Route::resource('posts', PostController::class);

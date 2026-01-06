@@ -21,9 +21,9 @@
                 <div class="hidden sm:ml-6 sm:block">
                     <div class="flex space-x-4">
                         <!-- Current: "", Default: "" -->
-                        <x-nav-link-item href="/" :active="request()->is('/')">Home</x-nav-link-item>
-                        <x-nav-link-item href="/about" :active="request()->is('about')">About</x-nav-link-item>
-                        <x-nav-link-item href="/contact" :active="request()->is('contact')" >Contact</x-nav-link-item>
+                        <x-nav_link_item href="/" :active="request()->is('/')">Home</x-nav_link_item>
+                        <x-nav_link_item href="/about" :active="request()->is('about')">About</x-nav_link_item>
+                        <x-nav_link_item href="/contact" :active="request()->is('contact')" >Contact</x-nav_link_item>
                     </div>
                 </div>
             </div>
