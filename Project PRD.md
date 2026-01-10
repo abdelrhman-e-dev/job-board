@@ -1,37 +1,32 @@
-# Job Board App 
-
 # Product Requirements Document
-## JobBoard Laravel - Version 1.0
+## Job Board Platform - Version 1.0
 
 ### Document Information
-- **Product**: JobBoard Laravel
+- **Product**: Job Board Platform (Job Seeker App + Admin Dashboard)
 - **Version**: 1.0
-- **Date**: January 6, 2026
-- **Owner**: Product Development Team
+- **Date**: January 10, 2026
+- **Owner**: Product Manager
 - **Status**: Draft
-- **Last Updated**: January 6, 2026
+- **Last Updated**: January 10, 2026
 
 ---
 
 ### 1. Product Overview
 
 #### 1.1 Vision Statement
-JobBoard Laravel will become the leading open-source job board platform that empowers companies to efficiently connect with qualified candidates while providing job seekers with a streamlined, transparent application experience that maximizes their career opportunities.
+To create the most efficient and user-friendly job board platform that connects talented job seekers with forward-thinking companies through intelligent matching, streamlined application processes, and comprehensive administrative tools that empower hiring teams to find their ideal candidates.
 
 #### 1.2 Product Mission
-To provide a robust, scalable, and user-friendly job board platform built on Laravel that simplifies the hiring process for employers and creates meaningful employment connections for job seekers through intelligent matching, transparent communication, and efficient workflow management.
+Our platform bridges the gap between job seekers and employers by providing an intuitive mobile-first experience for candidates to discover and apply for opportunities, while giving companies powerful administrative tools to manage job postings, track applications, and collaborate effectively throughout the hiring process.
 
 #### 1.3 Target Market
-- **Primary Market**: Small to medium-sized businesses (10-500 employees) seeking cost-effective recruitment solutions. Market size: estimated 33 million SMBs globally with active hiring needs.
-- **Secondary Markets**:
-    - Recruitment agencies requiring white-label solutions
-    - Niche industry job boards (tech, healthcare, remote work)
-    - Educational institutions for career services
+- **Primary Market**: Small to medium-sized businesses (10-500 employees) seeking quality candidates and active job seekers in tech, business, and professional services sectors. Market size: $5.2B globally
+- **Secondary Markets**: Recruitment agencies, freelance platforms, enterprise HR departments
 - **Market Trends**:
-    - Shift toward remote and hybrid work arrangements
-    - Increased demand for applicant tracking integration
-    - Growing emphasis on diversity and inclusion in hiring
-    - Rise of skills-based hiring over credential-based
+    - 72% of job seekers use mobile devices for job search
+    - Companies prioritizing applicant tracking system (ATS) integration
+    - Growing demand for remote and hybrid work options
+    - AI-powered candidate matching gaining adoption
 
 ---
 
@@ -39,103 +34,103 @@ To provide a robust, scalable, and user-friendly job board platform built on Lar
 
 #### 2.1 Primary Personas
 
-**Persona 1: Sarah Chen - Hiring Manager**
-- **Role**: HR Manager at a 150-person tech startup
-- **Demographics**: 32 years old, 8 years HR experience, intermediate technical skills
+**Persona 1: Active Job Seeker (Sarah)**
+- **Role**: Marketing Specialist looking for career advancement
+- **Demographics**: 28 years old, 5 years experience, intermediate technical skills, mobile-first user
 - **Goals**:
-    - Quickly post job openings and reach qualified candidates
-    - Efficiently screen and manage applications
-    - Reduce time-to-hire from 45 to 30 days
-    - Track hiring metrics and improve recruitment ROI
+    - Find relevant job opportunities matching her skills and salary expectations
+    - Apply to multiple positions quickly without repetitive data entry
+    - Track application status and receive timely updates
+    - Showcase portfolio and accomplishments effectively
+- **Pain Points**:
+    - Applying to jobs requires filling out the same information repeatedly
+    - Difficulty tracking which jobs were applied to and their status
+    - Limited visibility into company culture and actual job requirements
+    - Spam and irrelevant job recommendations
+- **User Journey**: Browse jobs → Filter by criteria → Save interesting positions → Complete profile → Submit applications → Track status → Receive responses
+- **Success Metrics**: Time to find relevant job, application completion rate, interview invitation rate
+
+**Persona 2: Hiring Manager (Michael)**
+- **Role**: Engineering Team Lead responsible for building technical team
+- **Demographics**: 35 years old, 8 years management experience, high technical proficiency
+- **Goals**:
+    - Post job openings quickly with accurate requirements
+    - Review qualified candidates efficiently
+    - Collaborate with HR and team members on hiring decisions
+    - Track hiring pipeline and time-to-fill metrics
 - **Pain Points**:
     - Overwhelmed by unqualified applications
-    - Lacks visibility into application pipeline status
-    - Struggles with coordinating between hiring team members
-    - Limited budget for expensive ATS solutions
-- **User Journey**: Create account → Post job → Review applications → Schedule interviews → Make offer
-- **Success Metrics**: Time-to-hire, cost-per-hire, candidate quality score, offer acceptance rate
+    - Lack of collaboration tools for team-based hiring decisions
+    - Difficulty tracking candidates through multiple stages
+    - Limited insights into job posting performance
+- **User Journey**: Create job posting → Review applications → Filter candidates → Collaborate with team → Schedule interviews → Update candidate status → Make hiring decision
+- **Success Metrics**: Quality of applicants, time-to-hire, hiring manager satisfaction score
 
-**Persona 2: Marcus Thompson - Job Seeker**
-- **Role**: Software developer seeking new opportunities
-- **Demographics**: 28 years old, 5 years experience, high technical proficiency
+**Persona 3: Company Administrator (Lisa)**
+- **Role**: HR Director managing recruitment operations
+- **Demographics**: 42 years old, 15 years HR experience, moderate technical skills
 - **Goals**:
-    - Find relevant job opportunities matching skills and preferences
-    - Understand company culture and role expectations before applying
-    - Track application status and receive timely feedback
-    - Maintain organized job search records
+    - Manage company profile and employer brand
+    - Oversee all job postings and hiring workflows
+    - Grant appropriate access to hiring managers
+    - Generate reports on recruitment metrics
 - **Pain Points**:
-    - Applying to jobs feels like sending resumes into a void
-    - Difficult to find remote-friendly companies
-    - Repetitive application forms waste time
-    - Lack of salary transparency causes frustration
-- **User Journey**: Search jobs → Filter results → Review details → Submit application → Track status → Respond to interview requests
-- **Success Metrics**: Application response rate, interview conversion rate, time-to-offer
-
-**Persona 3: David Park - Company Administrator**
-- **Role**: Owner of recruitment agency
-- **Demographics**: 45 years old, 20 years recruitment experience, moderate technical skills
-- **Goals**:
-    - Manage multiple client companies and job postings
-    - Maintain branded experience for clients
-    - Generate reports on recruitment performance
-    - Scale operations without proportional cost increases
-- **Pain Points**:
-    - Managing multiple platforms is inefficient
-    - Difficult to provide transparency to clients
-    - Manual reporting is time-consuming
-    - Limited customization options in existing tools
-- **User Journey**: Configure platform → Add client companies → Post jobs → Manage candidates → Generate reports
-- **Success Metrics**: Number of active clients, placements per month, client satisfaction score
+    - Difficulty maintaining consistent employer brand across postings
+    - Limited visibility into team hiring activities
+    - Manual reporting processes are time-consuming
+    - Managing user permissions is cumbersome
+- **User Journey**: Set up company profile → Manage team access → Monitor all job postings → Review analytics → Generate reports → Optimize recruitment strategy
+- **Success Metrics**: Overall time-to-hire, cost-per-hire, candidate quality score
 
 #### 2.2 User Research Insights
-- **Key Finding 1**: 73% of hiring managers report spending over 50% of their time on unqualified applications. Opportunity: Implement intelligent screening and matching algorithms.
-- **Key Finding 2**: 68% of job seekers abandon applications that take longer than 15 minutes to complete. Opportunity: Streamline application process with profile auto-fill and one-click apply.
-- **Key Finding 3**: Salary transparency in job postings increases application quality by 43% and reduces time-to-hire by 18%. Opportunity: Encourage or require salary range disclosure.
+- **Key Finding 1**: 68% of job seekers abandon applications that take more than 15 minutes to complete (Source: Candidate Experience Survey, 2024)
+- **Key Finding 2**: Hiring teams with collaborative review tools reduce time-to-hire by 35% compared to email-based coordination
+- **Key Finding 3**: Mobile applications account for 58% of all job applications, yet only 40% of job boards provide optimal mobile experience
 - **Opportunity Areas**:
-    - AI-powered candidate-job matching
-    - Mobile-first application experience
-    - Integration with popular HR tools (Slack, Google Workspace, LinkedIn)
-    - Video introduction capabilities
+    - Streamlined one-click apply with profile auto-fill
+    - Real-time collaborative candidate evaluation
+    - Mobile-optimized application process
+    - Predictive matching to reduce irrelevant applications
 
 ---
 
 ### 3. Product Strategy
 
 #### 3.1 Product Goals
-1. **Primary Goal**: Launch a fully-functional job board platform that processes 10,000+ monthly job applications within 6 months of release
+1. **Primary Goal**: Launch MVP within 4 months that enables 100 companies to post jobs and attracts 5,000 active job seekers with 70% mobile usage
 2. **Secondary Goals**:
-    - Achieve 95%+ platform uptime with sub-2-second page load times
-    - Reach 500+ registered employer accounts in first year
-    - Maintain 4.5+ star rating from users across all personas
-    - Build active open-source community with 50+ contributors
+    - Achieve 80% application completion rate for started applications
+    - Reduce average time-to-hire by 25% compared to traditional job boards
+    - Maintain 4.5+ star rating from both job seekers and employers
 
 #### 3.2 Success Metrics
 
 | Metric | Baseline | Target | Timeframe |
 |--------|----------|--------|-----------|
-| Monthly Active Employers | 0 | 500 | 12 months |
-| Monthly Applications | 0 | 10,000 | 6 months |
-| Platform Uptime | N/A | 99.5% | Ongoing |
-| Average Response Time | N/A | <2s | Launch |
-| User Satisfaction (NPS) | N/A | 40+ | 6 months |
-| Cost per Application | N/A | <$0.50 | 12 months |
+| Active Job Seekers | 0 | 5,000 | 4 months |
+| Company Accounts | 0 | 100 | 4 months |
+| Active Job Postings | 0 | 300 | 4 months |
+| Application Completion Rate | 45% (industry avg) | 80% | 3 months |
+| Mobile Application % | 58% (industry avg) | 75% | 4 months |
+| Average Time-to-Hire | 42 days (industry avg) | 32 days | 6 months |
+| User Satisfaction (NPS) | N/A | 50+ | 6 months |
 
 #### 3.3 Key Performance Indicators (KPIs)
 - **User Engagement**:
-    - Daily active users (employers and job seekers)
-    - Average session duration
-    - Application completion rate
-    - Return user rate within 30 days
+    - Daily Active Users (DAU) for Job Seekers
+    - Average applications per job seeker per week
+    - Job search sessions per user
+    - Return user rate within 7 days
 - **Business Impact**:
-    - Monthly recurring revenue (for premium features)
-    - Customer acquisition cost
-    - Customer lifetime value
-    - Conversion rate from free to paid tiers
+    - Monthly Recurring Revenue (MRR) from company subscriptions
+    - Cost per acquisition (CPA) for both sides
+    - Job posting fill rate
+    - Platform commission per hire (if applicable)
 - **Product Quality**:
-    - Page load time (p95)
-    - Error rate
-    - User satisfaction score
-    - Feature adoption rate
+    - Application load time (< 2 seconds)
+    - Mobile app crash rate (< 0.5%)
+    - API uptime (99.9%)
+    - User satisfaction scores (CSAT)
 
 ---
 
@@ -143,166 +138,319 @@ To provide a robust, scalable, and user-friendly job board platform built on Lar
 
 #### 4.1 Core Features (Must-Have)
 
-**Feature 1: User Authentication & Profile Management**
-- **Description**: Secure multi-role authentication system supporting employers, job seekers, and administrators with comprehensive profile management capabilities
-- **User Stories**:
-    - As a job seeker, I want to create an account with my email or social login so that I can save my application progress
-    - As an employer, I want to manage multiple team members with different permission levels so that we can collaborate on hiring
-    - As any user, I want to securely reset my password so that I can regain access to my account
-- **Acceptance Criteria**:
-    - Email verification required for new accounts
-    - Support for OAuth (Google, LinkedIn, GitHub)
-    - Role-based access control (Super Admin, Company Admin, Recruiter, Job Seeker)
-    - Password must meet security requirements (min 8 chars, uppercase, lowercase, number)
-    - Profile includes: photo, bio, contact info, social links
-    - Job seekers can upload and manage resume/CV (PDF, DOCX)
-    - GDPR-compliant data export and account deletion
-- **Success Metrics**: Account creation conversion rate >60%, login success rate >95%
+---
 
-**Feature 2: Job Posting & Management**
-- **Description**: Comprehensive job posting system allowing employers to create, edit, publish, and manage job listings with rich formatting and detailed requirements
-- **User Stories**:
-    - As an employer, I want to create detailed job postings with rich text formatting so that candidates understand the role
-    - As an employer, I want to save draft job postings so that I can collaborate with my team before publishing
-    - As an employer, I want to set application deadlines and job expiration dates so that postings stay current
-- **Acceptance Criteria**:
-    - Rich text editor with formatting options (bold, italic, lists, links)
-    - Required fields: title, description, location, employment type, experience level
-    - Optional fields: salary range, benefits, company culture, skills required
-    - Support for remote, hybrid, and on-site positions
-    - Job status: draft, active, paused, closed, expired
-    - Bulk job management (activate, deactivate, duplicate)
-    - Featured job promotion option
-    - Application settings: collect resume, cover letter, custom questions
-- **Success Metrics**: Average time to publish job <10 minutes, job posting completion rate >80%
+### JOB SEEKER APP FEATURES
 
-**Feature 3: Advanced Job Search & Filtering**
-- **Description**: Powerful search engine with multiple filter options enabling job seekers to efficiently find relevant opportunities matching their criteria
+**Feature 1: User Registration & Profile Management**
+- **Description**: Job seekers create accounts and build comprehensive profiles that auto-populate job applications, eliminating repetitive data entry and improving application speed.
 - **User Stories**:
-    - As a job seeker, I want to search jobs by keyword, location, and filters so that I find relevant opportunities quickly
+    - As a job seeker, I want to create an account using email or social login so that I can quickly access the platform
+    - As a job seeker, I want to build a detailed profile with my experience, education, and skills so that I can apply to jobs faster
+    - As a job seeker, I want to upload my resume/CV so that my profile can be auto-populated with relevant information
+    - As a job seeker, I want to add a profile photo and portfolio links so that I can showcase my professional brand
+- **Acceptance Criteria**:
+    - Registration via email with verification required
+    - Social login options (Google, LinkedIn)
+    - Profile sections: personal info, work experience, education, skills, certifications, portfolio
+    - Resume upload and parsing (PDF, DOCX formats)
+    - Profile completeness indicator showing percentage complete
+    - Mobile-responsive profile editing interface
+- **Success Metrics**: Registration completion rate >85%, profile completion rate >70%, average time to complete profile <10 minutes
+
+**Feature 2: Job Search & Discovery**
+- **Description**: Intelligent job search with multiple filter options, saved searches, and personalized recommendations to help job seekers find relevant opportunities quickly.
+- **User Stories**:
+    - As a job seeker, I want to search jobs by keywords, location, and category so that I can find relevant positions
+    - As a job seeker, I want to filter jobs by salary range, experience level, and job type so that I can narrow results
     - As a job seeker, I want to save my search criteria so that I can quickly repeat searches
-    - As a job seeker, I want to see similar jobs to ones I've viewed so that I don't miss opportunities
+    - As a job seeker, I want to receive job recommendations based on my profile so that I don't miss opportunities
 - **Acceptance Criteria**:
-    - Full-text search across job title, description, company name
-    - Filters: location (with radius search), employment type, experience level, salary range, remote options, date posted
-    - Sort options: relevance, date posted, salary (if disclosed)
-    - Pagination with infinite scroll option
-    - Search result count display
-    - Saved searches (registered users)
-    - Email alerts for saved searches (opt-in)
-    - Mobile-responsive search interface
-- **Success Metrics**: Search-to-apply conversion rate >25%, average results load time <1s
+    - Full-text search across job titles, descriptions, and company names
+    - Filters: location (with radius), salary range, job type (full-time, part-time, contract, remote), experience level, industry, company size
+    - Save search functionality with email alerts option
+    - Recommended jobs section based on profile matching
+    - Sort options: relevance, date posted, salary, company
+    - Infinite scroll with pagination
+    - Search results display: job title, company, location, salary (if available), posting date, quick apply indicator
+- **Success Metrics**: Average search time to first relevant result <30 seconds, search-to-apply conversion rate >15%
 
-**Feature 4: Application Submission & Tracking**
-- **Description**: Streamlined application process with progress tracking for job seekers and centralized management dashboard for employers
+**Feature 3: Job Application Submission**
+- **Description**: Streamlined application process with one-click apply for profile-complete users and optional custom responses for specific jobs.
 - **User Stories**:
-    - As a job seeker, I want to apply to jobs with one click using my profile so that I save time
-    - As a job seeker, I want to track the status of my applications so that I know where I stand
-    - As an employer, I want to review applications with filtering and sorting so that I can efficiently identify top candidates
+    - As a job seeker, I want to apply to jobs with one click using my profile information so that I can apply quickly
+    - As a job seeker, I want to add a custom cover letter for specific applications so that I can personalize my submission
+    - As a job seeker, I want to answer custom screening questions so that I can meet employer requirements
+    - As a job seeker, I want to attach additional documents so that I can provide requested materials
 - **Acceptance Criteria**:
-    - One-click apply for registered users with complete profiles
-    - Guest application support with email notification
-    - Application includes: resume, cover letter, answers to custom questions
-    - Application status: submitted, under review, interview scheduled, rejected, offer extended
-    - Job seeker dashboard showing all applications with status
-    - Employer application management with filters (status, date, rating)
-    - Star/flag candidates for later review
-    - Bulk actions (reject, move to interview)
-    - Application withdrawal option for job seekers
-- **Success Metrics**: Application completion rate >70%, employer review rate >90% within 7 days
+    - One-click apply button for users with complete profiles
+    - Auto-population of application forms from profile data
+    - Optional cover letter text editor with templates
+    - Custom screening questions rendered dynamically
+    - Additional document uploads (max 3 files, 5MB each)
+    - Application preview before submission
+    - Confirmation message and email after successful submission
+    - Application takes <3 minutes to complete
+- **Success Metrics**: Application completion rate >80%, one-click apply usage >60%, average application time <5 minutes
 
-**Feature 5: Company Profile Management**
-- **Description**: Comprehensive company profile pages allowing employers to showcase their brand, culture, and benefits to attract quality candidates
+**Feature 4: Application Tracking Dashboard**
+- **Description**: Centralized dashboard where job seekers can view all submitted applications, track their status, and receive updates from employers.
 - **User Stories**:
-    - As an employer, I want to create a compelling company profile so that candidates are excited to apply
-    - As a job seeker, I want to learn about a company before applying so that I can determine culture fit
+    - As a job seeker, I want to see all my submitted applications in one place so that I can track my job search
+    - As a job seeker, I want to see the current status of each application so that I know where I stand
+    - As a job seeker, I want to receive notifications when my application status changes so that I can respond promptly
+    - As a job seeker, I want to withdraw applications if needed so that I can manage my active searches
 - **Acceptance Criteria**:
-    - Company details: logo, cover image, name, industry, size, founded year, website
-    - Rich text description and culture section
-    - Photo/video gallery
-    - Benefits and perks list
-    - Social media links
-    - Office locations with maps
-    - Current job openings list
-    - Public company profile URL
-    - SEO-optimized pages
-- **Success Metrics**: Company profile completion rate >80%, profile view-to-apply conversion >15%
+    - Dashboard showing all applications with: company name, job title, date applied, current status
+    - Status types: Submitted, Reviewing, Interview, Rejected, Accepted, Withdrawn
+    - Filter and sort options for applications
+    - Status change notifications (in-app and email)
+    - Ability to withdraw application with confirmation
+    - Application details view showing full submission
+    - Company response messages displayed inline
+- **Success Metrics**: Dashboard engagement rate >70%, time spent on dashboard >2 minutes per session
 
-**Feature 6: Email Notification System**
-- **Description**: Automated email notification system keeping users informed of important events and updates throughout the hiring process
+**Feature 5: Job Alerts & Notifications**
+- **Description**: Customizable notification system to keep job seekers informed about new matching jobs, application updates, and saved search results.
 - **User Stories**:
-    - As a job seeker, I want to receive email notifications when my application status changes so that I stay informed
-    - As an employer, I want to receive notifications when new applications arrive so that I can respond quickly
+    - As a job seeker, I want to receive alerts for jobs matching my criteria so that I don't miss opportunities
+    - As a job seeker, I want to control notification preferences so that I'm not overwhelmed
+    - As a job seeker, I want to receive updates about my applications so that I stay informed
 - **Acceptance Criteria**:
-    - Job seeker notifications: application confirmation, status updates, new job alerts
-    - Employer notifications: new applications, application updates, job expiration warnings
-    - Notification preferences page (frequency, types)
-    - Unsubscribe option in all emails
-    - Branded email templates
-    - Support for transactional and marketing emails
-    - Queue-based email delivery
-- **Success Metrics**: Email delivery rate >98%, open rate >35%, unsubscribe rate <2%
+    - Email and push notification options
+    - Notification types: new matching jobs, application status changes, saved search results, messages from employers
+    - Frequency settings: immediate, daily digest, weekly digest
+    - Granular control over notification types
+    - Unsubscribe options for each notification type
+    - Notification history in app
+- **Success Metrics**: Notification opt-in rate >60%, notification click-through rate >25%
 
-**Feature 7: Admin Dashboard & Analytics**
-- **Description**: Comprehensive administrative interface providing platform oversight, user management, content moderation, and analytics
+**Feature 6: Saved Jobs & Favorites**
+- **Description**: Allow job seekers to bookmark interesting positions for later review and application.
 - **User Stories**:
-    - As an admin, I want to view platform statistics so that I can monitor growth and health
-    - As an admin, I want to manage users and content so that I can maintain platform quality
+    - As a job seeker, I want to save jobs to review later so that I can compare opportunities
+    - As a job seeker, I want to organize saved jobs so that I can prioritize applications
+    - As a job seeker, I want to receive reminders about saved jobs so that I don't forget to apply
 - **Acceptance Criteria**:
-    - Dashboard with key metrics: total users, active jobs, applications, revenue
-    - User management: view, edit, suspend, delete accounts
-    - Job moderation: review, approve, flag, remove listings
-    - Analytics: user growth, job posting trends, application patterns
-    - Export reports (CSV, PDF)
-    - Activity logs for audit trail
-    - System health monitoring
-    - Content management for static pages
-- **Success Metrics**: Admin response time to flagged content <4 hours, platform health score >95%
+    - Save/unsave button on job listings
+    - Saved jobs section in user profile
+    - Notes field for each saved job
+    - Application deadline warnings for saved jobs
+    - Bulk actions (apply, remove) on saved jobs
+    - Saved jobs accessible offline in mobile app
+- **Success Metrics**: Average saved jobs per user >5, saved-to-apply conversion rate >40%
+
+**Feature 7: Mobile-First Interface**
+- **Description**: Responsive web application optimized for mobile devices with progressive web app (PWA) capabilities.
+- **User Stories**:
+    - As a job seeker, I want to access the platform from my phone so that I can search jobs anywhere
+    - As a job seeker, I want a fast, app-like experience so that I can apply quickly on mobile
+- **Acceptance Criteria**:
+    - Fully responsive design (mobile, tablet, desktop)
+    - Touch-optimized UI elements (minimum 44px tap targets)
+    - PWA installation prompt for mobile browsers
+    - Offline access to saved jobs and profile
+    - Mobile-optimized forms and inputs
+    - Fast load times (<3s on 3G connection)
+    - Swipe gestures for navigation (mobile)
+- **Success Metrics**: Mobile traffic >60%, mobile application completion rate >75%
+
+---
+
+### ADMIN DASHBOARD FEATURES
+
+**Feature 8: Company Account Management**
+- **Description**: Company administrators can create and manage company profiles, including branding, description, and team member access.
+- **User Stories**:
+    - As a company admin, I want to create a company profile so that job seekers can learn about our organization
+    - As a company admin, I want to add company logo and branding so that our jobs are recognizable
+    - As a company admin, I want to add team members with different roles so that we can collaborate on hiring
+- **Acceptance Criteria**:
+    - Company registration with email verification
+    - Company profile fields: name, logo, industry, size, location(s), website, description, culture/values, benefits
+    - Rich text editor for company description
+    - Logo upload (max 2MB, PNG/JPG)
+    - Multiple office locations supported
+    - Social media links (LinkedIn, Twitter, Facebook)
+    - Company verification badge system
+- **Success Metrics**: Company profile completion rate >85%, average profile completion time <15 minutes
+
+**Feature 9: User Role & Permission Management**
+- **Description**: Flexible role-based access control allowing company admins to manage team members with appropriate permissions.
+- **User Stories**:
+    - As a company admin, I want to invite team members via email so that they can access the platform
+    - As a company admin, I want to assign different roles to team members so that they have appropriate access
+    - As a company admin, I want to remove or deactivate users so that I can manage team changes
+- **Acceptance Criteria**:
+    - Three role types: Admin (full access), Hiring Manager (job-specific access), Viewer (read-only)
+    - Email invitations with registration links
+    - Role assignment at invitation and editable later
+    - Permission matrix clearly displayed
+    - User list with status indicators (active, pending, deactivated)
+    - Activity log showing user actions
+    - Bulk user management capabilities
+- **Success Metrics**: Average team size >3 users per company, role assignment completion >95%
+
+**Feature 10: Job Posting Creation & Management**
+- **Description**: Intuitive job posting interface with templates, rich formatting, and preview capabilities to create compelling job advertisements.
+- **User Stories**:
+    - As a hiring manager, I want to create job postings quickly so that I can fill positions faster
+    - As a hiring manager, I want to use templates so that I maintain consistency
+    - As a hiring manager, I want to preview how the job will appear so that I can ensure quality
+    - As a hiring manager, I want to duplicate existing posts so that I can create similar roles efficiently
+- **Acceptance Criteria**:
+    - Job posting form with sections: title, location, job type, experience level, salary range, description, requirements, responsibilities, benefits
+    - Rich text editor for description with formatting options
+    - Job posting templates (customizable)
+    - Custom screening questions (up to 5 questions)
+    - Application deadline setting
+    - Required vs. optional application fields configuration
+    - Preview mode showing candidate view
+    - Save as draft functionality
+    - Duplicate job posting feature
+    - Publish/unpublish controls
+- **Success Metrics**: Average time to create job posting <10 minutes, job posting completion rate >90%
+
+**Feature 11: Applicant Tracking & Review**
+- **Description**: Comprehensive applicant management system allowing hiring teams to review, filter, and track candidates through the hiring pipeline.
+- **User Stories**:
+    - As a hiring manager, I want to see all applications for my job postings so that I can review candidates
+    - As a hiring manager, I want to filter applicants by qualifications so that I can find the best matches
+    - As a hiring manager, I want to move candidates through stages so that I can track progress
+    - As a hiring manager, I want to add notes and ratings so that I can remember my evaluation
+- **Acceptance Criteria**:
+    - Applicant list view with key information: name, applied date, status, rating
+    - Detailed applicant profile view with full application, resume, and documents
+    - Filter options: status, rating, date applied, experience level, skills
+    - Drag-and-drop kanban board for status management
+    - Status pipeline: New → Reviewing → Shortlisted → Interview → Offer → Hired/Rejected
+    - Star rating system (1-5 stars)
+    - Private notes field per applicant
+    - Bulk actions (status change, send message)
+    - Resume viewer with download option
+    - Application comparison view (side-by-side)
+- **Success Metrics**: Average review time per applicant <3 minutes, applicant response rate within 48 hours >70%
+
+**Feature 12: Collaboration & Team Review**
+- **Description**: Enable hiring teams to collaborate on candidate evaluation with shared notes, ratings, and decision-making workflows.
+- **User Stories**:
+    - As a hiring manager, I want to share applicants with team members so that we can evaluate together
+    - As a team member, I want to see colleague ratings and feedback so that we can make informed decisions
+    - As a hiring manager, I want to request feedback from specific team members so that I get required input
+- **Acceptance Criteria**:
+    - Assign reviewers to specific applicants
+    - Shared notes visible to all assigned reviewers
+    - Individual ratings aggregated into average score
+    - Comment threads on applicant profiles
+    - Feedback request notifications
+    - Review status indicators (pending, completed)
+    - Decision workflow with approval gates
+    - Activity timeline showing all team interactions
+- **Success Metrics**: Collaboration feature usage >50% of companies, average reviewers per candidate >2
+
+**Feature 13: Communication Tools**
+- **Description**: In-platform messaging system for communicating with candidates, sending interview invitations, and providing updates.
+- **User Stories**:
+    - As a hiring manager, I want to message candidates directly so that I can request additional information
+    - As a hiring manager, I want to send interview invitations so that I can schedule meetings
+    - As a hiring manager, I want to use templates so that I can communicate efficiently
+- **Acceptance Criteria**:
+    - Message composer with rich text formatting
+    - Message templates for common communications (rejection, interview invitation, information request)
+    - Template variables (candidate name, job title, company name)
+    - Bulk messaging to multiple candidates
+    - Message history per applicant
+    - Email notification to candidates for new messages
+    - Response tracking and read receipts
+    - Quick actions (schedule interview, send rejection)
+- **Success Metrics**: Response time to candidates <24 hours, message template usage >70%
+
+**Feature 14: Analytics & Reporting**
+- **Description**: Comprehensive analytics dashboard providing insights into job posting performance, applicant pipeline, and recruitment metrics.
+- **User Stories**:
+    - As a company admin, I want to see recruitment metrics so that I can evaluate our hiring effectiveness
+    - As a hiring manager, I want to see job posting performance so that I can optimize listings
+    - As a company admin, I want to generate reports so that I can share with leadership
+- **Acceptance Criteria**:
+    - Dashboard with key metrics: active jobs, total applications, time-to-hire, applicant sources
+    - Job posting analytics: views, applications, application rate, time to fill
+    - Applicant pipeline funnel visualization
+    - Team performance metrics (applications reviewed, time-to-respond)
+    - Date range filters and comparison periods
+    - Export reports to PDF and CSV
+    - Custom report builder (basic)
+    - Scheduled report delivery via email
+- **Success Metrics**: Dashboard usage >80% of active companies, report generation >2 times per month per company
+
+**Feature 15: Job Posting Management Dashboard**
+- **Description**: Centralized view of all company job postings with status indicators, performance metrics, and quick actions.
+- **User Stories**:
+    - As a hiring manager, I want to see all my active job postings so that I can monitor them
+    - As a company admin, I want to see all company jobs so that I can oversee recruitment
+    - As a hiring manager, I want to quickly edit or close positions so that I can respond to changes
+- **Acceptance Criteria**:
+    - List view and grid view options
+    - Job posting cards showing: title, status, applications count, views, date posted
+    - Status indicators: Draft, Active, Paused, Closed, Expired
+    - Quick actions: edit, pause, close, duplicate, view applications
+    - Search and filter by: status, hiring manager, department, date range
+    - Sort options: newest, most applications, most views
+    - Bulk actions on multiple job postings
+    - Application distribution visualization per job
+- **Success Metrics**: Dashboard engagement >5 times per week per hiring manager
+
+---
 
 #### 4.2 Enhanced Features (Should-Have)
 
-**Feature 8: Application Messaging System**
-- Brief description: In-platform messaging between employers and candidates for interview scheduling and questions
-- Priority: High
-- Estimated effort: Medium
+**Job Seeker App:**
+- Advanced profile features: video introduction, skill assessments, work samples gallery
+- AI-powered resume builder and optimization suggestions
+- Salary insights and negotiation tools
+- Company reviews and ratings from employees
+- Interview preparation resources and tips
+- Career path recommendations
+- Skill gap analysis with learning recommendations
+- Application tracking with interview scheduling integration
+- Referral bonus program for successful hires
 
-**Feature 9: Skills-Based Matching**
-- Brief description: AI-powered recommendation engine suggesting relevant jobs to seekers and qualified candidates to employers
-- Priority: High
-- Estimated effort: High
-
-**Feature 10: Video Introductions**
-- Brief description: Allow candidates to upload short video introductions visible to employers
-- Priority: Medium
-- Estimated effort: Medium
-
-**Feature 11: Interview Scheduling Integration**
-- Brief description: Calendar integration for scheduling interviews with automatic email reminders
-- Priority: Medium
-- Estimated effort: Medium
-
-**Feature 12: Referral Program**
-- Brief description: Built-in referral system rewarding users for bringing new employers or successful hires
-- Priority: Medium
-- Estimated effort: Low
-
-**Feature 13: Advanced Analytics Dashboard**
-- Brief description: Detailed analytics for employers showing application funnel, source tracking, and hiring metrics
-- Priority: Medium
-- Estimated effort: High
+**Admin Dashboard:**
+- Branded career page builder
+- Custom application forms per job posting
+- Video interview integration (e.g., Zoom, Teams)
+- Automated candidate screening with AI matching scores
+- Chrome extension for sourcing candidates from LinkedIn
+- Email campaign builder for talent pipeline
+- Integration with HR systems (BambooHR, Workday)
+- Advanced analytics: source effectiveness, diversity metrics, competitive benchmarking
+- Candidate relationship management (CRM) features
+- Interview scheduling automation
+- Offer letter generation and e-signature
+- Background check integration
 
 #### 4.3 Future Features (Nice-to-Have)
 
-- API access for third-party integrations
-- Mobile native applications (iOS/Android)
-- Applicant Tracking System (ATS) integrations (Greenhouse, Lever, etc.)
-- Automated interview scheduling with AI assistant
-- Skills assessment and testing platform
-- Virtual job fair functionality
-- Blockchain-verified credentials
-- Salary benchmarking tool
-- Employee reviews and ratings
-- Multi-language support (internationalization)
+**Job Seeker App:**
+- AI chatbot for job search assistance
+- Gamification with achievements and badges
+- Networking features (connect with other job seekers)
+- Salary calculator with market comparisons
+- Live job fairs and virtual events
+- Career coaching marketplace
+- Freelance/gig work opportunities section
+- Application practice simulator with AI feedback
+- Anonymous profile viewing by employers
+
+**Admin Dashboard:**
+- Predictive analytics for hiring success
+- Diversity and inclusion tracking tools
+- Employee referral portal
+- Advanced workflow automation with conditional logic
+- Multi-language support for international hiring
+- API access for custom integrations
+- White-label platform for recruitment agencies
+- Advanced security features (SSO, 2FA)
+- Headcount planning and budget management tools
 
 ---
 
@@ -312,76 +460,82 @@ To provide a robust, scalable, and user-friendly job board platform built on Lar
 - **Response Time**:
     - Page load time: <2 seconds for 95th percentile
     - API response time: <500ms for 95th percentile
-    - Search results: <1 second
-    - Database queries: <100ms for simple queries, <500ms for complex
+    - Search results: <1 second for most queries
+    - Application submission: <3 seconds
 - **Throughput**:
-    - Support 1,000 concurrent users without degradation
-    - Handle 100 job applications per minute
-    - Process 50 job postings per minute
+    - Support 10,000 concurrent users initially
+    - Handle 1,000 job applications per hour
+    - Process 5,000 searches per minute during peak hours
 - **Availability**:
-    - 99.5% uptime (maximum 3.65 hours downtime per month)
-    - Scheduled maintenance windows outside peak hours
-    - Automated failover for critical services
+    - 99.9% uptime (less than 8.7 hours downtime per year)
+    - Scheduled maintenance windows during low-traffic hours (2-4 AM local time)
+    - Zero data loss guarantee
 - **Scalability**:
-    - Horizontal scaling capability for web and application servers
-    - Database read replicas for scaling read operations
-    - CDN integration for static assets
-    - Support growth to 100,000 jobs and 1 million users
+    - Architecture supports horizontal scaling
+    - Database optimization for 1M+ job seekers and 10,000+ companies
+    - CDN integration for static assets and media
+    - Auto-scaling during traffic spikes
 
 #### 5.2 Security Requirements
 - **Authentication**:
-    - Multi-factor authentication (MFA) option for all users
-    - OAuth 2.0 for social logins
-    - JWT tokens for API authentication
-    - Session timeout after 30 minutes of inactivity
+    - Email/password with bcrypt hashing (cost factor 12)
+    - OAuth 2.0 for social logins (Google, LinkedIn)
+    - Session management with secure, httpOnly cookies
+    - Password requirements: minimum 8 characters, complexity rules
     - Account lockout after 5 failed login attempts
+    - Password reset via email with time-limited tokens
 - **Authorization**:
-    - Role-based access control (RBAC) with granular permissions
-    - Row-level security for multi-tenant data isolation
+    - Role-based access control (RBAC) using Laravel policies
+    - Row-level security for company data isolation
     - API rate limiting per user/IP
-    - Principle of least privilege for all operations
+    - JWT tokens for API authentication with short expiration
 - **Data Protection**:
-    - Encryption at rest for sensitive data (AES-256)
-    - TLS 1.3 for all data in transit
-    - GDPR and CCPA compliance
-    - Personal data anonymization in analytics
-    - Secure file upload with virus scanning
-    - Regular automated backups with encryption
-    - Password hashing using bcrypt (cost factor 12+)
+    - HTTPS/TLS 1.3 for all connections
+    - Database encryption at rest (AES-256)
+    - Personal data encryption for sensitive fields (SSN, salary expectations)
+    - Regular automated backups (daily with 30-day retention)
+    - GDPR compliance: right to access, right to deletion, data portability
+    - File upload scanning for malware
+    - SQL injection prevention via parameterized queries
+    - XSS protection via input sanitization and output encoding
+    - CSRF protection on all forms
 - **Compliance**:
-    - GDPR (right to access, delete, port data)
-    - CCPA compliance for California users
-    - WCAG 2.1 Level AA accessibility
-    - PCI DSS for payment processing (if applicable)
-    - SOC 2 Type II certification path
+    - GDPR (European Union)
+    - CCPA (California Consumer Privacy Act)
+    - SOC 2 Type II readiness
+    - Equal Employment Opportunity (EEO) compliance
+    - Data retention policies documented and enforced
 
 #### 5.3 Usability Requirements
 - **Accessibility**:
     - WCAG 2.1 Level AA compliance
-    - Keyboard navigation support
-    - Screen reader compatibility
-    - Sufficient color contrast (4.5:1 minimum)
-    - Alt text for all images
-    - ARIA labels for dynamic content
+    - Keyboard navigation support throughout
+    - Screen reader compatibility (ARIA labels)
+    - Color contrast ratios meeting accessibility standards
+    - Alt text for all images and meaningful graphics
+    - Form labels and error messages clearly associated
+    - Focus indicators visible on all interactive elements
 - **User Experience**:
-    - Mobile-first responsive design
-    - Intuitive navigation with max 3 clicks to any feature
-    - Consistent UI patterns across the platform
-    - Loading indicators for operations >1 second
-    - Clear error messages with actionable guidance
-    - Undo capability for destructive actions
-    - Auto-save for forms and drafts
+    - Mobile-first design approach
+    - Maximum 3 clicks to reach any feature
+    - Consistent UI patterns across platform
+    - Inline validation with helpful error messages
+    - Loading indicators for all asynchronous operations
+    - Tooltips and contextual help throughout
+    - Onboarding tutorials for new users
+    - Empty states with clear calls-to-action
 - **Multi-platform**:
-    - Support for modern browsers: Chrome, Firefox, Safari, Edge (last 2 versions)
-    - Mobile responsive (iOS Safari, Android Chrome)
-    - Progressive Web App (PWA) capabilities
-    - Tablet optimization
+    - Responsive web design (320px to 4K displays)
+    - Browser support: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+    - Progressive Web App (PWA) for mobile installation
+    - iOS 14+ and Android 10+ compatibility
+    - Optimal performance on 3G and 4G connections
 - **Localization**:
-    - Initial launch: English (US)
-    - Architecture supporting future translations
+    - Initial launch: English only
+    - Platform architecture supports multiple languages
     - Date/time formatting based on user locale
-    - Currency formatting for salary displays
-    - UTF-8 encoding for international characters
+    - Currency display based on regional settings
+    - Right-to-left (RTL) support architecture
 
 ---
 
@@ -389,411 +543,607 @@ To provide a robust, scalable, and user-friendly job board platform built on Lar
 
 #### 6.1 User Workflows
 
-**Employer Job Posting Workflow**
-```
-Login → Company Dashboard → Create New Job →
-Enter Job Details (Title, Description, Requirements) →
-Set Application Settings → Preview Job →
-Publish or Save as Draft → View Active Jobs
+**Job Seeker Application Flow:**
+```mermaid
+graph TD
+    A[Land on Homepage] --> B{Registered?}
+    B -->|No| C[Sign Up]
+    B -->|Yes| D[Login]
+    C --> E[Create Profile]
+    E --> F[Dashboard]
+    D --> F
+    F --> G[Search Jobs]
+    G --> H[View Job Details]
+    H --> I{Interested?}
+    I -->|Yes| J[Save or Apply]
+    I -->|No| G
+    J --> K{Profile Complete?}
+    K -->|Yes| L[One-Click Apply]
+    K -->|No| M[Complete Application Form]
+    L --> N[Application Submitted]
+    M --> N
+    N --> O[Track in Dashboard]
+    O --> P{Status Update?}
+    P -->|Yes| Q[Receive Notification]
+    Q --> O
+    P -->|No| R[Continue Job Search]
+    R --> G
 ```
 
-**Job Seeker Application Workflow**
-```
-Search Jobs → Filter Results → View Job Details →
-Review Company Profile → Click Apply →
-Upload Resume (if not in profile) → Write Cover Letter (optional) →
-Answer Custom Questions → Review Application →
-Submit → Receive Confirmation → Track in Dashboard
+**Hiring Manager Job Posting Flow:**
+```mermaid
+graph TD
+    A[Login to Admin Dashboard] --> B[Navigate to Jobs]
+    B --> C[Click Create New Job]
+    C --> D[Select Template or Start Fresh]
+    D --> E[Fill Job Details]
+    E --> F[Add Screening Questions]
+    F --> G[Configure Application Settings]
+    G --> H[Preview Job Posting]
+    H --> I{Satisfied?}
+    I -->|No| E
+    I -->|Yes| J[Publish Job]
+    J --> K[Job Goes Live]
+    K --> L[Applications Start Coming]
+    L --> M[Review Applicants]
+    M --> N[Filter and Rate Candidates]
+    N --> O[Move Through Pipeline]
+    O --> P{Hire Decision?}
+    P -->|Yes| Q[Send Offer]
+    P -->|No| R[Send Rejection]
+    Q --> S[Close Job Posting]
+    R --> M
 ```
 
-**Application Review Workflow (Employer)**
-```
-Login → Applications Dashboard → Filter by Job/Status →
-View Candidate Profile → Review Resume & Cover Letter →
-Rate Candidate (1-5 stars) → Update Status →
-Send Message or Schedule Interview → Export Shortlist
+**Applicant Review and Collaboration Flow:**
+```mermaid
+graph TD
+    A[New Application Received] --> B[Notification to Hiring Manager]
+    B --> C[Review Application]
+    C --> D{Meets Requirements?}
+    D -->|No| E[Reject with Message]
+    D -->|Yes| F[Move to Shortlist]
+    F --> G[Assign Reviewers]
+    G --> H[Team Reviews Application]
+    H --> I[Collect Ratings & Feedback]
+    I --> J{Team Consensus?}
+    J -->|No| K[Discuss Further]
+    K --> H
+    J -->|Yes| L[Move to Interview Stage]
+    L --> M[Send Interview Invitation]
+    M --> N[Schedule Interview]
+    N --> O[Conduct Interview]
+    O --> P[Final Decision]
+    P --> Q{Hire?}
+    Q -->|Yes| R[Send Offer]
+    Q -->|No| S[Send Rejection]
 ```
 
 #### 6.2 Information Architecture
 
-**Main Navigation Structure**
+**Job Seeker App Navigation:**
 ```
-For Job Seekers:
-- Home
-- Browse Jobs
-- My Applications
-- Saved Jobs
-- Profile
-- Settings
-
-For Employers:
-- Dashboard
-- Post Job
-- Manage Jobs
-- Applications
-- Company Profile
-- Team & Settings
-
-For Admin:
-- Overview Dashboard
-- Users Management
-- Jobs Management
-- Companies Management
-- Analytics & Reports
-- System Settings
+Home/Dashboard
+├── My Applications
+│   ├── Active Applications
+│   ├── Interview Scheduled
+│   └── Application History
+├── Job Search
+│   ├── Search Results
+│   ├── Saved Searches
+│   └── Recommended Jobs
+├── Saved Jobs
+├── Profile
+│   ├── Personal Information
+│   ├── Work Experience
+│   ├── Education
+│   ├── Skills & Certifications
+│   ├── Resume/CV Upload
+│   └── Portfolio
+├── Notifications
+│   └── Notification Settings
+└── Settings
+    ├── Account Settings
+    ├── Privacy Settings
+    └── Email Preferences
 ```
 
-#### 6.3 Key Screen Descriptions
+**Admin Dashboard Navigation:**
+```
+Dashboard (Overview)
+├── Jobs
+│   ├── All Job Postings
+│   ├── Create New Job
+│   ├── Drafts
+│   ├── Active Jobs
+│   └── Closed Jobs
+├── Candidates
+│   ├── All Applications
+│   ├── Shortlisted
+│   ├── In Interview
+│   └── Hired
+├── Team
+│   ├── Team Members
+│   ├── Invite Users
+│   └── Roles & Permissions
+├── Company Profile
+│   ├── Company Information
+│   ├── Branding
+│   └── Locations
+├── Analytics
+│   ├── Recruitment Dashboard
+│   ├── Job Performance
+│   ├── Pipeline Metrics
+│   └── Custom Reports
+├── Messages
+│   ├── Candidate Communications
+│   └── Message Templates
+└── Settings
+    ├── Account Settings
+    ├── Billing & Subscription
+    ├── Notifications
+    └── Integrations
+```
 
-**Job Seeker Dashboard**
-- Quick stats: applications submitted, under review, interviews scheduled
-- Recent activity feed
-- Recommended jobs based on profile
-- Saved searches and alerts
-- Quick apply to featured jobs
+#### 6.3 Wireframe Descriptions
 
-**Employer Dashboard**
-- Active jobs summary with application counts
-- Recent applications requiring review
-- Hiring funnel metrics
-- Team activity log
-- Quick actions (post job, review applications)
+**Job Seeker App - Key Screens:**
 
-**Job Detail Page**
-- Job title, company name, location
-- Salary range (if provided)
-- Employment type and experience level
-- Full job description with formatting
-- Requirements and qualifications
-- About the company section
-- Similar jobs recommendations
-- Easy apply button (sticky on mobile)
+1. **Homepage/Dashboard**
+    - Hero section with search bar
+    - Quick stats: applications pending, interviews scheduled, new matches
+    - Recommended jobs carousel
+    - Recently viewed jobs
+    - Application status timeline
 
-#### 6.4 Design Principles
+2. **Job Search Results**
+    - Filter sidebar (collapsible on mobile)
+    - Job cards with: company logo, title, location, salary, quick apply button
+    - Sort dropdown
+    - Pagination or infinite scroll
+    - Save job heart icon
 
-1. **Clarity Over Cleverness**: Every interface element should have obvious purpose and functionality
-2. **Progressive Disclosure**: Show essential information first, advanced features on demand
-3. **Immediate Feedback**: Provide instant visual feedback for all user actions
-4. **Forgiveness**: Allow users to undo actions and recover from mistakes easily
-5. **Consistency**: Maintain uniform design patterns, terminology, and interactions
-6. **Mobile-First**: Design for mobile experience first, then enhance for desktop
+3. **Job Details Page**
+    - Company header with logo and name
+    - Job title, location, salary, type
+    - Apply button (sticky on scroll)
+    - Job description with formatting
+      Company information section
+   - Similar jobs section
+
+4. **Application Form**
+    - Progress indicator
+    - Auto-filled fields from profile
+    - Optional cover letter
+    - Screening questions
+    - Document uploads
+    - Preview and submit
+
+5. **My Applications Dashboard**
+    - Filter tabs by status
+    - Application cards with status badges
+    - Search/filter bar
+    - Timeline view option
+
+**Admin Dashboard - Key Screens:**
+
+1. **Dashboard Overview**
+    - Key metrics cards: active jobs, total applications, time-to-hire
+    - Application pipeline chart
+    - Recent activity feed
+    - Quick actions: create job, view applications
+
+2. **Job Posting List**
+    - Data table with: title, status, applications, views, date posted
+    - Action buttons: edit, pause, view applications
+    - Bulk actions toolbar
+    - Create new job button (prominent)
+
+3. **Create/Edit Job Posting**
+    - Multi-step form with progress indicator
+    - Section tabs: details, description, requirements, screening
+    - Rich text editor for description
+    - Preview panel (side-by-side or modal)
+    - Save draft button
+
+4. **Applicant Review**
+    - Applicant list with filters
+    - Kanban board view toggle
+    - Applicant cards: photo, name, applied date, rating
+    - Quick actions: view profile, message, change status
+
+5. **Applicant Profile**
+    - Header: name, photo, contact info
+    - Application details tab
+    - Resume viewer tab
+    - Activity timeline
+    - Notes section
+    - Rating and status controls
+    - Collaboration panel showing team feedback
 
 ---
 
 ### 7. Technical Architecture
 
 #### 7.1 Technology Stack
-- **Backend Framework**: Laravel 11.x (PHP 8.3+)
-- **Database**: MySQL 8.0 or PostgreSQL 15+
-- **Cache**: Redis 7+ for session and application caching
+
+**Backend:**
+- **Framework**: Laravel 11.x (PHP 8.3+)
+- **Database**: MySQL 8.0+ or PostgreSQL 15+
+- **Cache**: Redis 7.x for session storage and caching
 - **Queue**: Laravel Queue with Redis driver for background jobs
-- **Search**: Laravel Scout with Meilisearch or Algolia
-- **Storage**: AWS S3 or compatible service for file uploads
-- **Frontend**: Laravel Blade templates with Alpine.js and Tailwind CSS
-- **Email**: AWS SES or similar transactional email service
+- **Search**: Laravel Scout with Meilisearch or Elasticsearch
+- **Storage**: AWS S3 or compatible object storage for file uploads
+- **Email**: Laravel Mail with SES or SendGrid
 
-#### 7.2 System Architecture
-- **Application Layer**: Laravel MVC architecture with service-oriented design
-- **Data Layer**: Relational database with proper indexing and query optimization
-- **Caching Layer**: Multi-level caching (application, database query, full-page)
-- **Queue Workers**: Background processing for emails, notifications, and heavy operations
-- **File Storage**: Cloud object storage with CDN for public assets
-- **Load Balancing**: Application load balancer for horizontal scaling
+**Frontend (Job Seeker App):**
+- **Framework**: Laravel Blade with Alpine.js for interactivity OR Vue.js 3/React for SPA approach
+- **CSS**: Tailwind CSS 4.x
+- **Build Tool**: Vite
+- **PWA**: Workbox for service workers
 
-#### 7.3 Database Schema (Core Tables)
-- **users**: id, name, email, password, role, verified_at, timestamps
-- **companies**: id, user_id, name, logo, description, website, industry, size, timestamps
-- **jobs**: id, company_id, title, description, location, type, experience_level, salary_min, salary_max, status, expires_at, timestamps
-- **applications**: id, job_id, user_id, resume_path, cover_letter, status, rating, timestamps
-- **saved_jobs**: user_id, job_id, timestamps
-- **notifications**: id, user_id, type, data, read_at, timestamps
+**Frontend (Admin Dashboard):**
+- **Framework**: Laravel Blade with Livewire 3.x OR Vue.js 3 with Inertia.js
+- **UI Components**: Tailwind CSS with custom component library
+- **Charts**: Chart.js or ApexCharts
 
-#### 7.4 API Structure
-- RESTful API design following JSON:API specification
-- API versioning (v1, v2) for backward compatibility
-- Rate limiting: 60 requests/minute for authenticated users, 20 for guests
-- Standardized error responses with appropriate HTTP status codes
-- Comprehensive API documentation using Laravel Scribe
+**Additional Tools:**
+- **API Documentation**: Laravel Scribe or OpenAPI/Swagger
+- **Testing**: PHPUnit, Laravel Dusk for browser testing
+- **Code Quality**: PHP CS Fixer, PHPStan
+- **Monitoring**: Laravel Telescope for development, Sentry for production errors
+- **CI/CD**: GitHub Actions or GitLab CI
 
----
+#### 7.2 Database Schema (Key Tables)
 
-### 8. Data Requirements
+**Core Tables:**
+- `users` - Authentication and basic user info (polymorphic - job seekers and company users)
+- `job_seekers` - Extended profile data for job seekers
+- `companies` - Company profiles and information
+- `company_users` - Company team members with roles
+- `jobs` - Job postings
+- `applications` - Job applications
+- `application_statuses` - Application status tracking with timeline
+- `saved_jobs` - Job seeker bookmarks
+- `searches` - Saved searches for job seekers
+- `messages` - In-platform messaging
+- `notifications` - User notifications
+- `activity_logs` - Audit trail for important actions
 
-#### 8.1 Data Models
+**Supporting Tables:**
+- `job_categories` - Industry/category classifications
+- `locations` - Geographic locations with hierarchy
+- `skills` - Master skills list
+- `job_seeker_skills` - Many-to-many relationship
+- `experiences` - Work experience entries
+- `educations` - Education history
+- `certifications` - Professional certifications
+- `documents` - File uploads (resumes, portfolios)
+- `screening_questions` - Custom application questions
+- `screening_answers` - Applicant responses
+- `reviews` - Applicant reviews by team members
+- `notes` - Private notes on applicants
 
-**User Data**
-- Personal information (name, email, phone, location)
-- Authentication credentials (hashed password, remember tokens)
-- Profile data (bio, experience summary, skills)
-- Resume/CV file reference
-- Privacy preferences
-- Account status and verification
+#### 7.3 API Architecture
 
-**Company Data**
-- Business information (name, industry, size, founded year)
-- Branding assets (logo, cover image)
-- Descriptive content (about, culture, benefits)
-- Contact information
-- Social media links
-- Verification status
+**RESTful API Structure:**
+- `/api/v1/auth/*` - Authentication endpoints
+- `/api/v1/jobs/*` - Job listings and search
+- `/api/v1/applications/*` - Application management
+- `/api/v1/profile/*` - User profile operations
+- `/api/v1/companies/*` - Company operations
+- `/api/v1/messages/*` - Messaging endpoints
+- `/api/v1/notifications/*` - Notification management
 
-**Job Posting Data**
-- Job details (title, description, requirements)
-- Employment information (type, level, location, remote options)
-- Compensation (salary range, benefits)
-- Application settings (custom questions, required documents)
-- Status and lifecycle (created, published, closed dates)
-- View and application statistics
+**Key API Features:**
+- JWT token authentication for stateless requests
+- Rate limiting: 60 requests/minute for authenticated, 20/minute for unauthenticated
+- Pagination with cursor-based and offset-based options
+- API versioning in URL structure
+- Standardized error responses
+- Request validation using Laravel Form Requests
+- API resource transformers for consistent responses
 
-**Application Data**
-- Candidate reference (user_id or guest email)
-- Job reference
-- Submitted materials (resume, cover letter, question answers)
-- Application metadata (submitted date, source)
-- Review data (status, rating, notes)
-- Communication history
+#### 7.4 Third-Party Integrations
 
-#### 8.2 Data Privacy & Retention
-- **Personal Data**: Stored encrypted, accessible only by authorized users
-- **Retention Policy**:
-    - Active applications: retained indefinitely while account is active
-    - Closed applications: archived after 2 years
-    - Deleted accounts: personal data purged within 30 days
-    - Audit logs: retained for 7 years
-- **User Rights**:
-    - Right to access all personal data
-    - Right to data portability (JSON/CSV export)
-    - Right to deletion (with legal retention exceptions)
-    - Right to rectification
+**Initial Integrations:**
+- **Payment Processing**: Stripe for company subscriptions
+- **Email Service**: SendGrid or AWS SES for transactional emails
+- **File Storage**: AWS S3 for resume and document storage
+- **Maps/Geocoding**: Google Maps API for location services
+- **Analytics**: Google Analytics 4 for usage tracking
 
-#### 8.3 Data Backup & Recovery
-- Automated daily database backups retained for 30 days
-- Point-in-time recovery capability for last 7 days
-- Backup encryption with separate key management
-- Quarterly disaster recovery testing
-- Recovery Time Objective (RTO): 4 hours
-- Recovery Point Objective (RPO): 24 hours
-
----
-
-### 9. Integration Requirements
-
-#### 9.1 External Service Integrations
-- **Email Service**: AWS SES, SendGrid, or Mailgun for transactional emails
-- **File Storage**: AWS S3, DigitalOcean Spaces, or similar
-- **Payment Processing**: Stripe for premium features and job promotions
-- **Social Login**: Google, LinkedIn, GitHub OAuth providers
-- **Analytics**: Google Analytics 4 for user behavior tracking
-- **Error Tracking**: Sentry or Bugsnag for application monitoring
-
-#### 9.2 API Integration Points
-- **LinkedIn**: Job posting integration (future)
-- **Indeed**: Job syndication (future)
-- **Zapier**: Webhook automation (future)
-- **Calendar Services**: Google Calendar, Outlook for interview scheduling (future)
+**Future Integrations:**
+- **OAuth Providers**: LinkedIn, Google for social authentication
+- **Video Interviewing**: Zoom, Microsoft Teams
+- **Background Checks**: Checkr or similar
+- **Calendar**: Google Calendar, Outlook for interview scheduling
+- **ATS Systems**: API integrations with popular HR platforms
 
 ---
 
-### 10. Deployment & DevOps
+### 8. Development Phases
 
-#### 10.1 Deployment Strategy
-- **Environment Setup**: Development, Staging, Production
-- **CI/CD Pipeline**: Automated testing and deployment using GitHub Actions or GitLab CI
-- **Deployment Process**: Blue-green deployment with zero-downtime
-- **Rollback Capability**: Quick rollback to previous stable version
-- **Database Migrations**: Automated with backward compatibility checks
+#### 8.1 Phase 1: MVP (Months 1-4)
 
-#### 10.2 Monitoring & Logging
-- **Application Monitoring**: Laravel Telescope for local, New Relic or Datadog for production
-- **Server Monitoring**: CPU, memory, disk usage alerts
-- **Error Tracking**: Real-time error notifications with stack traces
-- **Log Management**: Centralized logging with ELK stack or CloudWatch
-- **Performance Monitoring**: Response time, database query performance
-- **Uptime Monitoring**: Third-party service (Pingdom, UptimeRobot)
+**Job Seeker App MVP:**
+- User registration and authentication
+- Basic profile creation (manual entry only)
+- Job search with basic filters
+- Job details view
+- Manual application submission
+- Application tracking dashboard
+- Basic notifications (email only)
+- Saved jobs
 
-#### 10.3 Infrastructure Requirements
-- **Web Server**: Nginx or Apache with PHP-FPM
-- **Application Servers**: Minimum 2 instances for high availability
-- **Database**: Managed service (AWS RDS, DigitalOcean Managed Database) with replication
-- **Cache Server**: Redis cluster for high availability
-- **Queue Workers**: Supervisor-managed Laravel queue workers
-- **CDN**: CloudFront, Cloudflare, or similar for static assets
+**Admin Dashboard MVP:**
+- Company registration
+- Basic company profile
+- Single-user access (admin only)
+- Job posting creation and management
+- Basic applicant list view
+- Application status management
+- Simple messaging to candidates
+- Basic analytics dashboard
 
----
+**Infrastructure:**
+- Laravel application deployed on AWS/DigitalOcean
+- MySQL database
+- Basic Redis caching
+- S3 for file storage
+- CI/CD pipeline setup
 
-### 11. Testing Strategy
+#### 8.2 Phase 2: Enhanced Features (Months 5-6)
 
-#### 11.1 Testing Types
-- **Unit Tests**: 80%+ code coverage for business logic
-- **Feature Tests**: Complete coverage of all API endpoints and user flows
-- **Browser Tests**: Laravel Dusk tests for critical user journeys
-- **Performance Tests**: Load testing for 1000+ concurrent users
-- **Security Tests**: OWASP Top 10 vulnerability scanning
-- **Accessibility Tests**: Automated WCAG compliance checking
+**Job Seeker App:**
+- Resume upload and parsing
+- One-click apply
+- Advanced search filters and saved searches
+- Job recommendations algorithm
+- Push notifications (PWA)
+- Mobile optimizations
 
-#### 11.2 Quality Assurance Process
-- All features require passing tests before merge
-- Automated test suite runs on every pull request
-- Manual QA testing in staging environment
-- User acceptance testing with beta users
-- Regression testing before each release
+**Admin Dashboard:**
+- Multi-user support with roles
+- Hiring manager and viewer roles
+- Collaborative applicant review
+- Team notes and ratings
+- Advanced applicant filtering
+- Kanban pipeline view
+- Message templates
+- Enhanced analytics with charts
 
----
+#### 8.3 Phase 3: Advanced Features (Months 7-9)
 
-### 12. Launch Plan
+**Job Seeker App:**
+- Social login (LinkedIn, Google)
+- Profile completeness wizard
+- Salary insights
+- Application tracking enhancements
+- Job alerts customization
 
-#### 12.1 Launch Phases
+**Admin Dashboard:**
+- Custom screening questions
+- Bulk actions on applicants
+- Interview scheduling
+- Email campaign tools
+- Custom report builder
+- API access (beta)
+- Integration with calendar apps
 
-**Phase 1: Alpha (Internal - Month 1-2)**
-- Core features: authentication, job posting, applications
-- Internal team testing and feedback
-- Infrastructure setup and optimization
+#### 8.4 Phase 4: Optimization & Scale (Months 10-12)
 
-**Phase 2: Beta (Limited - Month 3-4)**
-- Invite 50-100 companies and job seekers
-- Gather user feedback and iterate
-- Performance optimization
-- Bug fixes and refinements
-
-**Phase 3: Public Launch (Month 5-6)**
-- Open registration to public
-- Marketing campaign initiation
-- Full feature set availability
-- Support team ready
-
-#### 12.2 Success Criteria for Launch
-- ✓ All P0 (must-have) features complete and tested
-- ✓ 99%+ uptime during beta period
-- ✓ Page load times <2s on average
-- ✓ Security audit passed
-- ✓ Beta user satisfaction score >4.0/5.0
-- ✓ Zero critical bugs in production
-
-#### 12.3 Post-Launch Support Plan
-- 24/7 monitoring for first 2 weeks
-- Daily bug triage and hot-fix deployments
-- Weekly feature prioritization based on user feedback
-- Monthly performance review and optimization
-
----
-
-### 13. Risks & Mitigation
-
-| Risk | Likelihood | Impact | Mitigation Strategy |
-|------|-----------|--------|---------------------|
-| Low initial user adoption | Medium | High | Pre-launch marketing, beta user seeding, referral incentives |
-| Performance issues at scale | Medium | High | Load testing, caching strategy, infrastructure auto-scaling |
-| Security breach | Low | Critical | Security audits, penetration testing, bug bounty program |
-| Competition from established platforms | High | Medium | Focus on niche markets, superior UX, open-source community |
-| Spam job postings | Medium | Medium | Moderation tools, verification process, rate limiting |
-| Data privacy compliance | Low | Critical | Legal review, GDPR/CCPA compliance, data protection officer |
-| Third-party service failures | Medium | Medium | Graceful degradation, backup services, monitoring |
+- Performance optimizations
+- Advanced security features (2FA)
+- Multi-language support preparation
+- Enhanced mobile apps (native or advanced PWA)
+- AI-powered matching algorithm
+- Video interview integration
+- Advanced ATS features
+- Third-party integrations expansion
 
 ---
 
-### 14. Budget & Resources
+### 9. Success Criteria & Launch Plan
 
-#### 14.1 Development Team
-- 1 Product Manager
-- 2 Backend Developers (Laravel)
-- 1 Frontend Developer
-- 1 UI/UX Designer
-- 1 QA Engineer
-- 1 DevOps Engineer
+#### 9.1 MVP Launch Criteria
 
-#### 14.2 Estimated Timeline
-- **Development**: 4-5 months
-- **Testing & QA**: 1 month (parallel with development)
-- **Beta Testing**: 1-2 months
-- **Total Time to Public Launch**: 6 months
+**Technical Readiness:**
+- All Phase 1 features fully functional and tested
+- Security audit completed and vulnerabilities addressed
+- Performance targets met (load time, response time)
+- 99%+ uptime during beta period
+- Database backup and disaster recovery tested
+- Mobile responsiveness validated on target devices
 
-#### 14.3 Infrastructure Costs (Monthly Estimates)
-- Application Servers: $200-400
-- Database: $150-300
-- Redis Cache: $50-100
-- File Storage & CDN: $100-200
-- Email Service: $50-150
-- Monitoring Tools: $100-200
-- **Total Monthly**: $650-1,350
+**Content Readiness:**
+- Help documentation completed for both platforms
+- FAQ section populated
+- Onboarding tutorials created
+- Email templates for all notifications finalized
+- Legal pages (Terms, Privacy Policy, Cookie Policy) published
 
----
+**Market Readiness:**
+- Beta testing with 20+ companies completed
+- Beta testing with 200+ job seekers completed
+- Feedback incorporated into MVP
+- Pricing model finalized
+- Marketing website launched
+- Initial company partnerships secured (50+ companies committed)
 
-### 15. Open Source Considerations
+#### 9.2 Launch Strategy
 
-#### 15.1 Licensing
-- MIT License for maximum flexibility and adoption
-- Clear contribution guidelines and code of conduct
-- Contributor License Agreement (CLA) for major contributions
+**Soft Launch (Month 4):**
+- Invite-only access for beta users
+- Limited to specific geographic market or industry vertical
+- Gather feedback and iterate quickly
+- Target: 50 companies, 1,000 job seekers
 
-#### 15.2 Community Building
-- Comprehensive documentation (installation, configuration, customization)
-- Video tutorials and demos
-- Active GitHub discussions and issue tracking
-- Monthly community calls
-- Showcase of implementations
+**Public Launch (Month 5):**
+- Open registration for all users
+- Press release and media outreach
+- Content marketing campaign (blog, SEO)
+- Social media campaigns
+- Partnerships with industry associations
+- Referral program launch
+- Target: 100 companies, 5,000 job seekers by Month 6
 
-#### 15.3 Contribution Guidelines
-- Code style guide (PSR-12 for PHP)
-- Pull request template
-- Issue templates for bugs and features
-- Required tests for new features
-- Documentation updates required
+**Growth Phase (Months 6-12):**
+- Paid advertising campaigns (Google Ads, LinkedIn)
+- Strategic partnerships with universities and job placement services
+- Event sponsorships and job fairs
+- Continuous feature releases based on user feedback
+- Geographic expansion
+- Target: 500 companies, 25,000 job seekers by Month 12
 
----
+#### 9.3 Key Risks & Mitigation
 
-### 16. Future Roadmap (12-24 Months)
+**Risk 1: Low initial job posting volume**
+- *Mitigation*: Pre-launch company partnerships, incentivized early posting, scraping public job boards (with permission) to seed initial listings
 
-**Q2 2026**
-- Advanced analytics dashboard
-- Skills-based matching algorithm
-- Mobile app development begins
+**Risk 2: Chicken-and-egg problem (need jobs to attract seekers, need seekers to attract companies)**
+- *Mitigation*: Focus on company acquisition first, subsidized or free initial listings, targeted seeker marketing in high-demand skill areas
 
-**Q3 2026**
-- Video introduction feature
-- Interview scheduling integration
-- Multi-language support
+**Risk 3: Poor mobile experience**
+- *Mitigation*: Mobile-first development approach, extensive mobile testing, PWA implementation from day one
 
-**Q4 2026**
-- Mobile app launch (iOS/Android)
-- API marketplace for integrations
-- White-label licensing options
+**Risk 4: Data privacy concerns**
+- *Mitigation*: Transparent privacy policy, GDPR/CCPA compliance from launch, security audits, clear data handling practices
 
-**Q1 2027**
-- AI-powered resume screening
-- Automated candidate outreach
-- Virtual job fair platform
+**Risk 5: Competition from established job boards**
+- *Mitigation*: Focus on superior UX, niche market initially, unique features (one-click apply, collaboration tools), strong customer support
 
----
-
-### 17. Appendix
-
-#### 17.1 Glossary
-- **ATS**: Applicant Tracking System
-- **JWT**: JSON Web Token
-- **RBAC**: Role-Based Access Control
-- **GDPR**: General Data Protection Regulation
-- **CCPA**: California Consumer Privacy Act
-- **WCAG**: Web Content Accessibility Guidelines
-- **CDN**: Content Delivery Network
-- **RTO**: Recovery Time Objective
-- **RPO**: Recovery Point Objective
-
-#### 17.2 References
-- Laravel Documentation: https://laravel.com/docs
-- OWASP Security Guidelines: https://owasp.org
-- WCAG 2.1 Guidelines: https://www.w3.org/WAI/WCAG21/quickref/
-- Job Board Industry Reports: Various market research sources
-
-#### 17.3 Document Revision History
-- v1.0 - January 6, 2026 - Initial PRD creation
+**Risk 6: Technical performance issues at scale**
+- *Mitigation*: Load testing before launch, scalable architecture, caching strategy, database optimization, monitoring and alerting
 
 ---
 
-**Document Approval**
+### 10. Metrics & KPIs
 
-| Role              | Name | Signature  |  Date |
-|-------------------|------|------------|-------|
-| Product Manager   | [Name]            |       | |
-| Engineering Lead  | [Name]            |       | |
-| Design Lead       | [Name]            |       | |
-| Executive Sponsor | [Name]            |       | |
+#### 10.1 Product Metrics
+
+**Acquisition:**
+- New job seeker registrations per week
+- New company registrations per week
+- Cost per acquisition (CPA) by channel
+- Registration completion rate
+- Profile completion rate
+
+**Engagement:**
+- Daily/Weekly/Monthly Active Users (DAU/WAU/MAU)
+- Average session duration
+- Sessions per user per week
+- Job search frequency
+- Application submission rate
+- Admin dashboard login frequency
+
+**Retention:**
+- Day 1, Day 7, Day 30 retention rates
+- Churn rate (job seekers and companies)
+- Return visit rate for job seekers
+- Company subscription renewal rate
+
+**Business:**
+- Active job postings
+- Applications per job posting
+- Application-to-interview conversion rate
+- Job fill rate
+- Time-to-hire (average days)
+- Revenue per company
+- Monthly Recurring Revenue (MRR)
+- Customer Lifetime Value (CLV)
+
+#### 10.2 User Satisfaction Metrics
+
+- Net Promoter Score (NPS) - Target: 50+
+- Customer Satisfaction Score (CSAT) - Target: 4.5/5
+- Feature adoption rates
+- Support ticket volume and resolution time
+- App store ratings (for mobile apps)
+- User feedback sentiment analysis
+
+#### 10.3 Technical Metrics
+
+- Application uptime percentage
+- Page load time (p50, p95, p99)
+- API response time
+- Error rate (4xx and 5xx responses)
+- Database query performance
+- Search query latency
+- Background job processing time
+- Infrastructure costs per active user
+
+---
+
+### 11. Future Vision (12-24 Months)
+
+**Platform Expansion:**
+- Native mobile apps (iOS and Android)
+- AI-powered candidate matching and recommendations
+- Skills assessment and testing platform
+- Freelance and gig work marketplace
+- Employer branding and recruitment marketing tools
+- Advanced analytics and predictive hiring insights
+- White-label solution for recruitment agencies
+- International expansion with multi-language support
+
+**Marketplace Features:**
+- Job seeker services marketplace (resume writing, career coaching)
+- Recruitment agency partnerships
+- Premium job seeker profiles with verified credentials
+- Direct hiring incentives and success fees
+- Talent pool database for proactive recruiting
+
+**Community Features:**
+- Company reviews and ratings
+- Salary transparency and negotiation tools
+- Career advice content and resources
+- Networking and professional connections
+- Industry forums and discussions
+- Virtual job fairs and events
+
+---
+
+### 12. Appendices
+
+#### 12.1 Glossary
+
+- **ATS (Applicant Tracking System)**: Software for managing recruitment and hiring process
+- **Job Seeker**: Individual looking for employment opportunities
+- **Hiring Manager**: Company representative responsible for recruiting for specific positions
+- **Company Admin**: User with full administrative access to company account
+- **Pipeline**: The stages candidates move through in the hiring process
+- **One-Click Apply**: Feature allowing applications with pre-filled profile data
+- **PWA (Progressive Web App)**: Web application that functions like a native mobile app
+- **Kanban Board**: Visual workflow management tool showing stages of process
+
+#### 12.2 References
+
+- Industry benchmarks from recruitment technology reports (2024-2025)
+- User research data from competitor analysis
+- WCAG 2.1 accessibility guidelines
+- GDPR and CCPA compliance requirements
+- Laravel 11 documentation and best practices
+
+#### 12.3 Approval & Sign-off
+
+This PRD requires approval from:
+- [ ] Product Manager
+- [ ] Engineering Lead
+- [ ] Design Lead
+- [ ] Business Stakeholder
+- [ ] Legal/Compliance (for data handling)
+
+**Version History:**
+- v1.0 - January 10, 2026 - Initial draft
+
+---
+
+### Document End
+
+**Next Steps:**
+1. Review and approval from stakeholders
+2. Technical architecture deep-dive with engineering team
+3. Design mockups and prototype creation
+4. Sprint planning and backlog prioritization
+5. Development kickoff meeting
