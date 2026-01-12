@@ -1147,3 +1147,6 @@ This PRD requires approval from:
 3. Design mockups and prototype creation
 4. Sprint planning and backlog prioritization
 5. Development kickoff meeting
+
+
+![img.png](img.png)

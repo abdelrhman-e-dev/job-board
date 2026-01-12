@@ -3,3 +3,12 @@
 
 Programming Language:
     - PHP
+
+Libraries:
+    - Filament
+    - Livewire
+
+AI Integration:
+    - AI review jobseeker cv and job posting
+    - AI match jobseeker cv to job posting
+    - AI review All jobseekers cv which apply for a job posting
