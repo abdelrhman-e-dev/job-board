@@ -1,0 +1,157 @@
+erDiagram
+    users ||--o{ jobs : "posts"
+    users ||--o{ applications : "submits"
+    users ||--o{ saved_jobs : "saves"
+    users ||--o{ messages : "sends"
+    users ||--o{ messages : "receives"
+    users }o--|| companies : "works for"
+    
+    companies ||--o{ jobs : "has"
+    
+    jobs ||--o{ applications : "receives"
+    jobs ||--o{ saved_jobs : "bookmarked by"
+    jobs }o--|| categories : "belongs to"
+    
+    applications ||--o{ messages : "has"
+    applications ||--o{ reviews : "has"
+    
+    users {
+        bigint id PK
+        string email UK
+        string password
+        enum type "job_seeker, company_admin, hiring_manager"
+        bigint company_id FK "null for job_seekers"
+        string first_name
+        string last_name
+        string phone
+        string avatar
+        text bio
+        json profile_data "experience, education, skills, etc"
+        json settings "notifications, preferences"
+        timestamp email_verified_at
+        timestamps created_at_updated_at
+        softDeletes deleted_at
+    }
+    
+    companies {
+        bigint id PK
+        string name
+        string slug UK
+        string logo
+        string website
+        text description
+        string industry
+        enum size "1-10, 11-50, 51-200, 201-500, 500+"
+        json locations "array of office locations"
+        json metadata "benefits, culture, social_links"
+        boolean verified
+        enum subscription_plan "free, basic, pro, enterprise"
+        integer jobs_limit
+        timestamps created_at_updated_at
+        softDeletes deleted_at
+    }
+    
+    jobs {
+        bigint id PK
+        bigint company_id FK
+        bigint posted_by FK "users.id"
+        bigint category_id FK
+        string title
+        string slug UK
+        text description
+        json requirements "skills, experience, education"
+        enum type "full_time, part_time, contract, remote"
+        enum level "entry, mid, senior, lead"
+        string location
+        decimal salary_min
+        decimal salary_max
+        string salary_currency
+        json screening_questions "array of questions"
+        enum status "draft, active, closed, expired"
+        integer views_count
+        integer applications_count
+        date deadline
+        timestamp published_at
+        timestamps created_at_updated_at
+        softDeletes deleted_at
+    }
+    
+    categories {
+        bigint id PK
+        string name UK
+        string slug UK
+        bigint parent_id FK "self-reference, nullable"
+        integer order
+        timestamps created_at_updated_at
+    }
+    
+    applications {
+        bigint id PK
+        bigint job_id FK
+        bigint user_id FK "job_seeker"
+        text cover_letter
+        string resume_url
+        json screening_answers "answers to questions"
+        json documents "additional files"
+        enum status "new, reviewing, shortlisted, interview, offer, hired, rejected, withdrawn"
+        integer rating "1-5, set by reviewers"
+        json status_history "timeline of status changes"
+        boolean is_read
+        timestamp read_at
+        timestamps created_at_updated_at
+    }
+    
+    reviews {
+        bigint id PK
+        bigint application_id FK
+        bigint reviewer_id FK "users.id company_user"
+        integer rating "1-5"
+        text feedback
+        text notes
+        enum recommendation "hire, maybe, reject"
+        timestamps created_at_updated_at
+    }
+    
+    saved_jobs {
+        bigint id PK
+        bigint user_id FK
+        bigint job_id FK
+        text notes
+        timestamps created_at_updated_at
+        unique user_id_job_id
+    }
+    
+    messages {
+        bigint id PK
+        bigint application_id FK
+        bigint sender_id FK "users.id"
+        bigint recipient_id FK "users.id"
+        string subject
+        text body
+        boolean is_read
+        timestamp read_at
+        timestamps created_at_updated_at
+    }
+    
+    notifications {
+        bigint id PK
+        bigint user_id FK
+        string type "job_alert, application_update, message"
+        string title
+        text message
+        json data "related model info"
+        boolean is_read
+        timestamp read_at
+        timestamp created_at
+    }
+    
+    activity_logs {
+        bigint id PK
+        bigint user_id FK
+        string action "created, updated, deleted, viewed"
+        string model "Job, Application, User"
+        bigint model_id
+        json changes
+        string ip_address
+        timestamp created_at
+    }
