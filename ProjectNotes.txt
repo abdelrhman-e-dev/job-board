@@ -6,7 +6,7 @@ Programming Language:
 
 Libraries:
     - Filament
-    - Livewire
+    - Liveware
 
 AI Integration:
     - AI review jobseeker cv and job posting
