@@ -1,0 +1,97 @@
+graph TB
+    CompanyUser[👤 Company User]
+    
+    P1[1.0<br/>User Authentication<br/>Process]
+    P2[2.0<br/>Company Management<br/>Process]
+    P3[3.0<br/>Team Management<br/>Process]
+    P4[4.0<br/>Job Posting<br/>Process]
+    P5[5.0<br/>Applicant Review<br/>Process]
+    P6[6.0<br/>Communication<br/>Process]
+    P7[7.0<br/>Analytics & Reporting<br/>Process]
+    
+    D1[(Users DB)]
+    D2[(Companies DB)]
+    D3[(Jobs DB)]
+    D4[(Applications DB)]
+    D5[(Reviews DB)]
+    D6[(Messages DB)]
+    D7[(Activity Logs DB)]
+    
+    EmailSystem[📧 Email System]
+    SearchEngine[🔍 Search Engine]
+    PaymentGateway[💳 Payment Gateway]
+    
+    CompanyUser -->|Login Credentials| P1
+    P1 -->|Auth Token, Permissions| CompanyUser
+    P1 -->|Validate User & Role| D1
+    D1 -->|User & Company Data| P1
+    
+    CompanyUser -->|Company Details, Logo| P2
+    P2 -->|Confirmation| CompanyUser
+    P2 -->|Update Company| D2
+    D2 -->|Company Data| P2
+    P2 -->|Process Payment| PaymentGateway
+    PaymentGateway -->|Payment Status| P2
+    
+    CompanyUser -->|Team Member Invitation| P3
+    P3 -->|Invite Sent| CompanyUser
+    P3 -->|Create/Update User| D1
+    P3 -->|Send Invite Email| EmailSystem
+    D1 -->|Team List| P3
+    
+    CompanyUser -->|Job Details, Requirements| P4
+    P4 -->|Job Published| CompanyUser
+    P4 -->|Create/Update Job| D3
+    P4 -->|Index Job| SearchEngine
+    D3 -->|Job Data| P4
+    P4 -->|Log Activity| D7
+    
+    CompanyUser -->|Review Request, Filters| P5
+    P5 -->|Applicant List| CompanyUser
+    P5 -->|Fetch Applications| D4
+    D4 -->|Application Data| P5
+    P5 -->|Get Job Details| D3
+    D3 -->|Job Info| P5
+    
+    CompanyUser -->|Rating, Feedback, Status Change| P5
+    P5 -->|Update Confirmation| CompanyUser
+    P5 -->|Save Review| D5
+    P5 -->|Update Status| D4
+    P5 -->|Notify Applicant| EmailSystem
+    P5 -->|Log Activity| D7
+    
+    CompanyUser -->|Message Content| P6
+    P6 -->|Message Sent| CompanyUser
+    P6 -->|Store Message| D6
+    P6 -->|Send Email Notification| EmailSystem
+    D4 -->|Application Context| P6
+    
+    CompanyUser -->|Report Request| P7
+    P7 -->|Analytics Dashboard| CompanyUser
+    P7 -->|Query Applications| D4
+    P7 -->|Query Jobs| D3
+    P7 -->|Query Activity| D7
+    D4 -->|Application Metrics| P7
+    D3 -->|Job Performance| P7
+    D7 -->|Activity Data| P7
+    
+    style P1 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P2 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P3 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P4 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P5 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P6 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P7 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    
+    style D1 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D2 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D3 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D4 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D5 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D6 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D7 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    
+    style CompanyUser fill:#08427b,stroke:#052e56,color:#ffffff
+    style EmailSystem fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style SearchEngine fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style PaymentGateway fill:#999999,stroke:#6b6b6b,color:#ffffff

@@ -1,0 +1,68 @@
+graph TB
+    JobSeeker[👤 Job Seeker]
+    
+    P4_1[4.1<br/>Validate<br/>Application]
+    P4_2[4.2<br/>Auto-fill from<br/>Profile]
+    P4_3[4.3<br/>Check<br/>Duplicate]
+    P4_4[4.4<br/>Process Screening<br/>Questions]
+    P4_5[4.5<br/>Submit<br/>Application]
+    P4_6[4.6<br/>Send<br/>Notifications]
+    P4_7[4.7<br/>Update Job<br/>Metrics]
+    
+    D1[(Users DB)]
+    D2[(Profile & Documents DB)]
+    D3[(Jobs DB)]
+    D4[(Applications DB)]
+    D5[(Notifications DB)]
+    
+    EmailSystem[📧 Email System]
+    
+    JobSeeker -->|Application Form Data| P4_1
+    
+    P4_1 -->|Valid Data| P4_2
+    P4_1 -->|Validation Errors| JobSeeker
+    P4_1 -->|Get Job Requirements| D3
+    D3 -->|Job Rules| P4_1
+    
+    P4_2 -->|Request Profile| D2
+    D2 -->|Profile Data, Selected CV| P4_2
+    P4_2 -->|Auto-filled Application| P4_3
+    
+    P4_3 -->|Check Existing| D4
+    D4 -->|Application Status| P4_3
+    P4_3 -->|Duplicate Found| JobSeeker
+    P4_3 -->|No Duplicate| P4_4
+    
+    P4_4 -->|Get Questions| D3
+    D3 -->|Screening Questions| P4_4
+    P4_4 -->|Process Answers| P4_5
+    
+    P4_5 -->|Create Application Record| D4
+    D4 -->|Application ID| P4_5
+    P4_5 -->|Success| P4_6
+    P4_5 -->|Confirmation| JobSeeker
+    
+    P4_6 -->|Create Notifications| D5
+    P4_6 -->|Email to Company| EmailSystem
+    P4_6 -->|Email Confirmation to Seeker| EmailSystem
+    P4_6 -->|Trigger| P4_7
+    
+    P4_7 -->|Increment Application Count| D3
+    P4_7 -->|Update Job Stats| D3
+    
+    style P4_1 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_2 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_3 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_4 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_5 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_6 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    style P4_7 fill:#ac92ec,stroke:#967adc,color:#ffffff
+    
+    style D1 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D2 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D3 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D4 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D5 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    
+    style JobSeeker fill:#08427b,stroke:#052e56,color:#ffffff
+    style EmailSystem fill:#999999,stroke:#6b6b6b,color:#ffffff

@@ -1,0 +1,81 @@
+graph TB
+    JobSeeker[👤 Job Seeker]
+    
+    P1[1.0<br/>User Authentication<br/>Process]
+    P2[2.0<br/>Profile Management<br/>Process]
+    P3[3.0<br/>Job Search & Discovery<br/>Process]
+    P4[4.0<br/>Application Submission<br/>Process]
+    P5[5.0<br/>Application Tracking<br/>Process]
+    P6[6.0<br/>CV Analysis<br/>Process]
+    
+    D1[(Users DB)]
+    D2[(Profiles & Documents DB)]
+    D3[(Jobs DB)]
+    D4[(Applications DB)]
+    D5[(Saved Jobs DB)]
+    D6[(Document Reviews DB)]
+    
+    CloudStorage[☁️ Cloud Storage]
+    AIService[🤖 AI Service]
+    EmailSystem[📧 Email System]
+    SearchEngine[🔍 Search Engine]
+    
+    JobSeeker -->|Login Credentials| P1
+    P1 -->|Auth Token| JobSeeker
+    P1 -->|Validate/Create User| D1
+    D1 -->|User Data| P1
+    
+    JobSeeker -->|Profile Data, CV Upload| P2
+    P2 -->|Confirmation| JobSeeker
+    P2 -->|Store Profile| D2
+    P2 -->|Upload CV| CloudStorage
+    CloudStorage -->|File URL| P2
+    P2 -->|Save Document Record| D2
+    P2 -->|Trigger Analysis| P6
+    
+    JobSeeker -->|Search Query, Filters| P3
+    P3 -->|Search Results| JobSeeker
+    P3 -->|Query| SearchEngine
+    SearchEngine -->|Ranked Results| P3
+    P3 -->|Job Details| D3
+    D3 -->|Job Data| P3
+    P3 -->|Save Job| D5
+    
+    JobSeeker -->|Application Data| P4
+    P4 -->|Confirmation| JobSeeker
+    P4 -->|Get Profile & CV| D2
+    D2 -->|Auto-fill Data| P4
+    P4 -->|Create Application| D4
+    P4 -->|Notify Company| EmailSystem
+    P4 -->|Increment Count| D3
+    
+    JobSeeker -->|Request Status| P5
+    P5 -->|Application List & Status| JobSeeker
+    P5 -->|Fetch Applications| D4
+    D4 -->|Application History| P5
+    
+    P6 -->|Send CV Text| AIService
+    AIService -->|Analysis Results| P6
+    P6 -->|Store Review| D6
+    P6 -->|Notify User| EmailSystem
+    D2 -->|CV Document| P6
+    
+    style P1 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P2 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P3 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P4 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P5 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    style P6 fill:#5d9cec,stroke:#4a89dc,color:#ffffff
+    
+    style D1 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D2 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D3 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D4 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D5 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    style D6 fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    
+    style JobSeeker fill:#08427b,stroke:#052e56,color:#ffffff
+    style CloudStorage fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style AIService fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style EmailSystem fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style SearchEngine fill:#999999,stroke:#6b6b6b,color:#ffffff

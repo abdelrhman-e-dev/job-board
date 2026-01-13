@@ -1,0 +1,45 @@
+---
+title: Level 0 - Context Diagram
+---
+graph TB
+    JobSeeker[👤 Job Seeker]
+    CompanyUser[👤 Company User<br/>Admin/Hiring Manager]
+    EmailSystem[📧 Email System]
+    CloudStorage[☁️ Cloud Storage<br/>AWS S3]
+    PaymentGateway[💳 Payment Gateway<br/>Stripe]
+    AIService[🤖 AI Service<br/>OpenAI/Claude]
+    
+    System[Job Board Platform<br/>System]
+    
+    JobSeeker -->|Registration, Profile, CV Upload| System
+    JobSeeker -->|Job Search, Save Jobs| System
+    JobSeeker -->|Submit Applications| System
+    System -->|Job Listings, Recommendations| JobSeeker
+    System -->|Application Status, Messages| JobSeeker
+    System -->|CV Analysis & Suggestions| JobSeeker
+    
+    CompanyUser -->|Company Profile, Team Management| System
+    CompanyUser -->|Post Jobs, Review Applicants| System
+    CompanyUser -->|Send Messages, Update Status| System
+    System -->|Applications, Analytics| CompanyUser
+    System -->|Notifications, Reports| CompanyUser
+    
+    System -->|Send Notifications| EmailSystem
+    EmailSystem -->|Delivery Confirmations| System
+    
+    System -->|Upload/Download Files| CloudStorage
+    CloudStorage -->|File URLs| System
+    
+    System -->|Process Payments| PaymentGateway
+    PaymentGateway -->|Payment Status| System
+    
+    System -->|Analyze CV| AIService
+    AIService -->|Analysis Results| System
+    
+    style System fill:#1168bd,stroke:#0b4884,color:#ffffff
+    style JobSeeker fill:#08427b,stroke:#052e56,color:#ffffff
+    style CompanyUser fill:#08427b,stroke:#052e56,color:#ffffff
+    style EmailSystem fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style CloudStorage fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style PaymentGateway fill:#999999,stroke:#6b6b6b,color:#ffffff
+    style AIService fill:#999999,stroke:#6b6b6b,color:#ffffff
