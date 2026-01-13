@@ -4,16 +4,27 @@ erDiagram
     users ||--o{ saved_jobs : "saves"
     users ||--o{ messages : "sends"
     users ||--o{ messages : "receives"
-    users }o--|| companies : "works for"
+    users }o--o| companies : "works for"
+    users ||--o{ experiences : "has"
+    users ||--o{ educations : "has"
+    users ||--o{ user_skills : "has"
+    users ||--o{ documents : "uploads"
+    
+    documents ||--o{ document_reviews : "has AI analysis"
     
     companies ||--o{ jobs : "has"
     
     jobs ||--o{ applications : "receives"
     jobs ||--o{ saved_jobs : "bookmarked by"
+    jobs ||--o{ job_skills : "requires"
     jobs }o--|| categories : "belongs to"
     
     applications ||--o{ messages : "has"
     applications ||--o{ reviews : "has"
+    applications }o--o| documents : "uses CV"
+    
+    skills ||--o{ user_skills : "possessed by"
+    skills ||--o{ job_skills : "required by"
     
     users {
         bigint id PK
@@ -26,7 +37,8 @@ erDiagram
         string phone
         string avatar
         text bio
-        json profile_data "experience, education, skills, etc"
+        string city
+        string country
         json settings "notifications, preferences"
         timestamp email_verified_at
         timestamps created_at_updated_at
@@ -42,11 +54,8 @@ erDiagram
         text description
         string industry
         enum size "1-10, 11-50, 51-200, 201-500, 500+"
-        json locations "array of office locations"
-        json metadata "benefits, culture, social_links"
+        string location
         boolean verified
-        enum subscription_plan "free, basic, pro, enterprise"
-        integer jobs_limit
         timestamps created_at_updated_at
         softDeletes deleted_at
     }
@@ -59,14 +68,14 @@ erDiagram
         string title
         string slug UK
         text description
-        json requirements "skills, experience, education"
+        text requirements
         enum type "full_time, part_time, contract, remote"
         enum level "entry, mid, senior, lead"
         string location
         decimal salary_min
         decimal salary_max
         string salary_currency
-        json screening_questions "array of questions"
+        json screening_questions
         enum status "draft, active, closed, expired"
         integer views_count
         integer applications_count
@@ -80,34 +89,111 @@ erDiagram
         bigint id PK
         string name UK
         string slug UK
-        bigint parent_id FK "self-reference, nullable"
-        integer order
+        bigint parent_id FK "nullable"
         timestamps created_at_updated_at
+    }
+    
+    experiences {
+        bigint id PK
+        bigint user_id FK
+        string job_title
+        string company_name
+        string location
+        date start_date
+        date end_date
+        boolean is_current
+        text description
+        timestamps created_at_updated_at
+    }
+    
+    educations {
+        bigint id PK
+        bigint user_id FK
+        string institution
+        string degree
+        string field_of_study
+        date start_date
+        date end_date
+        timestamps created_at_updated_at
+    }
+    
+    skills {
+        bigint id PK
+        string name UK
+        string slug UK
+        timestamps created_at_updated_at
+    }
+    
+    user_skills {
+        bigint id PK
+        bigint user_id FK
+        bigint skill_id FK
+        enum level "beginner, intermediate, advanced, expert"
+        timestamps created_at_updated_at
+        unique user_id_skill_id
+    }
+    
+    job_skills {
+        bigint id PK
+        bigint job_id FK
+        bigint skill_id FK
+        boolean is_required
+        timestamps created_at_updated_at
+        unique job_id_skill_id
     }
     
     applications {
         bigint id PK
         bigint job_id FK
-        bigint user_id FK "job_seeker"
+        bigint user_id FK
+        bigint document_id FK "selected CV for this application"
         text cover_letter
-        string resume_url
-        json screening_answers "answers to questions"
-        json documents "additional files"
+        json screening_answers
         enum status "new, reviewing, shortlisted, interview, offer, hired, rejected, withdrawn"
-        integer rating "1-5, set by reviewers"
-        json status_history "timeline of status changes"
+        integer rating "1-5"
+        json status_history
         boolean is_read
         timestamp read_at
+        timestamps created_at_updated_at
+    }
+    
+    documents {
+        bigint id PK
+        bigint user_id FK
+        string original_name
+        string file_name "stored filename"
+        string file_path "S3/cloud path"
+        string file_url "full URL to access"
+        enum type "resume, cover_letter, portfolio, certificate, other"
+        string mime_type "application/pdf, etc"
+        integer file_size "in bytes"
+        boolean is_primary "default CV"
+        json parsed_data "extracted text/data from resume"
+        timestamps created_at_updated_at
+        softDeletes deleted_at
+    }
+    
+    document_reviews {
+        bigint id PK
+        bigint document_id FK
+        integer overall_score "0-100"
+        json scores "formatting, content, keywords, structure"
+        json strengths "array of strong points"
+        json weaknesses "array of areas to improve"
+        json suggestions "actionable recommendations"
+        json keyword_analysis "missing keywords, matching rate"
+        json ats_compatibility "ATS scan score and issues"
+        enum status "analyzing, completed, failed"
+        string ai_model_version "track which AI model used"
         timestamps created_at_updated_at
     }
     
     reviews {
         bigint id PK
         bigint application_id FK
-        bigint reviewer_id FK "users.id company_user"
+        bigint reviewer_id FK "users.id"
         integer rating "1-5"
         text feedback
-        text notes
         enum recommendation "hire, maybe, reject"
         timestamps created_at_updated_at
     }
@@ -136,22 +222,11 @@ erDiagram
     notifications {
         bigint id PK
         bigint user_id FK
-        string type "job_alert, application_update, message"
+        string type
         string title
         text message
-        json data "related model info"
+        json data
         boolean is_read
         timestamp read_at
-        timestamp created_at
-    }
-    
-    activity_logs {
-        bigint id PK
-        bigint user_id FK
-        string action "created, updated, deleted, viewed"
-        string model "Job, Application, User"
-        bigint model_id
-        json changes
-        string ip_address
         timestamp created_at
     }
