@@ -1,1166 +1,322 @@
-# 1. 👤 JOB SEEKER
+# 1. Job Seeker
 
-## 1.1 User Profile
+## 1.1 Role Definition
+The Job Seeker is an individual actively searching for employment opportunities. They represent the primary end-user of the consumer-facing job board application and are the focal point of the platform's value proposition.
 
-### Who They Are
-Job Seekers are individuals actively searching for employment opportunities or passively exploring career options. They represent the demand side of the job marketplace and are the primary value drivers for attracting companies to the platform.
+## 1.2 User Profile Characteristics
 
 ### Demographics
-- **Age Range:** 18–65 years old  
-- **Education Levels:** High school diploma to PhD  
+- **Age Range:** 18-65+ years  
+- **Education Level:** High school diploma to advanced degrees  
+- **Technical Proficiency:** Basic to advanced (platform designed for all levels)  
+- **Employment Status:** Unemployed, employed but seeking change, recent graduates, career changers  
+- **Experience Level:** Entry-level to executive  
+- **Geographic Distribution:** Initially focused markets, expanding globally  
 
-#### Experience Levels
-- Fresh graduates (0–1 years)  
-- Early career (1–3 years)  
-- Mid-level professionals (3–7 years)  
-- Senior professionals (7–15 years)  
-- Executive level (15+ years)  
+### Behavioral Traits
+- Mobile-first users (72% access via mobile devices)  
+- Time-constrained (prefer quick, streamlined processes)  
+- Comparison shoppers (evaluate multiple opportunities)  
+- Transparency seekers (want clear job requirements and compensation)  
+- Status-conscious (need visibility into application progress)  
 
-- **Geographic Distribution:** Global, with focus on major employment markets  
-- **Device Usage:** 75% mobile, 25% desktop  
-- **Technical Proficiency:** Varies from basic to advanced  
+## 1.3 Core Objectives & Goals
 
----
+### Primary Goals
+- **Discover Relevant Opportunities:** Find jobs matching skills, experience, and career aspirations  
+- **Apply Efficiently:** Submit applications quickly without repetitive data entry  
+- **Track Progress:** Monitor application status and receive timely updates  
+- **Present Best Self:** Showcase skills, experience, and accomplishments effectively  
+- **Make Informed Decisions:** Access comprehensive information about companies and roles  
 
-## User Personas
+### Secondary Goals
+- Build professional profile for future opportunities  
+- Receive relevant job recommendations  
+- Understand market salary ranges for their skills  
+- Network with potential employers  
+- Develop career through resources and insights  
 
-### Persona A: Sarah — The Career Changer
-- **Age:** 28  
-- **Current Role:** Marketing Specialist  
-- **Education:** Bachelor’s in Communications  
-- **Experience:** 5 years in traditional marketing  
-- **Goal:** Transition to digital marketing role with better salary  
+## 1.4 Pain Points & Challenges
 
-**Pain Points**
-- Lacks some required technical skills  
-- Unsure how to position career change in applications  
-- Needs to learn new tools quickly  
+### Current Pain Points
+- **Application Fatigue:** Filling out same information repeatedly across multiple applications  
+- **Black Hole Effect:** Applications submitted with no feedback or status updates  
+- **Information Asymmetry:** Lack of transparency about salary, culture, and actual job requirements  
+- **Search Inefficiency:** Difficulty filtering through irrelevant job postings  
+- **Mobile Friction:** Poor mobile experience on most job boards leads to abandoned applications  
+- **Profile Management:** Keeping multiple job board profiles updated is time-consuming  
+- **Spam & Irrelevance:** Receiving notifications for jobs that don't match qualifications  
 
-**Behavior**
-- Searches daily, applies to 3–5 jobs per week  
-- Heavily researches companies before applying  
-- Takes online courses to fill skill gaps  
-- Very responsive to application feedback  
+### Emotional Challenges
+- Anxiety about job search progress  
+- Frustration with unresponsive employers  
+- Uncertainty about application quality  
+- Stress from managing multiple applications  
+- Disappointment from rejections  
 
----
+## 1.5 System Access & Permissions
 
-### Persona B: James — The Fresh Graduate
-- **Age:** 22  
-- **Current Status:** Recent Computer Science graduate  
-- **Education:** Bachelor’s in Computer Science  
-- **Experience:** Internships and academic projects  
-- **Goal:** Land first full-time software engineering role  
+### Access Level
+- **Standard User (Job Seeker Account)**  
 
-**Pain Points**
-- Limited work experience  
-- Competing with experienced candidates  
-- Uncertainty about salary expectations  
-- ATS systems reject resume due to formatting  
+### Capabilities
 
-**Behavior**
-- Applies to 20–30 jobs per week  
-- Uses mobile app extensively  
-- Needs guidance on CV optimization  
-- Follows up frequently on applications  
+#### Profile Management
+- Create and update personal profile  
+- Upload and manage resume/CV (PDF, DOCX)  
+- Add work experience with detailed descriptions  
+- Document education history  
+- List skills and certifications  
+- Upload portfolio items and work samples  
+- Add profile photo  
+- Include contact information  
+- Set job preferences (location, salary, job type)  
+- Manage privacy settings  
 
----
+#### Job Search & Discovery
+- Access full job database  
+- Use advanced search with multiple filters  
+- Save custom search queries  
+- Receive personalized job recommendations  
+- View complete job descriptions  
+- Access company profiles and information  
+- See salary ranges (when provided)  
+- Filter by location, salary, job type, experience level, industry  
+- Sort results by relevance, date, salary  
 
-### Persona C: Michael — The Passive Seeker
-- **Age:** 35  
-- **Current Role:** Senior Product Manager (employed)  
-- **Education:** MBA  
-- **Experience:** 12 years in product management  
-- **Goal:** Find better opportunity with higher compensation or more interesting challenges  
+#### Application Management
+- Apply to unlimited job postings  
+- Use one-click apply for streamlined submissions  
+- Customize applications with cover letters  
+- Answer employer screening questions  
+- Upload additional documents per application  
+- Preview application before submission  
+- Edit draft applications  
+- Withdraw submitted applications  
+- View application history  
 
-**Pain Points**
-- Limited time to job search  
-- Needs discretion (currently employed)  
-- High standards for new opportunities  
-- Wants personalized, relevant matches only  
+#### Tracking & Communication
+- Access application dashboard with all submissions  
+- View real-time application status updates  
+- Receive notifications (email and push)  
+- Read messages from employers  
+- Respond to employer inquiries  
+- Save jobs for later review  
+- Add private notes to saved jobs  
+- Set job alerts based on criteria  
 
-**Behavior**
-- Checks platform 2–3 times per week  
-- Applies to 1–2 highly targeted jobs per month  
-- Relies heavily on recommendations  
-- Values quality over quantity  
+#### Settings & Preferences
+- Manage notification preferences  
+- Configure privacy settings  
+- Control profile visibility  
+- Set email frequency (immediate, daily, weekly)  
+- Update password and security settings  
+- Manage connected accounts (social logins)  
+- Download personal data (GDPR compliance)  
+- Delete account and data  
 
-## 1.2 Complete Feature Access
+### Restrictions
+- Cannot view other job seekers' profiles  
+- Cannot access employer dashboard or analytics  
+- Cannot post jobs or manage company information  
+- Cannot view applicant data for positions they applied to  
+- Cannot message other job seekers directly  
 
-### A. Registration & Authentication
+## 1.6 User Journey & Workflows
 
-#### Features
-- Email registration with verification  
-- Social login (Google, LinkedIn)  
-- Password reset functionality  
-- Two-factor authentication (optional)  
-- Remember me on trusted devices  
-- Single Sign-On (SSO) for future integrations  
+### Typical User Journey
+**Discovery → Registration → Profile Creation → Job Search → Application → Tracking → Interview → Outcome**  
 
-#### User Flow
-Landing Page → Click **Sign Up** → Choose method (Email / Google / LinkedIn)  
-→ Enter details → Verify email → Complete basic profile → Dashboard  
+### Detailed Workflow Stages
 
-#### Data Collected
-- **Email address** (required)  
-- **Password** (required, minimum 8 characters)  
-- **First name** (required)  
-- **Last name** (required)  
-- Phone number (optional)  
-- Location (city, country)  
-- Agreement to Terms & Privacy Policy  
+#### Stage 1: Discovery & Registration (Day 1)
+- Discover platform through marketing, referral, or organic search  
+- Land on homepage and explore available jobs  
+- Decide to create account  
+- Register via email or social login (Google, LinkedIn)  
+- Verify email address  
+- Initial onboarding tutorial  
 
-#### Security Features
-- Encrypted password storage (bcrypt)  
-- Email verification required before full access  
-- Account lockout after 5 failed login attempts  
-- Session timeout after 30 minutes of inactivity  
-- Suspicious login detection and notification  
+#### Stage 2: Profile Building (Days 1-3)
+- Complete basic profile information (name, location, contact)  
+- Upload resume for auto-population  
+- Add or edit work experience entries  
+- Document education background  
+- List relevant skills  
+- Upload profile photo  
+- Add portfolio links or work samples  
+- Set job preferences and criteria  
+- Review profile completeness indicator (target: 100%)  
 
----
+#### Stage 3: Active Job Search (Ongoing)
+- Use search bar with keywords  
+- Apply filters (location, salary, job type)  
+- Browse search results  
+- Click into interesting job postings  
+- Read full job descriptions  
+- Research company profiles  
+- Save promising opportunities  
+- Compare multiple positions  
+- Set up job alerts for specific criteria  
 
-### B. Profile Management
+#### Stage 4: Application Submission (Per Job)
+- Click "Apply" button on job posting  
+- Review auto-populated information from profile  
+- Customize cover letter (optional)  
+- Answer employer screening questions  
+- Upload additional documents if required  
+- Preview complete application  
+- Submit application  
+- Receive confirmation email  
 
-#### Profile Sections
+#### Stage 5: Application Tracking (Daily/Weekly)
+- Log into dashboard  
+- View all submitted applications  
+- Check status updates (New, Reviewing, Interview, etc.)  
+- Read messages from employers  
+- Respond to employer inquiries  
+- Prepare for scheduled interviews  
+- Receive notifications of status changes  
 
-### 1. Personal Information
-- Full name  
-- Profile photo (optional, max 5MB)  
-- Email (verified)  
-- Phone number  
-- Current location (city, state, country)  
-- Willing to relocate (yes / no)  
-- Open to remote work (yes / no)  
-- Professional headline (e.g., *Senior Software Engineer*)  
-- Bio / Summary (max 500 characters)  
 
----
-
-### 2. Work Experience
-- Unlimited entries allowed  
-
-For each experience:
-- Job title  
-- Company name  
-- Location  
-- Start date (month / year)  
-- End date or **Currently working here**  
-- Description (max 2000 characters)  
-- Key achievements (bullet points)  
-- Order control (drag & drop)  
-
----
-
-### 3. Education
-- Unlimited entries allowed  
-
-For each education entry:
-- Institution name  
-- Degree type  
-  - High School  
-  - Associate  
-  - Bachelor’s  
-  - Master’s  
-  - PhD  
-  - Certificate  
-- Field of study  
-- Start date  
-- End date or **Currently studying**  
-- Grade / GPA (optional)  
-- Description / achievements  
-- Order control  
-
----
-
-### 4. Skills
-- Add skills from master list (autocomplete)  
-- Create custom skills if not listed  
-
-#### Proficiency Levels
-- Beginner (0–1 year)  
-- Intermediate (1–3 years)  
-- Advanced (3–5 years)  
-- Expert (5+ years)  
-
-- Primary skills (top 5 highlighted)  
-- Endorsements (future feature)  
-
----
-
-### 5. Certifications
-- Certification name  
-- Issuing organization  
-- Issue date  
-- Expiry date (if applicable)  
-- Credential ID  
-- Credential URL (for verification)  
+# Stage 6: Interview Process (Per Opportunity)
+- **Receive interview invitation**
+- **Confirm interview details**
+- **Prepare using provided resources**
+- **Attend interview**
+- **Send follow-up messages**
+- **Await decision**
 
 ---
 
-### 6. Languages
-- Language name  
-
-#### Proficiency Levels
-- Basic  
-- Conversational  
-- Professional  
-- Native / Bilingual  
-
----
-
-### 7. Job Preferences
-- Desired job titles  
-- Preferred industries  
-- Job types  
-  - Full-time  
-  - Part-time  
-  - Contract  
-  - Remote  
-
-#### Desired Salary Range
-- Currency  
-- Minimum salary  
-- Maximum salary  
-- Period (hourly / monthly / yearly)  
-
-- Preferred locations or **Remote only**  
-- Availability  
-  - Immediate  
-  - 2 weeks  
-  - 1 month  
-  - 3 months  
-- Work authorization status  
+# Stage 7: Outcome & Next Steps
+- **Receive offer or rejection notification**
+- **If offered:**
+  - Review offer details and negotiate
+- **If rejected:**
+  - Continue job search with lessons learned
+- **Update profile based on feedback**
+- **Adjust search criteria if needed**
 
 ---
 
-### 8. Social Links
-- LinkedIn profile  
-- GitHub profile  
-- Portfolio website  
-- Twitter / X  
-- Personal blog  
-- Other professional links  
+# Edge Case Workflows
+- **Profile Update:** Periodically update profile with new skills, experience, certifications
+- **Job Alert Management:** Adjust alert criteria as search evolves
+- **Application Withdrawal:** Remove application if accepting another offer
+- **Password Recovery:** Reset password via email if forgotten
+- **Data Export:** Request profile data download for personal records
+- **Account Deletion:** Permanently remove account and associated data
 
 ---
 
-### Profile Completeness Indicator
-Displays completion percentage (0–100%) with checklist:
+## 1.7 Success Metrics & KPIs
 
-- ✅ Basic info (20%)  
-- ✅ Profile photo (5%)  
-- ✅ At least one experience (20%)  
-- ✅ At least one education (10%)  
-- ✅ At least 5 skills (15%)  
-- ✅ Job preferences set (10%)  
-- ✅ Bio / summary written (10%)  
-- ✅ CV uploaded (10%)  
+### Individual Success Indicators
+- **Profile completion percentage** (target: 100%)
+- **Number of applications submitted per week** (benchmark: 5–10)
+- **Application response rate** (target: >20%)
+- **Interview invitation rate** (target: >15% of applications)
+- **Time from registration to first application** (target: <24 hours)
+- **Job search to offer acceptance time** (industry avg: 42 days, target: 32 days)
 
----
-
-### Profile Visibility Settings
-- **Public:** Visible to all companies  
-- **Limited:** Visible only to companies you apply to  
-- **Private:** Not searchable, visible only in applications  
-
-### C. CV / Resume Management
-
----
-
-## Upload Features
-- Upload multiple CVs (up to 10)  
-- Supported formats: **PDF, DOCX, DOC**  
-- Max file size: **5MB per file**  
-- Drag & drop upload  
-- Cloud storage (AWS S3)  
+### Platform-Wide Job Seeker Metrics
+- **Registration completion rate** (target: >85%)
+- **Profile completion rate** (target: >70%)
+- **Daily/Weekly/Monthly Active Users**
+- **Application completion rate** (target: >80%)
+- **One-click apply usage rate** (target: >60%)
+- **Mobile application percentage** (target: >75%)
+- **Return user rate within 7 days** (target: >50%)
+- **Net Promoter Score** (target: 50+)
+- **User satisfaction rating** (target: 4.5/5)
 
 ---
 
-## CV Organization
-- Assign custom name to each CV  
-  - Examples: *Technical Resume*, *Creative Resume*, *General CV*  
-- Set one CV as **Primary** (default for quick apply)  
-- View upload date and file size  
-- Preview CV in browser  
-- Download CV  
-- Delete CV (with confirmation)  
+## 1.8 Support & Resources
+
+### Available Support
+- **Help Center** with FAQs and tutorials
+- **Email support** for technical issues
+- **In-app chat support** (during business hours)
+- **Video tutorials** for key features
+- **Profile optimization tips and best practices**
+- **Resume writing guidelines**
+- **Interview preparation resources**
+- **Salary negotiation guides**
+
+### Self-Service Resources
+- **Comprehensive knowledge base**
+- **Step-by-step feature guides**
+- **Troubleshooting articles**
+- **Privacy and security information**
+- **Community forums** (future feature)
+- **Career advice blog**
+- **Webinars and workshops** (future feature)
 
 ---
 
-## CV Parsing (Automatic)
-Triggered on upload. The system automatically:
-- Extracts text from the document  
-- Identifies sections (experience, education, skills)  
-- Populates profile fields if empty  
-- Detects contact information  
-- Identifies keywords and skills  
-- Stores parsed data for fast reuse  
+## 1.9 Technical Requirements
+
+### Device & Browser Support
+- **Desktop:**
+  - Chrome 90+
+  - Firefox 88+
+  - Safari 14+
+  - Edge 90+
+- **Mobile:**
+  - iOS 14+ (Safari, Chrome)
+  - Android 10+ (Chrome, Samsung Browser)
+- **Tablet:**
+  - iPad OS 14+
+  - Android tablets
+- **Progressive Web App:** Installable on mobile devices
+
+### Connectivity
+- Optimized for 3G/4G/5G connections
+- Offline access to saved jobs and profile (PWA feature)
+- Automatic sync when connection restored
+
+### Accessibility
+- **WCAG 2.1 Level AA compliant**
+- **Screen reader compatible**
+- **Keyboard navigation support**
+- **High contrast mode support**
+- **Adjustable font sizes**
 
 ---
 
-## AI CV Analysis
-- Automatically triggered on upload  
-- Generated within **10–15 seconds**  
-
-### Overall Score (0–100)
-Based on:
-- Formatting  
-- Content quality  
-- Keyword optimization  
-- ATS compatibility  
-
----
-
-## Detailed Breakdown
-
-### Formatting Score (0–100)
-- Clean layout  
-- Consistent fonts  
-- Proper spacing  
-- Readable structure  
-
-### Content Quality Score (0–100)
-- Clear objective / summary  
-- Quantified achievements  
-- Action verb usage  
-- Relevance to target roles  
-
-### Keyword Optimization (0–100)
-- Industry-relevant keywords  
-- Skills aligned with job market demand  
-- Role-specific terminology  
-
-### ATS Compatibility (0–100)
-- Simple formatting (no tables or columns)  
-- Standard section headers  
-- Machine-readable fonts  
-- No images in content area  
-
----
-
-## Strengths
-```json
-[
-  "Strong professional summary that clearly states your value",
-  "Quantified achievements (e.g., 'Increased sales by 30%')",
-  "Consistent date formatting throughout",
-  "Clear progression in career trajectory",
-  "Relevant technical skills prominently displayed"
-]
-
-```
-
-```
-{
-  "score": 72,
-  "issues": [
-    {
-      "problem": "Two-column layout detected",
-      "impact": "ATS may not parse correctly",
-      "fix": "Use single-column format"
-    },
-    {
-      "problem": "Text in header/footer",
-      "impact": "Contact info may be missed",
-      "fix": "Move contact details to main body"
-    },
-    {
-      "problem": "Unconventional section headers",
-      "impact": "ATS may not categorize correctly",
-      "fix": "Use standard headers: 'Work Experience', 'Education', 'Skills'"
-    }
-  ]
-}
-
-```
-
-**CV Version History:**
-- Track all uploads
-- Compare scores between versions
-- See improvements over time
-- Revert to previous version if needed
-
----
-
-#### **D. Job Search & Discovery**
-
-**Search Interface:**
-
-**1. Basic Search:**
-- Search bar with autocomplete
-- Searches across:
-  - Job titles
-  - Company names
-  - Job descriptions
-  - Required skills
-  - Locations
-
-**2. Advanced Filters:**
-```
-Location:
-├── City/Region selection
-├── Country selection
-├── Radius search (10, 25, 50, 100 miles/km)
-└── Remote only option
-
-Job Type:
-├── Full-time
-├── Part-time
-├── Contract
-├── Freelance
-└── Internship
-
-Experience Level:
-├── Entry level (0-2 years)
-├── Mid-level (2-5 years)
-├── Senior (5-10 years)
-└── Executive (10+ years)
-
-Salary Range:
-├── Currency selector
-├── Minimum salary slider
-├── Maximum salary slider
-└── Period (hourly, monthly, yearly)
-
-Date Posted:
-├── Last 24 hours
-├── Last 7 days
-├── Last 30 days
-└── Any time
-
-Company:
-├── Company size (1-10, 11-50, etc.)
-├── Industry
-└── Verified companies only
-
-Remote Work:
-├── Remote only
-├── Hybrid
-└── On-site
-```
-
-**3. Sort Options:**
-- Relevance (default - based on profile match)
-- Date posted (newest first)
-- Salary (highest first)
-- Company name (A-Z)
-
-**Search Results Display:**
-
-Each job card shows:
-- Company logo
-- Job title
-- Company name (with verification badge if verified)
-- Location (or "Remote")
-- Salary range (if provided)
-- Job type badge (Full-time, Remote, etc.)
-- Posted date (e.g., "2 days ago")
-- Match score (% based on profile)
-- Quick apply button (if profile complete)
-- Save/bookmark icon
-
-**Match Score Algorithm:**
-```
-Match Score = 
-  Skills Match (40%) +
-  Experience Level Match (20%) +
-  Location Match (15%) +
-  Salary Match (10%) +
-  Job Type Match (10%) +
-  Industry Match (5%)
-```
-
-**Results Display:**
-- List view (default)
-- Grid view (toggle)
-- 20 results per page
-- Infinite scroll or pagination
-- Total results count
-- Active filters shown as removable chips
-
-**4. Saved Searches:**
-- Save current search with custom name
-- Set up email alerts:
-  - Immediate (as jobs posted)
-  - Daily digest (9 AM local time)
-  - Weekly digest (Monday 9 AM)
-- Manage saved searches from dashboard
-- Edit or delete saved searches
-- View count of new jobs since last check
-
-**5. Job Recommendations:**
-
-**"Jobs For You" Section:**
-Based on:
-- Profile completeness
-- Skills listed
-- Work experience
-- Job preferences
-- Previous applications
-- Jobs saved
-- Search history
-
-**Algorithm Components:**
-```
-Recommendation Score = 
-  Skill Match (35%) +
-  Experience Match (25%) +
-  Preference Match (20%) +
-  Similar Jobs Applied (10%) +
-  Trending in Industry (10%)
-```
-
-**Recommendation Categories:**
-- Best matches (90%+ match)
-- Good fit (70-89% match)
-- Worth considering (50-69% match)
-- Similar to jobs you've saved
-- From companies you've applied to
-- Based on your searches
-
-**6. Browse by Category:**
-- All job categories displayed
-- Click category to see all jobs
-- Subcategories expandable
-- Popular categories highlighted
-- Recent jobs count per category
-
----
-
-#### **E. Job Details & Application**
-
-**Job Details Page:**
-
-**Header Section:**
-- Company logo
-- Company name (clickable to company page)
-- Job title
-- Location
-- Salary range (if provided)
-- Job type badge
-- Posted date
-- Application deadline (if set)
-- Quick actions:
-  - Save job button
-  - Share job (LinkedIn, Twitter, Email, Copy link)
-  - Report job (inappropriate/spam)
-
-**Match Indicator:**
-- Match percentage with your profile
-- Breakdown showing:
-  - ✅ Matching skills (5 of 7)
-  - ✅ Experience level match
-  - ⚠️ Location (you prefer remote, this is on-site)
-  - ✅ Salary range matches preference
-
-**Job Description Tab:**
-- Full job description (rich text)
-- Responsibilities section
-- Requirements section
-- Nice-to-have qualifications
-- Benefits section
-- Company culture information
-
-**Required Skills Section:**
-- List of required skills
-- Your matching skills highlighted in green
-- Missing skills highlighted in orange
-- Proficiency level required vs. yours
-
-**Company Information Tab:**
-- Company description
-- Industry
-- Company size
-- Founded year
-- Headquarters location
-- Website link
-- Social media links
-- Company photos/culture gallery
-- Employee testimonials (future)
-
-**Similar Jobs Section:**
-- 5-10 similar job recommendations
-- From same company or similar roles
-- Can quick-save or view
-
-**Application Section:**
-
-**One-Click Apply (if profile complete):**
-- Single button: "Apply with Profile"
-- Uses primary CV
-- Auto-fills all information
-- Instant submission
-- Confirmation message
-
-**Standard Application:**
-1. **Personal Information (Auto-filled):**
-   - Full name
-   - Email
-   - Phone
-   - Current location
-   - Editable before submission
-
-2. **Resume Selection:**
-   - Choose from uploaded CVs
-   - Radio button selection
-   - Preview CV option
-   - Upload new CV option
-
-3. **Cover Letter:**
-   - Optional text area
-   - Rich text editor
-   - Character count (0/2000)
-   - Templates available:
-     - Generic cover letter
-     - Career change template
-     - Entry-level template
-     - Executive template
-   - AI-powered cover letter generator (future):
-     - Analyzes job description
-     - Incorporates your experience
-     - Generates personalized letter
-     - User can edit before using
-
-4. **Screening Questions:**
-   - Displayed if employer added them
-   - Question types:
-     - Text input
-     - Yes/No
-     - Multiple choice
-     - Number input
-   - Required questions marked with *
-   - Character limits displayed
-   - Validation before submission
-
-5. **Additional Documents (Optional):**
-   - Upload up to 3 additional files
-   - Portfolio samples
-   - Certificates
-   - Letters of recommendation
-   - 5MB per file limit
-
-6. **Consent & Legal:**
-   - Checkbox: "I confirm all information is accurate"
-   - Checkbox: "I consent to background check if required"
-   - Checkbox: "I agree to share my information with this employer"
-
-**Application Preview:**
-- See exactly what employer will see
-- Review all information
-- Edit button to go back
-- Download application copy (PDF)
-
-**Submit Application:**
-- Final "Submit Application" button
-- Confirmation modal
-- Success message with:
-  - Application ID
-  - Confirmation email sent
-  - Next steps information
-  - Estimated response time
-
-**Post-Application:**
-- Application appears in "My Applications"
-- Status: "Submitted"
-- Timestamp recorded
-- Notification to hiring manager triggered
-- Application cannot be edited after submission
-- Option to withdraw application
-
----
-
-#### **F. Application Tracking**
-
-**My Applications Dashboard:**
-
-**Dashboard Overview:**
-- Total applications submitted
-- Applications this week
-- Pending responses
-- Interview invitations
-- Offers received
-- Rejected applications
-
-**Filter Options:**
-- All applications
-- By status:
-  - New/Submitted
-  - Under review
-  - Shortlisted
-  - Interview scheduled
-  - Offer received
-  - Rejected
-  - Withdrawn
-- By date range
-- By company
-- By job title
-- By salary range
-
-**Application Cards:**
-
-Each card displays:
-- Company logo
-- Job title
-- Company name
-- Applied date
-- Current status badge (color-coded):
-  - Blue: New/Submitted
-  - Yellow: Under review
-  - Green: Shortlisted/Interview
-  - Red: Rejected
-  - Gray: Withdrawn
-- Days since application
-- Status last updated
-- View details button
-- Quick actions (withdraw, message employer)
-
-**Detailed Application View:**
-
-**Application Information:**
-- Full job details
-- Your submitted resume (view/download)
-- Cover letter
-- Screening question answers
-- Additional documents
-- Submission timestamp
-
-**Status Timeline:**
-Visual timeline showing:
-```
-Applied (Jan 15, 2:30 PM)
-    ↓
-Reviewing (Jan 16, 10:00 AM)
-    ↓
-Shortlisted (Jan 18, 3:15 PM)
-    ↓
-Interview Scheduled (Jan 20, 11:00 AM)
-    ↓
-Awaiting Decision...
-```
-
-**Status Change Notifications:**
-- Email notification
-- In-app notification
-- Push notification (if enabled)
-- SMS notification (optional premium feature)
-
-**Employer Messages:**
-- Dedicated message thread per application
-- Receive messages from hiring manager
-- Reply to messages
-- Attach files to messages
-- Message read receipts
-- Email notification for new messages
-
-**Interview Information (if applicable):**
-- Interview date and time
-- Interview format (in-person, phone, video)
-- Interview location or meeting link
-- Interviewer name and title
-- Preparation materials
-- Add to calendar button (Google, Outlook, iCal)
-- Directions/parking information
-
-**Feedback Section:**
-- Company feedback on application (if provided)
-- Rejection reason (if shared)
-- Tips for future applications
-- Request feedback button
-
-**Actions:**
-- Withdraw application (with confirmation)
-- Report issue
-- Request update
-- Download application PDF
-- Share application status
-
----
-
-#### **G. Saved Jobs**
-
-**Saved Jobs Page:**
-
-**Organization:**
-- All saved jobs in one place
-- Grid or list view
-- Sort by:
-  - Date saved
-  - Application deadline
-  - Match score
-  - Salary
-
-**Job Cards:**
-- Same information as search results
-- Date saved
-- Application deadline warning (if approaching)
-- Notes field (personal notes on each job)
-- Quick apply button
-- Remove from saved button
-
-**Bulk Actions:**
-- Select multiple jobs
-- Apply to selected
-- Remove selected
-- Create folder/tag (e.g., "High Priority", "Apply Later")
-
-**Reminders:**
-- Automatic reminders for application deadlines
-- Reminder if saved job but haven't applied in 7 days
-- Job about to close notification
-
----
-
-#### **H. Notifications & Alerts**
-
-**Notification Types:**
-
-**1. Application Updates:**
-- Application received confirmation
-- Status changed (reviewing, shortlisted, etc.)
-- Interview invitation
-- Offer received
-- Application rejected
-- Request for additional information
-
-**2. Job Alerts:**
-- New jobs matching saved searches
-- New jobs from companies you've applied to
-- Jobs about to close (from saved jobs)
-- Similar jobs to ones you've applied to
-
-**3. Profile & Account:**
-- Profile viewed by employer
-- CV analysis completed
-- Profile completeness milestone
-- Password change confirmation
-- Login from new device
-
-**4. Messages:**
-- New message from employer
-- Message reply received
-- Important update from company
-
-**5. Platform Updates:**
-- New feature announcements
-- Platform maintenance scheduled
-- Tips for job search success
-
-**Notification Preferences:**
-
-**Per Notification Type:**
-- Email: On/Off
-- In-app: On/Off
-- Push (mobile): On/Off
-- SMS: On/Off (premium)
-
-**Frequency Settings:**
-- Immediate
-- Daily digest (choose time)
-- Weekly digest (choose day and time)
-- None
-
-**Quiet Hours:**
-- Set hours to not receive push notifications
-- Email not affected
-
-**Notification Center (In-App):**
-- Bell icon with unread count
-- Dropdown showing recent notifications
-- Mark as read/unread
-- Delete notification
-- Clear all notifications
-- Link directly to relevant page
-
----
-
-#### **I. Messages & Communication**
-
-**Messaging Interface:**
-
-**Message Inbox:**
-- List of conversations grouped by application
-- Unread messages highlighted
-- Company logo and job title
-- Last message preview
-- Timestamp
-- Unread count badge
-
-**Conversation Thread:**
-- All messages related to specific application
-- Chronological order
-- Sender name and role
-- Message timestamp
-- Read receipts
-- File attachments displayed inline
-
-**Compose Message:**
-- Reply to employer messages
-- Cannot initiate conversation (employers initiate)
-- Rich text editor
-- Attach files (up to 3 files, 5MB each)
-- Save draft
-- Send message
-
-**Message Notifications:**
-- Email with message preview
-- Push notification
-- In-app notification
-- Badge on messages tab
-
-**Response Time Indicator:**
-- Shows average response time from company
-- "Usually responds within 24 hours"
-
----
-
-#### **J. Settings & Preferences**
-
-**Account Settings:**
-
-**1. Personal Information:**
-- Email (with verification if changed)
-- Phone number
-- Change password
-- Delete account (with confirmation and warning)
-
-**2. Privacy Settings:**
-- Profile visibility
-  - Public (searchable by all companies)
-  - Limited (only visible to companies you apply to)
-  - Private (completely hidden)
-- Who can contact you
-  - All companies
-  - Only companies I've applied to
-  - None
-- Show profile views
-- Show application history to employers
-
-**3. Email Preferences:**
-- Job alerts frequency
-- Application updates
-- Marketing emails
-- Newsletter
-- Platform updates
-- Tips and advice
-
-**4. Notification Settings:**
-- Detailed control per notification type
-- Quiet hours setup
-- Do not disturb mode
-
-**5. Job Search Preferences:**
-- Default search location
-- Distance radius default
-- Preferred job types
-- Salary visibility (show/hide in searches)
-- Language preference
-
-**6. CV Settings:**
-- Set primary CV
-- Auto-apply with primary CV
-- Allow CV parsing
-- Enable AI analysis
-
-**7. Accessibility:**
-- Text size
-- High contrast mode
-- Screen reader optimization
-- Keyboard navigation
-
-**8. Data & Privacy:**
-- Download my data (GDPR)
-- Delete my data request
-- Data sharing preferences
-- Cookie preferences
-- Privacy policy
-- Terms of service
-
-**9. Connected Accounts:**
-- Linked social accounts
-- Third-party integrations
-- Disconnect accounts
-
-**10. Session Management:**
-- Active sessions list
-- Logout from all devices
-- Trust this device
-
----
-
-### **1.3 User Journey Map**
-
-
-**Complete Job Seeker Journey:**
-
-```
-AWARENESS STAGE
-├── Hears about platform (ads, referral, search)
-├── Visits landing page
-├── Browses without account
-└── Decides to sign up
-
-REGISTRATION STAGE (Day 1)
-├── Creates account (email or social)
-├── Verifies email
-├── Completes basic profile (10 min)
-├── Uploads first CV (2 min)
-├── Waits for AI analysis (15 seconds)
-└── Reviews CV feedback
-
-PROFILE BUILDING (Day 1-2)
-├── Adds work experience (15 min)
-├── Adds education (5 min)
-├── Adds skills (5 min)
-├── Sets job preferences (5 min)
-├── Reaches 80% profile completion
-└── Receives "Profile Complete" notification
-
-JOB SEARCH PHASE (Day 2-ongoing)
-├── First job search
-├── Applies filters
-├── Reviews job recommendations
-├── Saves interesting jobs (5-10 jobs)
-├── Reads job details carefully
-└── Compares multiple opportunities
-
-APPLICATION PHASE (Day 3-ongoing)
-├── Applies to first job (one-click)
-├── Receives confirmation
-├── Continues searching
-├── Applies to 3-5 more jobs in first week
-├── Sets up job alerts
-└── Saves search criteria
-
-WAITING PHASE (Week 1-2)
-├── Checks application status daily
-├── Receives status update notifications
-├── Gets first "under review" status
-├── Continues applying to new jobs
-├── Improves CV based on feedback
-└── Optimizes profile
-
-ENGAGEMENT PHASE (Week 2-4)
-├── Receives interview invitation
-├── Communicates with employer
-├── Prepares for interview
-├── Attends interview
-├── Receives offer or rejection
-├── Updates application status
-└── Continues job search if needed
-
-SUCCESS PHASE (Week 4-8)
-├── Receives job offer
-├── Accepts offer
-├── Withdraws other applications
-├── Updates profile status to "Not looking"
-└── May return for future job search
-
-POST-HIRE (Optional)
-├── Leaves platform review
-├── Refers friends
-└── Keeps profile for future use
-
-```
-## 1.4 Pain Points & Solutions
-
-### Pain Point 1: Repetitive Form Filling
-- **Problem:** Filling the same information for every application  
-- **Solution:** One-click apply with profile data auto-fill  
-- **Impact:** Reduces application time from **20 minutes to 30 seconds**  
-
----
-
-### Pain Point 2: Application Black Hole
-- **Problem:** No feedback on application status  
-- **Solution:** Real-time status tracking with visual timeline  
-- **Impact:** Transparency increases user satisfaction by **45%**  
-
----
-
-### Pain Point 3: Poor CV Quality
-- **Problem:** Uncertainty whether the CV is strong enough  
-- **Solution:** AI-powered CV analysis with clear, actionable feedback  
-- **Impact:** Improves CV quality score by an average of **23 points**  
-
----
-
-### Pain Point 4: Finding Relevant Jobs
-- **Problem:** Time wasted on irrelevant job listings  
-- **Solution:** Match score algorithm and smart job recommendations  
-- **Impact:** **67%** of applications come from recommended jobs  
-
----
-
-### Pain Point 5: Missed Opportunities
-- **Problem:** Ideal jobs posted but not seen in time  
-- **Solution:** Saved searches with automated email alerts  
-- **Impact:** **40%** increase in application rate  
-
----
-
-### Pain Point 6: ATS Rejection
-- **Problem:** CV rejected by Applicant Tracking Systems  
-- **Solution:** ATS compatibility checks and formatting recommendations  
-- **Impact:** **30%** increase in passing initial screening  
-
-## 1.5 Behavioral Patterns
-
-### Usage Patterns
-
-#### Active Job Seekers
-- Visit platform **5–7 times per week**
-- Apply to **5–15 jobs per week**
-- Spend **30–60 minutes** per session
-- Check application status **2–3 times per day**
-- Respond to messages **within hours**
-- Update profile every **2–3 weeks**
-
----
-
-#### Passive Job Seekers
-- Visit platform **1–2 times per week**
-- Apply to **1–3 highly targeted jobs per month**
-- Spend **15–30 minutes** per session
-- Check application status **weekly**
-- Respond to messages within **1–2 days**
-- Rarely update profile
-
----
-
-#### Fresh Graduates
-- Visit platform **daily** during first month
-- Apply to **20–30 jobs per week**
-- Mass apply with minimal customization
-- Very responsive to feedback
-- Frequently update CV
-- Highly engaged with platform features
-
----
-
-#### Experienced Professionals
-- Strategic and selective approach
-- Extensive company research before applying
-- Customize every application
-- Higher application-to-interview ratio
-- Value quality over quantity
-- Heavy use of advanced filters
-
----
-
-## 1.6 Success Metrics
-
-### User Success Indicators
-- Profile completion: **> 80%**
-- Applications submitted: **> 5** in first 2 weeks
-- Application response rate: **> 20%**
-- Interview invitation rate: **> 5%**
-- Time-to-hire: **< 45 days**
-- User satisfaction (NPS): **> 40**
-
----
-
-### Platform Success Indicators
-- User retention: **60%** return after 30 days
-- Application completion rate: **> 80%**
-- One-click apply usage: **> 60%**
-- CV analysis engagement: **> 70%**
-- Job alert conversion: **> 25%**
-- Message response rate: **> 80%**
+## 1.10 Data Privacy & Security
+
+### Personal Data Collected
+- **Contact information** (name, email, phone)
+- **Location data** (city, region)
+- **Work history and education**
+- **Skills and certifications**
+- **Resume and portfolio documents**
+- **Application history and preferences**
+- **Search history and saved jobs**
+- **Communication with employers**
+
+### Data Usage
+- Profile matching for job recommendations
+- Application submission to employers
+- Platform analytics and improvement
+- Personalized notifications and alerts
+
+### User Rights
+- **Access** personal data at any time
+- **Edit or update** information
+- **Download** complete data export
+- **Delete** account and all associated data
+- **Control profile visibility** settings
+- **Opt-out** of marketing communications
+- **Request data portability**
+
+### Security Measures
+- **HTTPS/TLS encryption** for all connections
+- **Secure password storage** (bcrypt hashing)
+- **Two-factor authentication** (optional)
+- **Session management** with automatic timeout
+- **Email verification** for account changes
+- **Account lockout** after failed login attempts
