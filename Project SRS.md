@@ -461,7 +461,7 @@ Not applicable for this web-based application.
 
 - **Backend Framework**: Laravel 11.x
 - **Frontend**: Blade Templates, Bootstrap 5, JavaScript (vanilla or Alpine.js)
-- **Database**: MySQL 8.0+
+- **Database**: MariaDB
 - **Authentication**: Laravel Breeze/Jetstream or custom implementation
 - **File Storage**: Local or AWS S3
 - **Email**: Laravel Mail with SMTP
