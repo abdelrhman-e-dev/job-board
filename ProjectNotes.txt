@@ -5,8 +5,8 @@ Programming Language:
     - PHP
 
 Libraries:
-    - Filament
-    - Liveware
+    - Filament for job back office app 
+    - Liveware for job app (interface for the project)
 
 AI Integration:
     - AI review jobseeker cv and job posting
