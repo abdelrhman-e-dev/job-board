@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Job extends Model
+class JobVacancy extends Model
 {
   use HasFactory, HasUlids, SoftDeletes;
-  protected $table = 'jobs';
+  protected $table = 'job_vacancies';
   protected $keyType = 'string';
   public $incrementing = false;
   protected $primaryKey = 'job_id';
