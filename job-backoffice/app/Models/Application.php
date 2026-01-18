@@ -35,7 +35,7 @@ class Application extends Model
     // relation between Application and Job
     public function job()
     {
-        return $this->belongsTo(Job::class, 'job_id', 'job_id');
+        return $this->belongsTo(JobVacancy::class, 'job_id', 'job_id');
     }
     // relation between Application and Document
     public function document()
