@@ -18,8 +18,10 @@ return new class extends Migration
             $table->ulid('job_seeker_id');
             $table->foreign('job_seeker_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->ulid('document_id');
-            $table->foreign('document_id')->references('document_id')->on('documents')->onDelete('set null');
+            $table->foreign('document_id')->references('document_id')->on('documents')->onDelete('cascade');
             $table->text('cover_letter')->nullable();
+            $table->float('aiGeneratedScore' , 2)->default(0)->comment('AI generated score for the application');
+            $table->text('ai_feedback')->nullable()->comment('AI generated feedback for the application');
             $table->json('screening_questions')->nullable();
             $table->enum('status', ['new', 'reviewing' , 'shortlisted' , 'interview' , 'offer' , 'hired' , 'rejected' , 'withdraw'])->default('new');
             $table->unsignedTinyInteger('rating')->nullable()->comment('rating out of 5 given by the employer');
