@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('type', ['resume', 'cover_letter', 'portfolio', 'certificate', 'other'])->default('other');
             $table->string('mime_type')->comment('application/pdf, image/png, etc.');
             $table->bigInteger('file_size')->comment('in bytes');
-            $table->boolean('is_primary')->default('CV')->comment('indicates if this is the primary document of its type for the user');
+            $table->boolean('is_primary')->default(0)->comment('indicates if this is the primary document of its type for the user');
             $table->json('parsed_data')->nullable()->comment('extracted text or metadata from the document');
             $table->softDeletes();
             $table->timestamps();
