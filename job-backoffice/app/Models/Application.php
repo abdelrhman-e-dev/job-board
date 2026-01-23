@@ -20,6 +20,8 @@ class Application extends Model
         'job_id',
         'job_seeker_id',
         'document_id',
+        'aiGeneratedScore',
+        'ai_feedback',
         'cover_letter',
         'screening_questions',
         'status',
