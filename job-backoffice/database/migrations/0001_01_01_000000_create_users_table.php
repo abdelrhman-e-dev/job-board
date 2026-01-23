@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['system-admin', 'job-seeker', 'company-owner', 'hiring-manager','recruiter'])->default('job-seeker');
             $table->string('company_id')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable();
             $table->string('city')->nullable();
