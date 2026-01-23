@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             JobCategorySeeder::class,
             JobVacancySeeder::class,
             JobSkillSeeder::class,
+            DocumentsSeeder::class,
+            ApplicationSeeder::class,
         ]);
     }
 }
