@@ -1,0 +1,3 @@
+- create system admin with filament
+    - install filament
+    - create admin panel
