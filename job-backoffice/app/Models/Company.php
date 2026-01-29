@@ -51,8 +51,6 @@ class Company extends Model
   // relation between Company and Jobs
   public function jobs()
   {
-    return $this->hasMany(Job::class, 'company_id', 'company_id');
+    return $this->hasMany(JobVacancy::class, 'company_id', 'company_id');
   }
-
-
 }

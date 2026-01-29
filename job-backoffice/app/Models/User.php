@@ -95,4 +95,15 @@ class User extends Authenticatable implements FilamentUser
   {
     return trim("{$this->first_name} {$this->last_name}") ?: $this->email;
   }
+  // custom column to show full name
+  public function getFullNameAttribute()
+  {
+    return "{$this->first_name} {$this->last_name}";
+  }
+  // relation between User and Company
+
+  public function company()
+  {
+    return $this->belongsTo(Company::class, 'company_id', 'company_id');
+  }
 }
