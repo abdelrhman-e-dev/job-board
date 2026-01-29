@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
                 'first_name' => "JobSeeker{$i}",
                 'last_name'  => "User{$i}",
                 'email'      => "jobseeker{$i}@example.com",
-                'password'   => Hash::make('password'),
+                'password'   => Hash::make(value: 'password'),
                 'role'       => 'job-seeker',
                 'phone'      => "200000000{$i}",
                 'avatar'     => "https://placehold.co/400x400?text=Job+Seeker+{$i}",
