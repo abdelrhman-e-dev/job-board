@@ -30,6 +30,13 @@ class UserResource extends Resource
     return UserForm::configure($schema);
   }
 
+  public static function getEloquentQuery(): Builder
+  {
+    return parent::getEloquentQuery()
+      ->whereNot('role', 'system-admin')
+      ->with('company');
+  }
+
   public static function table(Table $table): Table
   {
     return UsersTable::configure($table);
