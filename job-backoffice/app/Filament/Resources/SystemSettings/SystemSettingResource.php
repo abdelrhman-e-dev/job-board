@@ -13,39 +13,42 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class SystemSettingResource extends Resource
 {
-    protected static ?string $model = SystemSetting::class;
+  protected static ?string $model = SystemSetting::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::Cog6Tooth;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::Cog6Tooth;
 
-    protected static ?string $navigationLabel = 'Settings';
-    protected static ?string $recordTitleAttribute = 'system setting';
+  protected static ?string $navigationLabel = 'Settings';
+  protected static ?string $recordTitleAttribute = 'system setting';
+  protected static string|UnitEnum|null $navigationGroup = "System Management";
+  // make setting the last element in the navigation 
+  protected static ?int $navigationSort = 6;
+  public static function form(Schema $schema): Schema
+  {
+    return SystemSettingForm::configure($schema);
+  }
 
-    public static function form(Schema $schema): Schema
-    {
-        return SystemSettingForm::configure($schema);
-    }
+  public static function table(Table $table): Table
+  {
+    return SystemSettingsTable::configure($table);
+  }
 
-    public static function table(Table $table): Table
-    {
-        return SystemSettingsTable::configure($table);
-    }
+  public static function getRelations(): array
+  {
+    return [
+      //
+    ];
+  }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListSystemSettings::route('/'),
-            'create' => CreateSystemSetting::route('/create'),
-            'edit' => EditSystemSetting::route('/{record}/edit'),
-        ];
-    }
+  public static function getPages(): array
+  {
+    return [
+      'index' => ListSystemSettings::route('/'),
+      'create' => CreateSystemSetting::route('/create'),
+      'edit' => EditSystemSetting::route('/{record}/edit'),
+    ];
+  }
 }
