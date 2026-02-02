@@ -15,46 +15,50 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class JobCategoryResource extends Resource
 {
-    protected static ?string $model = JobCategory::class;
+  protected static ?string $model = JobCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Job Categoreis';
+  protected static ?string $recordTitleAttribute = 'Job Categoreis';
 
-    public static function form(Schema $schema): Schema
-    {
-        return JobCategoryForm::configure($schema);
-    }
+  protected static string|UnitEnum|null $navigationGroup = "Jobs Management";
+  protected static ?int $navigationSort = 3;
 
-    public static function table(Table $table): Table
-    {
-        return JobCategoriesTable::configure($table);
-    }
+  public static function form(Schema $schema): Schema
+  {
+    return JobCategoryForm::configure($schema);
+  }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+  public static function table(Table $table): Table
+  {
+    return JobCategoriesTable::configure($table);
+  }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListJobCategories::route('/'),
-            'create' => CreateJobCategory::route('/create'),
-            'edit' => EditJobCategory::route('/{record}/edit'),
-        ];
-    }
+  public static function getRelations(): array
+  {
+    return [
+      //
+    ];
+  }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
-    {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+  public static function getPages(): array
+  {
+    return [
+      'index' => ListJobCategories::route('/'),
+      'create' => CreateJobCategory::route('/create'),
+      'edit' => EditJobCategory::route('/{record}/edit'),
+    ];
+  }
+
+  public static function getRecordRouteBindingEloquentQuery(): Builder
+  {
+    return parent::getRecordRouteBindingEloquentQuery()
+      ->withoutGlobalScopes([
+        SoftDeletingScope::class,
+      ]);
+  }
 }

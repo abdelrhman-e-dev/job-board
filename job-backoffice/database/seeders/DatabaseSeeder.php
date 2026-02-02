@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             JobSkillSeeder::class,
             DocumentsSeeder::class,
             ApplicationSeeder::class,
+            SystemSettingSeeder::class,
         ]);
+        
     }
 }

@@ -15,46 +15,49 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class ApplicationResource extends Resource
 {
-    protected static ?string $model = Application::class;
+  protected static ?string $model = Application::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Applications';
+  protected static ?string $recordTitleAttribute = 'Applications';
+  protected static ?string $navigationLabel = "Job Application";
+    protected static string | UnitEnum | null $navigationGroup = "Jobs Management";
+  protected static ?int $navigationSort = 5;
+   public static function form(Schema $schema): Schema
+  {
+    return ApplicationForm::configure($schema);
+  }
 
-    public static function form(Schema $schema): Schema
-    {
-        return ApplicationForm::configure($schema);
-    }
+  public static function table(Table $table): Table
+  {
+    return ApplicationsTable::configure($table);
+  }
 
-    public static function table(Table $table): Table
-    {
-        return ApplicationsTable::configure($table);
-    }
+  public static function getRelations(): array
+  {
+    return [
+      //
+    ];
+  }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+  public static function getPages(): array
+  {
+    return [
+      'index' => ListApplications::route('/'),
+      'create' => CreateApplication::route('/create'),
+      'edit' => EditApplication::route('/{record}/edit'),
+    ];
+  }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListApplications::route('/'),
-            'create' => CreateApplication::route('/create'),
-            'edit' => EditApplication::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getRecordRouteBindingEloquentQuery(): Builder
-    {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+  public static function getRecordRouteBindingEloquentQuery(): Builder
+  {
+    return parent::getRecordRouteBindingEloquentQuery()
+      ->withoutGlobalScopes([
+        SoftDeletingScope::class,
+      ]);
+  }
 }
