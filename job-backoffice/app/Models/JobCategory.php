@@ -28,4 +28,11 @@ class JobCategory extends Model
         'dated_at' => 'datetime',
       ];
     }
+    // relation between job vacancy and job category 
+    public function jobVacancies(){
+      return $this->hasMany(JobVacancy::class, 'category_id', 'category_id');
+    }
+    public function children(){
+      return $this->hasMany(JobCategory::class, 'parent_id', 'category_id');
+    }
 }
