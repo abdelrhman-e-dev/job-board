@@ -74,4 +74,8 @@ class JobVacancy extends Model
   {
     return $this->hasMany(JobSkill::class, 'job_id', 'job_skill_id');
   } 
+  // relation between job and job category
+  public function jobCategory(){
+    return $this->belongsTo(JobCategory::class, 'category_id' , 'category_id');
+  }
 }
