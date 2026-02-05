@@ -25,18 +25,17 @@ class JobCategoriesTable
           ->searchable(),
         TextColumn::make('slug')
           ->searchable(),
-        TextColumn::make('deleted_at')
-          ->dateTime()
-          ->sortable()
-          ->toggleable(isToggledHiddenByDefault: true),
         TextColumn::make('job_vacancies_count')
           ->label('Job Count')
           ->counts('jobVacancies')
           ->sortable(),
         TextColumn::make('created_at')
           ->dateTime()
+          ->sortable(),
+        TextColumn::make('deleted_at')
+          ->dateTime()
           ->sortable()
-          ->toggleable(isToggledHiddenByDefault: true),
+          ->placeholder('-'),
         TextColumn::make('updated_at')
           ->dateTime()
           ->sortable()
@@ -48,27 +47,47 @@ class JobCategoriesTable
       ->recordActions([
         EditAction::make(),
         DeleteAction::make()
+          ->label('Archive')
+          ->icon('heroicon-o-archive-box-arrow-down')
           ->before(function (DeleteAction $action, $record) {
-            if ($record->jobVacancies()->count() > 0) {
+            if ($record->jobVacancies()->count() > 0 || $record->children()->count() > 0) {
               Notification::make()
                 ->warning()
-                ->title('Cannot delete job category')
-                ->body('Job category has job vacancies')
+                ->title('Cannot archive job category')
+                ->body('Job category has job vacancies or children')
                 ->send();
               $action->halt();
             }
           })
           ->requiresConfirmation()
-          ->modalHeading('Delete Job Category')
-          ->modalDescription('Are you sure you want to delete this job category? This action cannot be undone.')
-          ->modalSubmitActionLabel('Yes, delete it')
+          ->modalHeading('Archive Job Category')
+          ->modalDescription('Are you sure you want to archive this job category? This action cannot be undone.')
+          ->modalSubmitActionLabel('Yes, Archive'),
+        RestoreAction::make(),
       ])
       ->toolbarActions([
         BulkActionGroup::make([
-          DeleteBulkAction::make(),
+          DeleteBulkAction::make()
+            ->label('Archive Selected')
+            ->icon('heroicon-o-archive-box-arrow-down')
+            ->before(function (DeleteBulkAction $action, $record) {
+              if ($record->jobVacancies()->count() > 0 || $record->children()->count() > 0) {
+                Notification::make()
+                  ->warning()
+                  ->title('Cannot archive job category')
+                  ->body('Job category has job vacancies or children')
+                  ->send();
+                $action->halt();
+              }
+            })
+            ->requiresConfirmation()
+            ->modalHeading('Archive Job Category')
+            ->modalDescription('Are you sure you want to archive this job category? This action cannot be undone.')
+            ->modalSubmitActionLabel('Yes, Archive'),
           ForceDeleteBulkAction::make(),
           RestoreBulkAction::make(),
         ]),
       ]);
+
   }
 }
