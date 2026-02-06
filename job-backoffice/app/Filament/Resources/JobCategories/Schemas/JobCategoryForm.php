@@ -26,6 +26,7 @@ class JobCategoryForm
                   ->label('Category Name')
                   ->placeholder('e.g. Software Development')
                   ->prefixIcon('heroicon-o-tag')
+                  ->unique(JobCategory::class, 'name', ignoreRecord: true)
                   ->live(onBlur: true)
                   ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
                   ->required(),
