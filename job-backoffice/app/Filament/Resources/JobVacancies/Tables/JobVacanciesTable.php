@@ -29,37 +29,37 @@ class JobVacanciesTable
           ->sortable()
           ->weight('medium')
           ->description(fn($record) => $record->company->name ?? 'N/A'),
-
         TextColumn::make('jobCategory.name')
           ->label('Category')
           ->badge()
           ->searchable()
           ->sortable(),
-
         TextColumn::make('type')
           ->badge()
           ->sortable(),
-
         TextColumn::make('level')
           ->badge()
           ->sortable(),
-
         TextColumn::make('status')
           ->badge()
           ->sortable(),
-
         TextColumn::make('applications_count')
           ->label('Applications')
           ->counts('applications')
           ->numeric()
           ->sortable(),
-
         TextColumn::make('deadline')
           ->date()
           ->sortable(),
       ])
       ->filters([
-        SelectFilter::make('status'),
+        SelectFilter::make('status')
+        ->options([
+          'active' => 'Active',
+          'draft' => 'Draft',
+          'closed' => 'Closed',
+          'expired' => 'Expired',
+        ]),
         SelectFilter::make('type'),
         SelectFilter::make('level'),
         TrashedFilter::make(),
@@ -136,25 +136,48 @@ class JobVacanciesTable
             Section::make('Description & Requirements')
               ->schema([
                 Grid::make(3)
-                ->schema([
-                  Placeholder::make('description')
-                  ->label('Description')
-                  ->content(fn($record) => new HtmlString(
-                    str($record->description ?? '')->markdown()
-                  )),
+                  ->schema([
+                    Placeholder::make('description')
+                      ->label('Description')
+                      ->content(fn($record) => new HtmlString(
+                        str($record->description ?? '')->markdown()
+                      )),
 
-                Placeholder::make('requirements')
-                  ->label('Requirements')
-                  ->content(fn($record) => new HtmlString(
-                    str($record->requirements ?? '')->markdown()
-                  )),
+                    Placeholder::make('requirements')
+                      ->label('Requirements')
+                      ->content(fn($record) => new HtmlString(
+                        str($record->requirements ?? '')->markdown()
+                      )),
 
-                Placeholder::make('benefits')
-                  ->label('Benefits')
-                  ->content(fn($record) => new HtmlString(
-                    str($record->benefits ?? '')->markdown()
-                  )),
-                ])
+                    Placeholder::make('screening_questions')
+                      ->label('Screening Questions')
+                      ->content(function ($record) {
+
+                        $questions = $record->screening_questions;
+
+                        if (empty($questions) || !is_array($questions)) {
+                          return '-';
+                        }
+
+                        return new HtmlString(
+                          collect($questions)
+                            ->map(function ($item) {
+                              return sprintf(
+                                '<div>
+                            %s
+                            %s
+                        </div>',
+                                e($item['question']),
+                                $item['required']
+                                ? '<span class="text-danger text-sm font-semibold">(Required)</span>'
+                                : '<span class="text-gray-500 text-sm">(Optional)</span>'
+                              );
+                            })
+                            ->implode('')
+                        );
+                      })
+                      ->columnSpan(3),
+                  ])
               ])
               ->collapsible()
               ->collapsed(),

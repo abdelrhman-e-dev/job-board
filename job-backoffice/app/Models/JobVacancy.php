@@ -41,14 +41,14 @@ class JobVacancy extends Model
     'published_at' => 'datetime',
     'deleted_at' => 'datetime',
   ];
-  protected function cast()
-  {
-    return [
-      'deadline' => 'datetime',
-      'published_at' => 'datetime',
-      'deleted_at' => 'datetime',
-    ];
-  }
+  protected $casts = [
+
+    'screening_questions' => 'array',
+    'deadline' => 'datetime',
+    'published_at' => 'datetime',
+    'deleted_at' => 'datetime',
+
+  ];
   // relation between Job and User (posted_by)
   public function user()
   {
@@ -73,9 +73,10 @@ class JobVacancy extends Model
   public function skills()
   {
     return $this->hasMany(JobSkill::class, 'job_id', 'job_skill_id');
-  } 
+  }
   // relation between job and job category
-  public function jobCategory(){
-    return $this->belongsTo(JobCategory::class, 'category_id' , 'category_id');
+  public function jobCategory()
+  {
+    return $this->belongsTo(JobCategory::class, 'category_id', 'category_id');
   }
 }
