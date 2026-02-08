@@ -60,20 +60,19 @@ class User extends Authenticatable implements FilamentUser
    *
    * @return array<string, string>
    */
-  protected function casts(): array
-  {
-    return [
-      'email_verified_at' => 'datetime',
-      'password' => 'hashed',
-      'deleted_at' => 'datetime',
-    ];
-  }
+  protected $casts = [
+
+    'email_verified_at' => 'datetime',
+    'password' => 'hashed',
+    'deleted_at' => 'datetime',
+  ];
+
   // implementing FilamentUser interface
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->role === 'system-admin';
-    }
+  public function canAccessPanel(Panel $panel): bool
+  {
+    return $this->role === 'system-admin';
+  }
   /**
    * Check if user has any of the given roles
    *
@@ -95,5 +94,9 @@ class User extends Authenticatable implements FilamentUser
   public function company()
   {
     return $this->belongsTo(Company::class, 'company_id', 'company_id');
+  }
+  public function application()
+  {
+    return $this->hasManyThrough(Application::class, JobVacancy::class, 'company_id', 'job_id', 'user_id', 'job_id');
   }
 }
