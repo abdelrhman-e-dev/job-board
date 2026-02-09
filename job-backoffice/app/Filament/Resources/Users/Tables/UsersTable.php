@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -63,7 +64,7 @@ class UsersTable
               'Inactive' => 'danger',
               default => 'gray',
             }
-          ) 
+          )
           ->sortable()
           ->placeholder('—'),
         TextColumn::make('phone')
@@ -110,7 +111,7 @@ class UsersTable
                   ]),
               ])
               ->collapsible(),
-              Section::make('Account Information')
+            Section::make('Account Information')
               ->schema([
                 Grid::make(4)
                   ->schema([
@@ -189,19 +190,58 @@ class UsersTable
         EditAction::make(),
         // send verification email acction
         Action::make('sendVerification')
-        ->label('Send Verification Email')
-        ->icon('heroicon-o-envelope')
-        ->color('primary')
-        ->requiresConfirmation()
-        ->visible(fn($record) => ! $record->hasVerifiedEmail())
-        ->action(fn ($record) => $record->sendEmailVerificationNotification())
-        ->successNotificationTitle('Verification email sent'),
-        ])
-      ->toolbarActions([
+          ->label('Send Verification Email')
+          ->icon('heroicon-o-envelope')
+          ->color('primary')
+          ->requiresConfirmation()
+          ->visible(fn($record) => !$record->hasEmailAuthentication())
+          ->action(fn($record) => $record->sendEmailVerificationNotification())
+          ->successNotificationTitle('Verification email sent'),
+      ])
+      ->bulkActions([
         BulkActionGroup::make([
           DeleteBulkAction::make(),
           ForceDeleteBulkAction::make(),
           RestoreBulkAction::make(),
+          Action::make('sendVerificationEmails')
+            ->label('Send Verification Emails')
+            ->icon('heroicon-o-envelope')
+            ->color('primary')
+            ->requiresConfirmation()
+            ->modalHeading('Send Verification Emails')
+            ->modalDescription('Send verification emails to all selected users who have not verified their email addresses.')
+            ->modalSubmitActionLabel('Send Emails')
+            ->action(function (Collection $records) {
+              $unverifiedUsers = $records->filter(fn($user) => !$user->hasEmailAuthentication());
+
+              if ($unverifiedUsers->isEmpty()) {
+                \Filament\Notifications\Notification::make()
+                  ->warning()
+                  ->title('No unverified users')
+                  ->body('All selected users have already verified their email addresses.')
+                  ->send();
+                return;
+              }
+
+              $count = 0;
+              foreach ($unverifiedUsers as $user) {
+                try {
+                  $user->sendEmailVerificationNotification();
+                  $count++;
+                } catch (\Exception $e) {
+                  \Log::error('Failed to send verification email to user: ' . $user->email, [
+                    'error' => $e->getMessage()
+                  ]);
+                }
+              }
+
+              \Filament\Notifications\Notification::make()
+                ->success()
+                ->title('Verification emails sent')
+                ->body("Successfully sent {$count} verification email(s).")
+                ->send();
+            })
+            ->deselectRecordsAfterCompletion(),
         ]),
       ]);
   }
