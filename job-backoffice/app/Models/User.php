@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
-  use HasFactory, Notifiable, HasUlids, SoftDeletes;
+  use HasFactory, Notifiable, HasUlids, SoftDeletes, Notifiable;
 
   protected $table = 'users';
   protected $primaryKey = 'user_id';
@@ -98,5 +99,19 @@ class User extends Authenticatable implements FilamentUser
   public function application()
   {
     return $this->hasManyThrough(Application::class, JobVacancy::class, 'company_id', 'job_id', 'user_id', 'job_id');
+  }
+
+  public function applications()
+  {
+    return $this->hasMany(Application::class, 'job_seeker_id', 'user_id');
+  }
+
+  public function hasEmailAuthentication()
+  {
+    return $this->email_verified_at ? 1 : 0;
+  }
+  public function documents()
+  {
+    return $this->hasMany(Document::class, 'user_id', 'user_id');
   }
 }
