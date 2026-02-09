@@ -67,10 +67,6 @@ class UsersTable
           )
           ->sortable()
           ->placeholder('—'),
-        TextColumn::make('phone')
-          ->searchable(),
-        TextColumn::make('country')
-          ->searchable(),
         TextColumn::make('deleted_at')
           ->dateTime()
           ->sortable()
@@ -126,7 +122,8 @@ class UsersTable
                       ->content(fn($record) => $record->status),
                   ]),
               ])
-              ->collapsible(),
+              ->collapsible()
+              ->collapsed(),
             Section::make('Company Information')
               ->schema([
                 Grid::make(4)
@@ -185,7 +182,54 @@ class UsersTable
 
                   ])
               ])->collapsible()
-              ->collapsed()
+              ->collapsed(),
+            Section::make('User Documents')
+              ->schema([
+                Grid::make(1)
+                  ->schema([
+                    Placeholder::make('total_documents')
+                      ->label('Total Documents')
+                      ->content(fn($record) => $record->documents()->count())
+                  ]),
+                Placeholder::make('documents')
+                  ->label('Documents')
+                  ->content(function ($record) {
+                    $docs = $record->documents()
+                    ->with('application')
+                    ->with('document_reviews')
+                      ->latest()
+                      ->get();
+
+                    if ($docs->isEmpty()) {
+                      return 'No Documents Uploaded';
+                    }
+
+                    $list = $docs->map(function ($doc) {
+                      $doc_title = e($doc->file_name ?? 'Unknown Document');
+                      $doc_type = e($doc->type ?? 'Unknown Type');
+                      $doc_app_title = e($doc->application->job->title ?? 'Unknown Job');
+                      $doc_review_status = $doc->document_reviews[0]->status;
+                      $doc_review_score = $doc->document_reviews[0]->overall_score;
+                      $doc_review_ats = $doc->document_reviews[0]->ats_compatibility;
+                      return "
+                        <li style='margin-bottom: 8px;'>
+                          <strong>{$doc_title} - {$doc_review_status}</strong>
+                          <div style='font-size: 13px; color: #b9bcc2ff;'>
+                            {$doc_type} • Applied for: {$doc_app_title} • {$doc->application->created_at->format('M d, Y')}
+                          </div>
+                        <div style='font-size: 13px; color: #b9bcc2ff;'>
+                            Score: {$doc_review_score} • ATS: {$doc_review_ats}%
+                        </div>
+                        </li>
+                      ";
+                    })->implode(' ');
+
+                    return new HtmlString(
+                      "<ul style='list-style: none; padding-left: 0;'>{$list}</ul>"
+                    );
+                  })
+              ])->collapsible()
+              ->collapsed(),
           ]),
         EditAction::make(),
         // send verification email acction

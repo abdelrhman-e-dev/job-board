@@ -39,13 +39,13 @@ class Document extends Model
         return $this->belongsTo(Application::class, 'document_id', 'document_id');
     }
     // relation between Document and document_reviews
-    public function documentReviews()
+    public function document_reviews()
     {
         return $this->hasMany(DocumentReview::class, 'document_id', 'document_id');
     }
     // relation between Document and User
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

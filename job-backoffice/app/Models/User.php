@@ -110,4 +110,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   {
     return $this->email_verified_at ? 1 : 0;
   }
+  public function documents()
+  {
+    return $this->hasMany(Document::class, 'user_id', 'user_id');
+  }
 }
