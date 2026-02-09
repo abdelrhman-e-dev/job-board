@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -53,8 +54,16 @@ class UsersTable
               default => 'gray',
             }
           ),
-        TextColumn::make('company.name')
-          ->label('Company')
+        TextColumn::make('status')
+          ->label('Status')
+          ->badge()
+          ->color(
+            fn(string $state): string => match ($state) {
+              'Active' => 'success',
+              'Inactive' => 'danger',
+              default => 'gray',
+            }
+          ) 
           ->sortable()
           ->placeholder('—'),
         TextColumn::make('phone')
@@ -65,12 +74,6 @@ class UsersTable
           ->dateTime()
           ->sortable()
           ->toggleable(isToggledHiddenByDefault: true),
-        TextColumn::make('created_at')
-          ->dateTime('M d')
-          ->sortable(),
-        TextColumn::make('created_at')
-          ->dateTime('M d')
-          ->sortable(),
       ])
       ->filters([
         SelectFilter::make('role')
@@ -86,7 +89,7 @@ class UsersTable
       ->actions([
         ViewAction::make()
           ->modalHeading(fn($record) => $record->full_name)
-          ->modalWidth('7xl')
+          ->modalWidth('6xl')
           ->form([
             Section::make('User Information')
               ->schema([
@@ -104,6 +107,22 @@ class UsersTable
                     Placeholder::make('country')
                       ->label('Country')
                       ->content(fn($record) => $record->country),
+                  ]),
+              ])
+              ->collapsible(),
+              Section::make('Account Information')
+              ->schema([
+                Grid::make(4)
+                  ->schema([
+                    Placeholder::make('role')
+                      ->label('Role')
+                      ->content(fn($record) => $record->role),
+                    Placeholder::make('email_verified_at')
+                      ->label('Email Verified')
+                      ->content(fn($record) => $record->email_verified_at ? 'Yes' : 'No'),
+                    Placeholder::make('status')
+                      ->label('Status')
+                      ->content(fn($record) => $record->status),
                   ]),
               ])
               ->collapsible(),
@@ -130,27 +149,54 @@ class UsersTable
                   ->schema([
                     Placeholder::make('total_applications')
                       ->label('Total Applications')
+                      ->content(fn($record) => $record->applications()->count()),
+                    Placeholder::make('applications')
+                      ->label('Applications List')
                       ->content(function ($record) {
-                        return $record->application()->count();
-                      }),
-                    Placeholder::make('Applications')
-                      ->label('Applications')
-                      ->content(function ($record) {
-                        $applications = $record->application()->with('jobSeeker')->get();
-                        return new HtmlString(
-                          collect($applications)->map(function ($app) {
-                            return $app->jobSeeker
-                              ? $app->jobSeeker->first_name . ' ' . $app->jobSeeker->last_name
-                              : 'Unknown Job Seeker';
+                        $apps = $record->applications()
+                          ->with('job.company')
+                          ->latest()
+                          ->get();
 
-                          })->implode('<br>')
-                        );
+                        if ($apps->isEmpty()) {
+                          return 'No applications found.';
+                        }
+                        $list = $apps->map(function ($app) {
+                          $jobTitle = e($app->job->title ?? 'Unknown Job');
+                          $company = e($app->job->company->name ?? 'Unknown Company');
+                          $status = ucfirst($app->status);
+                          return "
+                                <li style='margin-bottom: 8px;'>
+                                <strong>{$jobTitle}</strong>
+                                <div style='font-size: 13px; color: #6b7280;'>
+                                {$company} • {$status} • {$app->created_at->format('M d, Y')}
+                                </div>
+                                </li>
+                                  ";
+                        })->implode('');
+
+                        return new HtmlString("
+                                <ul style='list-style: none; padding-left: 0;'>
+                                {$list}
+                                </ul>
+                          ");
                       }),
+
                   ])
-              ])
+              ])->collapsible()
+              ->collapsed()
           ]),
         EditAction::make(),
-      ])
+        // send verification email acction
+        Action::make('sendVerification')
+        ->label('Send Verification Email')
+        ->icon('heroicon-o-envelope')
+        ->color('primary')
+        ->requiresConfirmation()
+        ->visible(fn($record) => ! $record->hasVerifiedEmail())
+        ->action(fn ($record) => $record->sendEmailVerificationNotification())
+        ->successNotificationTitle('Verification email sent'),
+        ])
       ->toolbarActions([
         BulkActionGroup::make([
           DeleteBulkAction::make(),
