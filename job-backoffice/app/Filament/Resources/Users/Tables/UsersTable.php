@@ -195,8 +195,8 @@ class UsersTable
                   ->label('Documents')
                   ->content(function ($record) {
                     $docs = $record->documents()
-                    ->with('application')
-                    ->with('document_reviews')
+                      ->with('application')
+                      ->with('document_reviews')
                       ->latest()
                       ->get();
 
@@ -207,20 +207,43 @@ class UsersTable
                     $list = $docs->map(function ($doc) {
                       $doc_title = e($doc->file_name ?? 'Unknown Document');
                       $doc_type = e($doc->type ?? 'Unknown Type');
-                      $doc_app_title = e($doc->application->job->title ?? 'Unknown Job');
-                      $doc_review_status = $doc->document_reviews[0]->status;
-                      $doc_review_score = $doc->document_reviews[0]->overall_score;
-                      $doc_review_ats = $doc->document_reviews[0]->ats_compatibility;
+
+                      // Handle Application
+                      $application = $doc->application;
+                      $app_details = '';
+                      if ($application) {
+                        $job_title = e($application->job->title ?? 'Unknown Job');
+                        $date = $application->created_at->format('M d, Y');
+                        $app_details = "• Applied for: {$job_title} • {$date}";
+                      } else {
+                        $app_details = "• Not used in application";
+                      }
+
+                      // Handle Review
+                      $review = $doc->document_reviews->first();
+                      $review_html = '';
+                      $status_suffix = '';
+
+                      if ($review) {
+                        $status = $review->status ?? 'Pending';
+                        $score = $review->overall_score ?? 'N/A';
+                        $ats = $review->ats_compatibility ?? 'N/A';
+
+                        $status_suffix = " - {$status}";
+                        $review_html = "
+                            <div style='font-size: 13px; color: #b9bcc2ff;'>
+                                Score: {$score} • ATS: {$ats}%
+                            </div>";
+                      }
+
                       return "
                         <li style='margin-bottom: 8px;'>
-                          <strong>{$doc_title} - {$doc_review_status}</strong>
+                          <strong>{$doc_title}{$status_suffix}</strong>
                           <div style='font-size: 13px; color: #b9bcc2ff;'>
-                            {$doc_type} • Applied for: {$doc_app_title} • {$doc->application->created_at->format('M d, Y')}
+                            {$doc_type} {$app_details}
                           </div>
-                        <div style='font-size: 13px; color: #b9bcc2ff;'>
-                            Score: {$doc_review_score} • ATS: {$doc_review_ats}%
-                        </div>
-                        </li>
+                          {$review_html}
+                          </li>
                       ";
                     })->implode(' ');
 
