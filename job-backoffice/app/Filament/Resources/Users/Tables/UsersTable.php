@@ -47,6 +47,7 @@ class UsersTable
           ->badge()
           ->color(
             fn(string $state): string => match ($state) {
+              'system-admin' => 'danger',
               'company-owner' => 'info',
               'hiring-manager' => 'info',
               'recruiter' => 'gray',
@@ -74,24 +75,18 @@ class UsersTable
       ->filters([
         SelectFilter::make('role')
           ->options([
+            'system-admin' => 'System Admin',
             'company-owner' => 'Company Owner',
             'hiring-manager' => 'Hiring Manager',
             'recruiter' => 'Recruiter',
             'job-seeker' => 'Job Seeker',
           ]),
-        SelectFilter::make('status')
-          ->options([
-            'Active' => 'Active',
-            'Inactive' => 'Inactive',
-          ]),
-          
         TrashedFilter::make(),
       ])
       ->actions([
         ViewAction::make()
           ->modalHeading(fn($record) => $record->full_name)
           ->modalWidth('6xl')
-          ->visible(fn($record) => $record->role == 'job-seeker')
           ->form([
             Section::make('User Information')
               ->schema([
