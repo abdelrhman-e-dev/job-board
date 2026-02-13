@@ -28,4 +28,10 @@ class Role extends Model
       ->withTimestamps()
       ->using(RolePermission::class);
   }
+
+  // relation between users
+  public function user()
+  {
+    return $this->hasMany(User::class, 'role_id', 'role_id');
+  }
 }
