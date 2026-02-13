@@ -67,3 +67,9 @@ Recruiter (Execution Role)
   - Not authorized to make final hiring decisions
 Think of them as:
 “Recruitment specialist”  
+
+
+Created roles and Permissions tables 
+created table role_permissions
+assigned permissions to roles
+configure user role column in users table
