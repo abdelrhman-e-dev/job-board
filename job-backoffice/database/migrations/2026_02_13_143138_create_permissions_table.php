@@ -13,7 +13,7 @@ return new class extends Migration {
     Schema::create('permissions', function (Blueprint $table) {
       $table->uuid('permission_id')->primary();
       $table->string('permission_name');
-      $table->enum('visibility', ['system_only', 'company_avilable']);
+      $table->enum('visibility', ['system_only', 'company_available']);
       $table->string('group');
       $table->string('description');
       $table->timestamps();
