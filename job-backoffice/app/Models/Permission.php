@@ -43,4 +43,12 @@ class Permission extends Model
   {
     return self::all();
   }
+  public static function getGroups()
+  {
+    return self::all()->pluck('group')->unique()->toArray();
+  }
+  public static function getVisibilities()
+  {
+    return self::all()->pluck('visibility')->unique()->toArray();
+  }
 }

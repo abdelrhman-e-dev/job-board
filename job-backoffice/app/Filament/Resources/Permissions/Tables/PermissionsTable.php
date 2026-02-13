@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Permissions\Tables;
 
+use App\Models\Permission;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -54,9 +56,16 @@ class PermissionsTable
           ->sortable()
           ->toggleable(isToggledHiddenByDefault: true),
       ])
-
       ->filters([
-        TrashedFilter::make(),
+
+        // filter based on group value
+
+        SelectFilter::make('group')
+          ->label(__('Group'))
+          ->options(fn() => Permission::query()->distinct()->pluck('group', 'group')->toArray()),
+
+
+
       ])
       ->recordActions([
         EditAction::make(),
