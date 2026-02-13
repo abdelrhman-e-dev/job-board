@@ -1,10 +1,10 @@
 Company User Management
   - View Permissions
-    - view user role 
-    - view user company details
-    - view account Information
-    - view jobs posted by this user (hiring manager)
-    - view applications for this user (hiring manager)
+    - view user role ✅
+    - view user company details ✅
+    - view account Information ✅
+    - view jobs posted by this user (hiring manager) ✅
+    - view applications for this user (hiring manager) ✅
 
   - Create Permissions
     - Create company admin accounts
@@ -72,4 +72,6 @@ Think of them as:
 Created roles and Permissions tables 
 created table role_permissions
 assigned permissions to roles
-configure user role column in users table
+configure user role column in users table - now 
+add active and inactive action button in roles table
+add filter in permissions table
