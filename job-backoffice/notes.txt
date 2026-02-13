@@ -1,0 +1,69 @@
+Company User Management
+  - View Permissions
+    - view user role 
+    - view user company details
+    - view account Information
+    - view jobs posted by this user (hiring manager)
+    - view applications for this user (hiring manager)
+
+  - Create Permissions
+    - Create company admin accounts
+    - Create hiring manager accounts
+    - Create recruiter accounts
+    - Assign to specific companies
+    - Set role and permission level
+    - Define job posting limits
+    - Send invitation emails
+
+  - Edit Permissions
+    - Change user roles (Admin ↔ Manager)
+    - Modify permissions and access levels
+    - Update company assignment
+    - Change job posting limits
+    - Enable/disable features per user
+
+  - Delete/Suspend Permissions
+    - Suspend company user accounts
+    - Remove users from companies
+    - Delete company user accounts
+    - Transfer ownership of job postings
+    - Reassign applications
+
+
+
+
+Company Owner (Strategic Role)
+  - Purpose: Manages the company account, not daily hiring.
+  - Should be able to:
+    - Create / edit company profile
+    - Manage subscription & billing
+    - Invite / remove team members
+    - Assign roles (Hiring Manager, Recruiter)
+    - View all jobs & reports
+    - Not required to review every application
+Think of them as:
+“Admin of the company account”
+
+Hiring Manager (Decision Maker)
+  - Purpose: Owns the job position.
+  - Should be able to:
+    - Create job posts
+    - Edit/delete their jobs
+    - View applications for their jobs
+    - Shortlist / reject candidates
+    - Move candidates between stages
+    - Final hiring decision
+Think of them as:
+“Owner of a job position”
+
+Recruiter (Execution Role)
+  - Purpose: Manages the recruitment process.
+  - Should be able to:
+    - Source candidates
+    - Screen resumes
+    - Schedule interviews
+    - Communicate with candidates
+    - Provide feedback to hiring manager
+  - Not authorized to make final hiring decisions
+Think of them as:
+“Recruitment specialist”  

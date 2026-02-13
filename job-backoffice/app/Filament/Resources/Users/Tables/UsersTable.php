@@ -47,6 +47,7 @@ class UsersTable
           ->badge()
           ->color(
             fn(string $state): string => match ($state) {
+              'system-admin' => 'danger',
               'company-owner' => 'info',
               'hiring-manager' => 'info',
               'recruiter' => 'gray',
@@ -74,101 +75,98 @@ class UsersTable
       ->filters([
         SelectFilter::make('role')
           ->options([
+            'system-admin' => 'System Admin',
             'company-owner' => 'Company Owner',
             'hiring-manager' => 'Hiring Manager',
             'recruiter' => 'Recruiter',
             'job-seeker' => 'Job Seeker',
           ]),
-        SelectFilter::make('status')
-          ->options([
-            'Active' => 'Active',
-            'Inactive' => 'Inactive',
-          ]),
-          
         TrashedFilter::make(),
       ])
       ->actions([
-        ViewAction::make()
+        ViewAction::make('viewUser')
           ->modalHeading(fn($record) => $record->full_name)
           ->modalWidth('6xl')
-          ->visible(fn($record) => $record->role == 'job-seeker')
-          ->form([
-            Section::make('User Information')
-              ->schema([
-                Grid::make(4)
-                  ->schema([
-                    Placeholder::make('full_name')
-                      ->label('Full Name')
-                      ->content(fn($record) => $record->full_name),
-                    Placeholder::make('email')
-                      ->label('Email')
-                      ->content(fn($record) => $record->email),
-                    Placeholder::make('phone')
-                      ->label('Phone')
-                      ->content(fn($record) => $record->phone),
-                    Placeholder::make('country')
-                      ->label('Country')
-                      ->content(fn($record) => $record->country),
-                  ]),
-              ])
-              ->collapsible(),
-            Section::make('Account Information')
-              ->schema([
-                Grid::make(4)
-                  ->schema([
-                    Placeholder::make('role')
-                      ->label('Role')
-                      ->content(fn($record) => $record->role),
-                    Placeholder::make('email_verified_at')
-                      ->label('Email Verified')
-                      ->content(fn($record) => $record->email_verified_at ? 'Yes' : 'No'),
-                    Placeholder::make('status')
-                      ->label('Status')
-                      ->content(fn($record) => $record->status),
-                  ]),
-              ])
-              ->collapsible()
-              ->collapsed(),
-            Section::make('Company Information')
-              ->schema([
-                Grid::make(4)
-                  ->schema([
-                    Placeholder::make('company')
-                      ->label('Company')
-                      ->content(function ($record) {
-                        if ($record->company_id) {
-                          return $record->company->name;
-                        } else {
-                          return 'Not Assigned Yet';
-                        }
-                      }),
-                  ]),
-              ])
-              ->collapsible()
-              ->collapsed(),
-            Section::make('User Applications')
-              ->schema([
-                Grid::make(1)
-                  ->schema([
-                    Placeholder::make('total_applications')
-                      ->label('Total Applications')
-                      ->content(fn($record) => $record->applications()->count()),
-                    Placeholder::make('applications')
-                      ->label('Applications List')
-                      ->content(function ($record) {
-                        $apps = $record->applications()
-                          ->with('job.company')
-                          ->latest()
-                          ->get();
+          ->form(
+            function ($record) {
+              if ($record->role == 'job-seeker') {
+                return [
+                  Section::make('User Information')
+                    ->schema([
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('full_name')
+                            ->label('Full Name')
+                            ->content(fn($record) => $record->full_name),
+                          Placeholder::make('email')
+                            ->label('Email')
+                            ->content(fn($record) => $record->email),
+                          Placeholder::make('phone')
+                            ->label('Phone')
+                            ->content(fn($record) => $record->phone),
+                          Placeholder::make('country')
+                            ->label('Country')
+                            ->content(fn($record) => $record->country),
+                        ]),
+                    ])
+                    ->collapsible(),
+                  Section::make('Account Information')
+                    ->schema([
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('role')
+                            ->label('Role')
+                            ->content(fn($record) => $record->role),
+                          Placeholder::make('email_verified_at')
+                            ->label('Email Verified')
+                            ->content(fn($record) => $record->email_verified_at ? 'Yes' : 'No'),
+                          Placeholder::make('status')
+                            ->label('Status')
+                            ->content(fn($record) => $record->status),
+                        ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+                  Section::make('Company Information')
+                    ->schema([
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('company')
+                            ->label('Company')
+                            ->content(function ($record) {
+                              if ($record->company_id) {
+                                return $record->company->name;
+                              } else {
+                                return 'Not Assigned Yet';
+                              }
+                            }),
+                        ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+                  Section::make('User Applications')
+                    ->schema([
+                      Grid::make(1)
+                        ->schema([
+                          Placeholder::make('total_applications')
+                            ->label('Total Applications')
+                            ->content(fn($record) => $record->applications()->count()),
+                          Placeholder::make('applications')
+                            ->label('Applications List')
+                            ->content(function ($record) {
+                              $apps = $record->applications()
+                                ->with('job.company')
+                                ->latest()
+                                ->get();
 
-                        if ($apps->isEmpty()) {
-                          return 'No applications found.';
-                        }
-                        $list = $apps->map(function ($app) {
-                          $jobTitle = e($app->job->title ?? 'Unknown Job');
-                          $company = e($app->job->company->name ?? 'Unknown Company');
-                          $status = ucfirst($app->status);
-                          return "
+                              if ($apps->isEmpty()) {
+                                return 'No applications found.';
+                              }
+                              $list = $apps->map(function ($app) {
+                                $jobTitle = e($app->job->title ?? 'Unknown Job');
+                                $company = e($app->job->company->name ?? 'Unknown Company');
+                                $status = ucfirst($app->status);
+                                return "
                                 <li style='margin-bottom: 8px;'>
                                 <strong>{$jobTitle}</strong>
                                 <div style='font-size: 13px; color: #6b7280;'>
@@ -176,72 +174,72 @@ class UsersTable
                                 </div>
                                 </li>
                                   ";
-                        })->implode('');
+                              })->implode('');
 
-                        return new HtmlString("
+                              return new HtmlString("
                                 <ul style='list-style: none; padding-left: 0;'>
                                 {$list}
                                 </ul>
                           ");
-                      }),
+                            }),
 
-                  ])
-              ])->collapsible()
-              ->collapsed(),
-            Section::make('User Documents')
-              ->schema([
-                Grid::make(1)
-                  ->schema([
-                    Placeholder::make('total_documents')
-                      ->label('Total Documents')
-                      ->content(fn($record) => $record->documents()->count())
-                  ]),
-                Placeholder::make('documents')
-                  ->label('Documents')
-                  ->content(function ($record) {
-                    $docs = $record->documents()
-                      ->with('application')
-                      ->with('document_reviews')
-                      ->latest()
-                      ->get();
+                        ])
+                    ])->collapsible()
+                    ->collapsed(),
+                  Section::make('User Documents')
+                    ->schema([
+                      Grid::make(1)
+                        ->schema([
+                          Placeholder::make('total_documents')
+                            ->label('Total Documents')
+                            ->content(fn($record) => $record->documents()->count())
+                        ]),
+                      Placeholder::make('documents')
+                        ->label('Documents')
+                        ->content(function ($record) {
+                          $docs = $record->documents()
+                            ->with('application')
+                            ->with('document_reviews')
+                            ->latest()
+                            ->get();
 
-                    if ($docs->isEmpty()) {
-                      return 'No Documents Uploaded';
-                    }
+                          if ($docs->isEmpty()) {
+                            return 'No Documents Uploaded';
+                          }
 
-                    $list = $docs->map(function ($doc) {
-                      $doc_title = e($doc->file_name ?? 'Unknown Document');
-                      $doc_type = e($doc->type ?? 'Unknown Type');
+                          $list = $docs->map(function ($doc) {
+                            $doc_title = e($doc->file_name ?? 'Unknown Document');
+                            $doc_type = e($doc->type ?? 'Unknown Type');
 
-                      // Handle Application
-                      $application = $doc->application;
-                      $app_details = '';
-                      if ($application) {
-                        $job_title = e($application->job->title ?? 'Unknown Job');
-                        $date = $application->created_at->format('M d, Y');
-                        $app_details = "• Applied for: {$job_title} • {$date}";
-                      } else {
-                        $app_details = "• Not used in application";
-                      }
+                            // Handle Application
+                            $application = $doc->application;
+                            $app_details = '';
+                            if ($application) {
+                              $job_title = e($application->job->title ?? 'Unknown Job');
+                              $date = $application->created_at->format('M d, Y');
+                              $app_details = "• Applied for: {$job_title} • {$date}";
+                            } else {
+                              $app_details = "• Not used in application";
+                            }
 
-                      // Handle Review
-                      $review = $doc->document_reviews->first();
-                      $review_html = '';
-                      $status_suffix = '';
+                            // Handle Review
+                            $review = $doc->document_reviews->first();
+                            $review_html = '';
+                            $status_suffix = '';
 
-                      if ($review) {
-                        $status = $review->status ?? 'Pending';
-                        $score = $review->overall_score ?? 'N/A';
-                        $ats = $review->ats_compatibility ?? 'N/A';
+                            if ($review) {
+                              $status = $review->status ?? 'Pending';
+                              $score = $review->overall_score ?? 'N/A';
+                              $ats = $review->ats_compatibility ?? 'N/A';
 
-                        $status_suffix = " - {$status}";
-                        $review_html = "
+                              $status_suffix = " - {$status}";
+                              $review_html = "
                             <div style='font-size: 13px; color: #b9bcc2ff;'>
                                 Score: {$score} • ATS: {$ats}%
                             </div>";
-                      }
+                            }
 
-                      return "
+                            return "
                         <li style='margin-bottom: 8px;'>
                           <strong>{$doc_title}{$status_suffix}</strong>
                           <div style='font-size: 13px; color: #b9bcc2ff;'>
@@ -250,15 +248,68 @@ class UsersTable
                           {$review_html}
                           </li>
                       ";
-                    })->implode(' ');
+                          })->implode(' ');
 
-                    return new HtmlString(
-                      "<ul style='list-style: none; padding-left: 0;'>{$list}</ul>"
-                    );
-                  })
-              ])->collapsible()
-              ->collapsed(),
-          ]),
+                          return new HtmlString(
+                            "<ul style='list-style: none; padding-left: 0;'>{$list}</ul>"
+                          );
+                        })
+                    ])->collapsible()
+                    ->collapsed(),
+                ];
+              };
+              if ($record->role == 'company-owner') {
+                return [
+                  Section::make('Owner Information')
+                    ->schema([
+                      Grid::make(5)
+                        ->schema([
+                          Placeholder::make('full_name')
+                            ->label('Full Name')
+                            ->content(fn($record) => $record->full_name),
+                          Placeholder::make('email')
+                            ->label('Email')
+                            ->content(fn($record) => $record->email),
+                          Placeholder::make('phone')
+                            ->label('Phone')
+                            ->content(fn($record) => $record->phone),
+                          Placeholder::make('address')
+                            ->label('Address')
+                            ->content(fn($record) => $record->city . ' - ' . $record->country),
+                          Placeholder::make('company_name')
+                            ->label('Company Name')
+                            ->content(fn($record) => $record->company->name ?? 'N/A'),
+                        ]),
+                    ])->collapsible(),
+                  Section::make('Company Information')
+                    ->schema([
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('company_name')
+                            ->label('Company Name')
+                            ->content(fn($record) => $record->company->name ?? 'N/A'),
+                          // Placeholder::make('status')
+                          //   ->label('Status')
+                          //   ->content(fn($record) => $record->company->status ?? 'N/A'),
+                          Placeholder::make('industry')
+                            ->label('Industry')
+                            ->content(fn($record) => $record->company->industry),
+                          Placeholder::make('size')
+                            ->label('Employees Count')
+                            ->content(fn($record) => $record->company->size),
+                          Placeholder::make('location')
+                            ->label('Location')
+                            ->content(fn($record) => $record->company->location),
+                          Placeholder::make('founder_year')
+                            ->label('Founder Year')
+                            ->content(fn($record) => $record->company->founded_year),
+                        ]),
+                    ])->collapsible()
+                    ->collapsed(),
+                ];
+              }
+            }
+          ),
         EditAction::make(),
         // send verification email acction
         Action::make('sendVerification')
