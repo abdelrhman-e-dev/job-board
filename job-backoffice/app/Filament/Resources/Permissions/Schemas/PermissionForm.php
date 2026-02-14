@@ -65,7 +65,7 @@ class PermissionForm
                   ->label('Assign to Roles')
                   ->relationship('roles', 'role_name')
                   ->options(
-                    Role::getRoles()->pluck('role_name', 'role_name')->where('active', 1)->toArray()
+                    Role::getRoles()->pluck('role_name', 'role_id')->toArray()
                   )
                   ->multiple()
                   ->preload()
