@@ -78,14 +78,8 @@ class UsersTable
           ->toggleable(isToggledHiddenByDefault: true),
       ])
       ->filters([
-        SelectFilter::make('role.role_name')
-          ->options([
-            'system-admin' => 'System Admin',
-            'company-owner' => 'Company Owner',
-            'hiring-manager' => 'Hiring Manager',
-            'recruiter' => 'Recruiter',
-            'job-seeker' => 'Job Seeker',
-          ]),
+        SelectFilter::make('role')
+          ->relationship('role', 'role_name'),
         TrashedFilter::make(),
       ])
       ->actions([
@@ -423,7 +417,7 @@ class UsersTable
                         ->schema([
                           Placeholder::make('jobs_posted')
                             ->content(function ($record) {
-                              $jobs = $record->jobs()
+                              $jobs = $record->company?->jobs()
                                 ->with(['applications.jobSeeker'])
                                 ->withCount('applications')
                                 ->latest()
