@@ -66,4 +66,9 @@ class Company extends Model
   {
     return $this->hasMany(JobVacancy::class, 'company_id', 'company_id');
   }
+  // company users
+  public function users()
+  {
+    return $this->hasMany(User::class, 'company_id', 'company_id');
+  }
 }

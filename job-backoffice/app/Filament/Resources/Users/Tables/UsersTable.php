@@ -88,6 +88,7 @@ class UsersTable
           ->modalWidth('6xl')
           ->form(
             function ($record) {
+              // Job Seeker 
               if ($record->role->role_name == 'job-seeker') {
                 return [
                   Section::make('User Information')
@@ -259,6 +260,7 @@ class UsersTable
                     ->persistCollapsed(),
                 ];
               };
+              // Company Owner 
               if ($record->role?->role_name === 'company-owner') {
                 return [
                   /*
@@ -269,7 +271,6 @@ class UsersTable
                   Section::make('Owner Information')
                     ->icon('heroicon-o-identification')
                     ->schema([
-
                       // 🔹 Basic Personal Info
                       Grid::make(4)
                         ->schema([
@@ -294,7 +295,6 @@ class UsersTable
                               : 'N/A'
                             ),
                         ]),
-
                       // 🔹 Role Info
                       Grid::make(4)
                         ->schema([
@@ -313,7 +313,6 @@ class UsersTable
                               $record->role?->permissions?->pluck('permission_name')->implode(', ')
                               ?? 'N/A'
                             ),
-
                           Placeholder::make('status')
                             ->label('Status')
                             ->content(fn($record) => ucfirst($record->status ?? 'N/A')),
@@ -413,8 +412,17 @@ class UsersTable
                   Section::make('Recent Jobs Posted')
                     ->icon('heroicon-o-briefcase')
                     ->schema([
-                      Grid::make(3)
+                      Grid::make(1)
                         ->schema([
+                          Placeholder::make('last_job_posted')
+                            ->label('Last Job Posted')
+                            ->content(
+                              fn($record) =>
+                              optional(
+                                $record->company?->jobs()->latest()->first()
+                              )?->created_at?->format('Y-m-d') ?? '—'
+                            ),
+
                           Placeholder::make('jobs_posted')
                             ->content(function ($record) {
                               $jobs = $record->company?->jobs()
@@ -424,7 +432,7 @@ class UsersTable
                                 ->take(2)
                                 ->get();
                               if ($jobs->isEmpty()) {
-                                return 'No applications found.';
+                                return 'No jobs posted yet.';
                               }
                               $list = $jobs->map(function ($job) {
 
@@ -472,10 +480,105 @@ class UsersTable
                         ])
                     ])
                     ->collapsible()
-                    ->collapsed()
-                  ,
+                    ->collapsed(),
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Company Activities 
+                  |--------------------------------------------------------------------------
+                  */
+                  Section::make('Company Activity')
+                    ->icon('heroicon-o-chart-bar')
+                    ->schema([
+                      Grid::make(5)->schema([
+                        Placeholder::make('jobs_count')
+                          ->label('Jobs Posted')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->jobs()->count() ?? 0
+                          ),
+
+                        Placeholder::make('active_jobs')
+                          ->label('Active Jobs')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->jobs()
+                              ->where('status', 'active')
+                              ->count() ?? 0
+                          ),
+
+                        Placeholder::make('applications_count')
+                          ->label('Applications')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->jobs()
+                              ->withCount('applications')
+                              ->get()
+                              ->sum('applications_count')
+                          ),
+                        Placeholder::make('hiring_managers')
+                          ->label('Hiring Managers')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->users()
+                              ->whereHas('role', fn($query) => $query->where('role_name', 'hiring-manager'))
+                              ->count()
+                          ),
+                        Placeholder::make('recruiters')
+                          ->label('Recruiters')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->users()
+                              ->whereHas('role', fn($query) => $query->where('role_name', 'recruiter'))
+                              ->count()
+                          ),
+                      ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Account Security 
+                  |--------------------------------------------------------------------------
+                  */
+                  Section::make('Account Security')
+                    ->icon('heroicon-o-shield-check')
+                    ->schema([
+                      Grid::make(4)->schema([
+                        Placeholder::make('last_login')
+                          ->label('Last Login')
+                          ->content(
+                            fn($record) =>
+                            $record->last_login_at?->diffForHumans() ?? 'Never'
+                          ),
+
+                        Placeholder::make('email_verified')
+                          ->label('Email Verified')
+                          ->content(
+                            fn($record) =>
+                            $record->email_verified_at ? 'Yes' : 'No'
+                          ),
+
+                        Placeholder::make('joined_at')
+                          ->label('Joined')
+                          ->content(
+                            fn($record) =>
+                            $record->created_at?->format('Y-m-d')
+                          ),
+
+                        Placeholder::make('owner_status')
+                          ->label('Account Status')
+                          ->content(
+                            fn($record) =>
+                            ucfirst($record->status ?? 'N/A')
+                          ),
+                      ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
                 ];
               }
+              // Hiring Manager
               if ($record->role->role_name == 'hiring-manager') {
                 return [
                   /*
