@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Filament\Resources\Companies\CompanyResource;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -43,15 +44,15 @@ class UsersTable
           ->label('Email address')
           ->limit(10)
           ->searchable(),
-        TextColumn::make('role')
+        TextColumn::make('role.role_name')
           ->badge()
           ->color(
             fn(string $state): string => match ($state) {
               'system-admin' => 'danger',
-              'company-owner' => 'info',
-              'hiring-manager' => 'info',
+              'company-owner' => 'success',
+              'hiring-manager' => 'warning',
               'recruiter' => 'gray',
-              'job-seeker' => 'warning',
+              'job-seeker' => 'info',
               default => 'gray',
             }
           ),
@@ -67,13 +68,17 @@ class UsersTable
           )
           ->sortable()
           ->placeholder('—'),
+        TextColumn::make('created_at')
+          ->label('Created At')
+          ->dateTime('d, M Y')
+          ->sortable(),
         TextColumn::make('deleted_at')
           ->dateTime()
           ->sortable()
           ->toggleable(isToggledHiddenByDefault: true),
       ])
       ->filters([
-        SelectFilter::make('role')
+        SelectFilter::make('role.role_name')
           ->options([
             'system-admin' => 'System Admin',
             'company-owner' => 'Company Owner',
@@ -89,9 +94,10 @@ class UsersTable
           ->modalWidth('6xl')
           ->form(
             function ($record) {
-              if ($record->role == 'job-seeker') {
+              if ($record->role->role_name == 'job-seeker') {
                 return [
                   Section::make('User Information')
+                    ->icon('heroicon-o-identification')
                     ->schema([
                       Grid::make(4)
                         ->schema([
@@ -114,9 +120,9 @@ class UsersTable
                     ->schema([
                       Grid::make(4)
                         ->schema([
-                          Placeholder::make('role')
+                          Placeholder::make('role_id')
                             ->label('Role')
-                            ->content(fn($record) => $record->role),
+                            ->content(fn($record) => $record->role->role_name),
                           Placeholder::make('email_verified_at')
                             ->label('Email Verified')
                             ->content(fn($record) => $record->email_verified_at ? 'Yes' : 'No'),
@@ -255,57 +261,285 @@ class UsersTable
                           );
                         })
                     ])->collapsible()
-                    ->collapsed(),
+                    ->collapsed()
+                    ->persistCollapsed(),
                 ];
               };
-              if ($record->role == 'company-owner') {
+              if ($record->role?->role_name === 'company-owner') {
                 return [
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Owner Information
+                  |--------------------------------------------------------------------------
+                  */
                   Section::make('Owner Information')
+                    ->icon('heroicon-o-identification')
                     ->schema([
-                      Grid::make(5)
+
+                      // 🔹 Basic Personal Info
+                      Grid::make(4)
                         ->schema([
                           Placeholder::make('full_name')
                             ->label('Full Name')
-                            ->content(fn($record) => $record->full_name),
+                            ->content(fn($record) => $record->full_name ?? 'N/A'),
+
                           Placeholder::make('email')
                             ->label('Email')
-                            ->content(fn($record) => $record->email),
+                            ->content(fn($record) => $record->email ?? 'N/A'),
+
                           Placeholder::make('phone')
                             ->label('Phone')
-                            ->content(fn($record) => $record->phone),
+                            ->content(fn($record) => $record->phone ?? 'N/A'),
+
+                          Placeholder::make('location')
+                            ->label('Location')
+                            ->content(
+                              fn($record) =>
+                              ($record->city && $record->country)
+                              ? "{$record->city} - {$record->country}"
+                              : 'N/A'
+                            ),
+                        ]),
+
+                      // 🔹 Role Info
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('company_name')
+                            ->label('Company')
+                            ->content(fn($record) => $record->company?->name ?? 'N/A'),
+
+                          Placeholder::make('role')
+                            ->label('Role')
+                            ->content(fn($record) => ucfirst($record->role?->role_name ?? 'N/A')),
+
+                          Placeholder::make('permissions')
+                            ->label('Permissions')
+                            ->content(
+                              fn($record) =>
+                              $record->role?->permissions?->pluck('permission_name')->implode(', ')
+                              ?? 'N/A'
+                            ),
+
+                          Placeholder::make('status')
+                            ->label('Status')
+                            ->content(fn($record) => ucfirst($record->status ?? 'N/A')),
+                        ]),
+                    ])
+                    ->collapsible(),
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Company Information
+                  |--------------------------------------------------------------------------
+                  */
+                  Section::make('Company Information')
+                    ->icon('heroicon-m-building-office-2')
+                    ->schema([
+                      // 🔹 Basic Info
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('company_name_display')
+                            ->label('Company Name')
+                            ->content(fn($record) => $record->company?->name ?? 'N/A'),
+                          Placeholder::make('industry')
+                            ->label('Industry')
+                            ->content(fn($record) => $record->company?->industry ?? 'N/A'),
+                          Placeholder::make('size')
+                            ->label('Company Size')
+                            ->content(fn($record) => $record->company?->size ?? 'N/A'),
+                        ]),
+                      // 🔹 Contact
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('contact_email')
+                            ->label('Email')
+                            ->content(fn($record) => $record->company?->contact_email ?? 'N/A'),
+                          Placeholder::make('contact_phone')
+                            ->label('Phone')
+                            ->content(fn($record) => $record->company?->contact_phone ?? 'N/A'),
+                          Placeholder::make('website')
+                            ->label('Website')
+                            ->content(fn($record) => $record->company?->website ?? 'N/A'),
+                        ]),
+                      // 🔹 Location
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('country')
+                            ->label('Country')
+                            ->content(fn($record) => $record->company?->country ?? 'N/A'),
+                          Placeholder::make('city')
+                            ->label('City')
+                            ->content(fn($record) => $record->company?->city ?? 'N/A'),
                           Placeholder::make('address')
                             ->label('Address')
-                            ->content(fn($record) => $record->city . ' - ' . $record->country),
-                          Placeholder::make('company_name')
-                            ->label('Company Name')
-                            ->content(fn($record) => $record->company->name ?? 'N/A'),
+                            ->content(fn($record) => $record->company?->address ?? 'N/A'),
                         ]),
-                    ])->collapsible(),
-                  Section::make('Company Information')
+
+                      // 🔹 Business Details
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('founded_year')
+                            ->label('Founded')
+                            ->content(fn($record) => $record->company?->founded_year ?? 'N/A'),
+                          Placeholder::make('specialization')
+                            ->label('Specialization')
+                            ->content(fn($record) => $record->company?->specialization ?? 'N/A'),
+                          Placeholder::make('job_posting_limit')
+                            ->label('Job Posting Limit')
+                            ->content(fn($record) => $record->company?->job_posting_limit ?? 'N/A'),
+                        ]),
+
+                      // 🔹 Status
+                      Grid::make(3)
+                        ->schema([
+                          Placeholder::make('company_status')
+                            ->label('Status')
+                            ->content(fn($record) => ucfirst($record->company?->status ?? 'N/A')),
+                          Placeholder::make('approved_at')
+                            ->label('Approved At')
+                            ->content(
+                              fn($record) =>
+                              optional($record->company?->approved_at)?->format('Y-m-d') ?? 'N/A'
+                            ),
+                          Placeholder::make('rejected_at')
+                            ->label('Rejected At')
+                            ->content(
+                              fn($record) =>
+                              optional($record->company?->rejected_at)?->format('Y-m-d') ?? 'N/A'
+                            ),
+                        ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed()
+                  ,
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Jobs Posted Information
+                  |--------------------------------------------------------------------------
+                  */
+                  Section::make('Recent Jobs Posted')
+                    ->icon('heroicon-o-briefcase')
                     ->schema([
                       Grid::make(3)
                         ->schema([
-                          Placeholder::make('company_name')
-                            ->label('Company Name')
-                            ->content(fn($record) => $record->company->name ?? 'N/A'),
-                          // Placeholder::make('status')
-                          //   ->label('Status')
-                          //   ->content(fn($record) => $record->company->status ?? 'N/A'),
-                          Placeholder::make('industry')
-                            ->label('Industry')
-                            ->content(fn($record) => $record->company->industry),
-                          Placeholder::make('size')
-                            ->label('Employees Count')
-                            ->content(fn($record) => $record->company->size),
+                          Placeholder::make('jobs_posted')
+                            ->content(function ($record) {
+                              $jobs = $record->jobs()
+                                ->with(['applications.jobSeeker'])
+                                ->withCount('applications')
+                                ->latest()
+                                ->take(2)
+                                ->get();
+                              if ($jobs->isEmpty()) {
+                                return 'No applications found.';
+                              }
+                              $list = $jobs->map(function ($job) {
+
+                                $lastApplication = $job->applications->sortByDesc('created_at')->first();
+
+                                $jobTitle = e($job->title);
+                                $applicationsCount = $job->applications_count;
+
+                                if (!$lastApplication) {
+                                  return "
+                            <li style='padding:10px 0; border-bottom:1px solid #eee;'>
+                                <strong>{$jobTitle}</strong><br>
+                                <span>{$applicationsCount} applications</span><br>
+                                <em>No applications yet.</em>
+                            </li>
+                        ";
+                                }
+
+                                $applicantName = e($lastApplication->jobSeeker->full_name ?? 'Unknown');
+                                $appliedDate = $lastApplication->created_at->format('Y-m-d');
+                                $status = ucfirst($lastApplication->status);
+
+                                return "
+                        <li style='padding:10px 0; border-bottom:1px solid #eee;'>
+                            <strong>{$jobTitle}</strong><br>
+                            <span>{$applicationsCount} applications</span><br>
+                            <small>
+                                {$applicantName} applied on {$appliedDate}<br>
+                                Status: {$status}
+                            </small>
+                        </li>
+                    ";
+                              })->implode('');
+                              // job data -> has number of applications -> last 2 application data
+                              return new HtmlString(
+                                "
+                              <ul style='list-style: none; padding-left: 0;'>
+                                {$list}
+                              </ul>
+                                "
+                              );
+
+
+                            }),
+                        ])
+                    ])
+                    ->collapsible()
+                    ->collapsed()
+                  ,
+                ];
+              }
+              if ($record->role->role_name == 'hiring-manager') {
+                return [
+                  /*
+                  |--------------------------------------------------------------------------
+                  | Hiring Manger Information
+                  |--------------------------------------------------------------------------
+                  */
+                  Section::make('Hiring Manager Information')
+                    ->icon('heroicon-o-identification')
+                    ->schema([
+                      // 🔹 Basic Personal Info
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('full_name')
+                            ->label('Full Name')
+                            ->content(fn($record) => $record->full_name ?? 'N/A'),
+
+                          Placeholder::make('email')
+                            ->label('Email')
+                            ->content(fn($record) => $record->email ?? 'N/A'),
+
+                          Placeholder::make('phone')
+                            ->label('Phone')
+                            ->content(fn($record) => $record->phone ?? 'N/A'),
+
                           Placeholder::make('location')
                             ->label('Location')
-                            ->content(fn($record) => $record->company->location),
-                          Placeholder::make('founder_year')
-                            ->label('Founder Year')
-                            ->content(fn($record) => $record->company->founded_year),
+                            ->content(
+                              fn($record) =>
+                              ($record->city && $record->country)
+                              ? "{$record->city} - {$record->country}"
+                              : 'N/A'
+                            ),
                         ]),
-                    ])->collapsible()
-                    ->collapsed(),
+
+                      // 🔹 Role Info
+                      Grid::make(4)
+                        ->schema([
+                          Placeholder::make('role')
+                            ->label('Role')
+                            ->content(fn($record) => ucfirst($record->role?->role_name ?? 'N/A')),
+                          Placeholder::make('company_name')
+                            ->label('Company')
+                            ->content(fn($record) => 'Hiring Manager in ' . $record->company?->name ?? 'N/A'),
+                          Placeholder::make('permissions')
+                            ->label('Permissions')
+                            ->content(
+                              fn($record) =>
+                              $record->role?->permissions?->pluck('permission_name')->implode(', ')
+                              ?? 'N/A'
+                            ),
+
+                          Placeholder::make('status')
+                            ->label('Status')
+                            ->content(fn($record) => ucfirst($record->status ?? 'N/A')),
+                        ]),
+                    ])
+                    ->collapsible(),
                 ];
               }
             }

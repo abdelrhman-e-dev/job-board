@@ -14,7 +14,7 @@ class Company extends Model
   protected $keyType = 'string';
   public $incrementing = false;
   protected $primaryKey = 'company_id';
-  protected $fillable = [
+    protected $fillable = [
     'owner_id',
     'name',
     'slug',
@@ -25,8 +25,21 @@ class Company extends Model
     'size',
     'location',
     'founded_year',
-    'verified',
     'deleted_at',
+    'status',
+    'rejection_reason',
+    'approved_at',
+    'rejected_at',
+    'suspended_at',
+    'specialization',
+    'banner',
+    'address',
+    'city',
+    'country',
+    'contact_phone',
+    'contact_email',
+    'social_links',
+    'job_posting_limit',
   ];
   protected $dates = [
     'deleted_at' => 'datetime',

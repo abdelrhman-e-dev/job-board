@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
   public function canAccessPanel(Panel $panel): bool
   {
-    return $this->role === 'system-admin';
+    return $this->role->role_name === 'system-admin' && $this->role->active;
   }
   /**
    * Check if user has any of the given roles
@@ -113,5 +113,14 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   public function documents()
   {
     return $this->hasMany(Document::class, 'user_id', 'user_id');
+  }
+  // role relation
+  public function role()
+  {
+    return $this->belongsTo(Role::class, 'role_id', 'role_id');
+  }
+  public function jobs()
+  {
+    return $this->hasMany(JobVacancy::class, 'posted_by', 'user_id');
   }
 }
