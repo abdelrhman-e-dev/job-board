@@ -33,11 +33,12 @@ class UserResource extends Resource
     return UserForm::configure($schema);
   }
 
+
   public static function getEloquentQuery(): Builder
   {
     return parent::getEloquentQuery()
-      ->whereNot('role', 'system-admin')
-      ->with('company');
+      ->with(['company', 'role'])
+      ->whereDoesntHave('role', fn(Builder $query) => $query->where('role_name', 'system-admin'));
   }
 
   public static function table(Table $table): Table

@@ -119,4 +119,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   {
     return $this->belongsTo(Role::class, 'role_id', 'role_id');
   }
+  public function jobs()
+  {
+    return $this->hasMany(JobVacancy::class, 'posted_by', 'user_id');
+  }
 }
