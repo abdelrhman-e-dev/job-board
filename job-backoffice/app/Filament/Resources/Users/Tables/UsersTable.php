@@ -78,7 +78,8 @@ class UsersTable
           ->toggleable(isToggledHiddenByDefault: true),
       ])
       ->filters([
-        SelectFilter::make('role.role_name')
+        SelectFilter::make('role')
+          ->relationship('role', 'role_name')
           ->options([
             'system-admin' => 'System Admin',
             'company-owner' => 'Company Owner',
