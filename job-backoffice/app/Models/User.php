@@ -121,6 +121,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   }
   public function jobs()
   {
-    return $this->hasMany(JobVacancy::class, 'posted_by', 'user_id');
+    return $this->hasMany(JobVacancy::class, 'company_id', 'company_id');
   }
 }

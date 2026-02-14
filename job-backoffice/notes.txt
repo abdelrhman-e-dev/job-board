@@ -1,10 +1,11 @@
 Company User Management
   - View Permissions
-    - view user role ✅
-    - view user company details ✅
-    - view account Information ✅
-    - view jobs posted by this user (hiring manager) ✅
-    - view applications for this user (hiring manager) ✅
+    - view user role ✅ 2/12/2026
+    - view user company details ✅ 2/12/2026
+    - view account Information ✅ 2/12/2026
+    - view jobs posted by this user (hiring manager) 
+    - view applications for this user (hiring manager) 
+    * view last 2 job posted in this company ✅ 2/14/2026
 
   - Create Permissions
     - Create company admin accounts
