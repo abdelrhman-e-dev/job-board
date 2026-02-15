@@ -76,3 +76,51 @@ assigned permissions to roles
 configure user role column in users table - now 
 add active and inactive action button in roles table
 add filter in permissions table
+
+Applications table new columns
+  - revieweb_by uuid -> hiring manager uuid
+  - last_updated_by uuid -> hiring manager uuid
+  - reviewed_at timestamp NULL
+  - shortlisted_at timestamp NULL
+  - interview_at timestamp NULL
+  - offered_at timestamp NULL
+  - hired_at timestamp NULL
+  - rejected_at timestamp NULL
+  - withdrawn_at timestamp NULL
+  - source enum('platform','referral','linkedin','indeed','career_page','agency')
+  - interview_scheduled_at timestamp NULL
+  - interview_completed_at timestamp NULL
+  - interview_score decimal(5,2) NULL
+  - offered_salary decimal(10,2) NULL
+  - offer_accepted_at timestamp NULL
+  - offer_rejected_at timestamp NULL 
+
+NOTE:  2/15/2026
+  - create interviews table
+    - interview_id 
+    - application_id 
+    - interviewer_id 
+    - scheduled_at 
+    - completed_at 
+    - interview_type -- phone, onsite, technical
+    - score 
+    - feedback  
+    - result  'pending','pass','fail','no_show'
+    - created_by 
+    - updated_by 
+  
+  - create offers table
+    - offer_id 
+    - application_id 
+    - salary 
+    - currency 
+    - start_date 
+    - end_date 
+    - status 'draft','sent','accepted','rejected','expired'
+    - sent_at 
+    - accepted_at
+    - rejected_at 
+    - expires_at 
+    - notes 
+    - created_by 
+    - updated_by 

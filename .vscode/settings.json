@@ -3,5 +3,27 @@
     "abdelrhanm",
     "Heroicon",
     "jobseeker"
+  ],
+  "todo-tree.regex.regex": "\\b(TODO|FIX|NOTE)\\b",
+  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.highlights.highlightDelay": 0,
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "foreground": "#0000ff",
+      "fontStyle": "bold"
+    },
+    "FIX": {
+      "foreground": "#ff0000",
+      "fontStyle": "bold"
+    },
+    "NOTE": {
+      "foreground": "#00ff00",
+      "fontStyle": "bold"
+    }
+  },
+  "todo-tree.general.tags": [
+    "TODO",
+    "FIX",
+    "NOTE"
   ]
 }
