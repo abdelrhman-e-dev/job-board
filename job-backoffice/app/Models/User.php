@@ -16,7 +16,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
-  use HasFactory, Notifiable, HasUlids, SoftDeletes, Notifiable;
+  use HasFactory, Notifiable, HasUlids, SoftDeletes;
 
   protected $table = 'users';
   protected $primaryKey = 'user_id';
@@ -122,5 +122,29 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   public function jobs()
   {
     return $this->hasMany(JobVacancy::class, 'company_id', 'company_id');
+  }
+
+  // interviews
+  public function interviewers()
+  {
+    return $this->hasMany(Interview::class, 'interviewer_id', 'user_id');
+  }
+  public function interviews_created_by()
+  {
+    return $this->hasMany(Interview::class, 'created_by', 'user_id');
+  }
+  public function interviews_updated_by()
+  {
+    return $this->hasMany(Interview::class, 'updated_by', 'user_id');
+  }
+
+  // offers
+  public function offers_created_by()
+  { 
+    return $this->hasMany(Offer::class, 'created_by', 'user_id');
+  }
+  public function offers_updated_by()
+  {
+    return $this->hasMany(Offer::class, 'updated_by', 'user_id');
   }
 }

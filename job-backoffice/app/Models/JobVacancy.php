@@ -79,4 +79,15 @@ class JobVacancy extends Model
   {
     return $this->belongsTo(JobCategory::class, 'category_id', 'category_id');
   }
+
+  // interviews
+  public function interviews()
+  {
+    return $this->hasMany(Interview::class, 'job_id', 'job_id');
+  }
+  // offers
+  public function offers()
+  {
+    return $this->hasMany(Offer::class, 'job_id', 'job_id');
+  }
 }

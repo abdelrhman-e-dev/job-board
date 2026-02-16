@@ -54,4 +54,14 @@ class Application extends Model
   {
     return $this->hasMany(Message::class, 'application_id', 'application_id');
   }
+  // relation with interviews
+  public function interviews()
+  {
+    return $this->hasMany(Interview::class, 'application_id', 'application_id');
+  }
+  // relation with offers
+  public function offers()
+  {
+    return $this->hasMany(Offer::class, 'application_id', 'application_id');
+  }
 }
