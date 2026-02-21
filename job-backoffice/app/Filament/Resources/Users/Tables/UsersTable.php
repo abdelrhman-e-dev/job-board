@@ -587,159 +587,80 @@ class UsersTable
                   | Hiring Manger Information
                   |--------------------------------------------------------------------------
                   */
-                  Section::make('Hiring Manager Information')
+                  Section::make('Hiring Manager Profile')
                     ->icon('heroicon-o-identification')
                     ->schema([
-                      // 🔹 Basic Personal Info
-                      Grid::make(4)
-                        ->schema([
-                          Placeholder::make('full_name')
-                            ->label('Full Name')
-                            ->content(fn($record) => $record->full_name ?? 'N/A'),
 
-                          Placeholder::make('email')
-                            ->label('Email')
-                            ->content(fn($record) => $record->email ?? 'N/A'),
-
-                          Placeholder::make('phone')
-                            ->label('Phone')
-                            ->content(fn($record) => $record->phone ?? 'N/A'),
-
-                          Placeholder::make('location')
-                            ->label('Location')
-                            ->content(
-                              fn($record) =>
-                              ($record->city && $record->country)
-                              ? "{$record->city} - {$record->country}"
-                              : 'N/A'
-                            ),
-                        ]),
-
-                      // 🔹 Role Info
-                      Grid::make(4)
-                        ->schema([
-                          Placeholder::make('role')
-                            ->label('Role')
-                            ->content(fn($record) => str_replace('-', ' ', ucfirst($record->role?->role_name)) ?? 'N/A'),
-                          Placeholder::make('company_name')
-                            ->label('Company')
-                            ->content(fn($record) => $record->company?->name ?? 'N/A'),
-                          Placeholder::make('permissions')
-                            ->label('Permissions')
-                            ->content(
-                              fn($record) =>
-                              $record->role?->permissions?->pluck('permission_name')->implode(', ')
-                              ?? 'N/A'
-                            ),
-
-                          Placeholder::make('status')
-                            ->label('Status')
-                            ->content(fn($record) => ucfirst($record->status ?? 'N/A')),
-                        ]),
-                    ])
-                    ->collapsible(),
-                  /*
-                    |--------------------------------------------------------------------------
-                    | Company Information
-                    |--------------------------------------------------------------------------
-                  */
-                  Section::make('Company Context')
-                    ->icon('heroicon-o-building-office')
-                    ->schema([
-
-                      // 🔹 Company Identity
                       Grid::make(4)->schema([
-                        Placeholder::make('company_name')
-                          ->label('Company')
-                          ->content(
-                            fn($record) =>
-                            $record->company?->name ?? 'N/A'
-                          ),
+                        Placeholder::make('full_name')
+                          ->label('Full Name')
+                          ->content(fn($record) => $record->full_name ?? 'N/A'),
 
-                        Placeholder::make('industry')
-                          ->label('Industry')
-                          ->content(
-                            fn($record) =>
-                            $record->company?->industry ?? 'N/A'
-                          ),
+                        Placeholder::make('email')
+                          ->label('Email')
+                          ->content(fn($record) => $record->email ?? 'N/A'),
 
-                        Placeholder::make('company_size')
-                          ->label('Size')
-                          ->content(
-                            fn($record) =>
-                            $record->company?->size ?? 'N/A'
-                          ),
+                        Placeholder::make('phone')
+                          ->label('Phone')
+                          ->content(fn($record) => $record->phone ?? 'N/A'),
 
                         Placeholder::make('location')
                           ->label('Location')
                           ->content(
                             fn($record) =>
-                            ($record->company?->city && $record->company?->country)
-                            ? "{$record->company->city}, {$record->company->country}, {$record->company->address}"
+                            ($record->city && $record->country)
+                            ? "{$record->city} - {$record->country}"
                             : 'N/A'
                           ),
                       ]),
 
-                      // 🔹 Manager Activity in Company
                       Grid::make(4)->schema([
-                        Placeholder::make('manager_jobs')
-                          ->label('Jobs Created')
+                        Placeholder::make('role')
+                          ->label('Role')
                           ->content(
                             fn($record) =>
-                            $record->jobs()->count()
+                            str_replace('-', ' ', ucfirst($record->role?->role_name)) ?? 'N/A'
                           ),
 
-                        Placeholder::make('active_jobs')
-                          ->label('Active Jobs')
+                        Placeholder::make('status')
+                          ->label('Status')
+                          ->content(fn($record) => ucfirst($record->status ?? 'N/A')),
+
+                        Placeholder::make('permissions')
+                          ->label('Permissions')
                           ->content(
                             fn($record) =>
-                            $record->jobs()
-                              ->where('status', 'active')
-                              ->count()
+                            $record->role?->permissions?->pluck('permission_name')->implode(', ')
+                            ?? 'N/A'
                           ),
 
-                        Placeholder::make('applications_received')
-                          ->label('Applications')
-                          ->content(
-                            fn($record) =>
-                            $record->jobs()
-                              ->withCount('applications')
-                              ->get()
-                              ->sum('applications_count')
-                          ),
-
-                        Placeholder::make('last_job_posted')
-                          ->label('Last Job')
-                          ->content(
-                            fn($record) =>
-                            optional(
-                              $record->jobs()->latest()->first()
-                            )?->created_at?->format('Y-m-d') ?? '—'
-                          ),
+                        Placeholder::make('company')
+                          ->label('Company')
+                          ->content(fn($record) => $record->company?->name ?? 'N/A'),
                       ]),
+                    ])
+                    ->collapsible(),
 
-                      // 🔹 Company Team Context
+                  Section::make('Company Context')
+                    ->icon('heroicon-o-building-office')
+                    ->schema([
+
                       Grid::make(4)->schema([
-                        Placeholder::make('company_managers')
-                          ->label('Hiring Managers')
-                          ->content(
-                            fn($record) =>
-                            $record->company?->users()
-                              ->whereHas('role', function ($query) {
-                                $query->where('role_name', 'hiring-manager');
-                              })
-                              ->count()
-                          ),
+                        Placeholder::make('industry')
+                          ->label('Industry')
+                          ->content(fn($record) => $record->company?->industry ?? 'N/A'),
 
-                        Placeholder::make('company_recruiters')
-                          ->label('Recruiters')
+                        Placeholder::make('company_size')
+                          ->label('Size')
+                          ->content(fn($record) => $record->company?->size ?? 'N/A'),
+
+                        Placeholder::make('company_location')
+                          ->label('Location')
                           ->content(
                             fn($record) =>
-                            $record->company?->users()
-                              ->whereHas('role', function ($query) {
-                                $query->where('role_name', 'recruiter');
-                              })
-                              ->count()
+                            ($record->company?->city && $record->company?->country)
+                            ? "{$record->company->city}, {$record->company->country}"
+                            : 'N/A'
                           ),
 
                         Placeholder::make('company_status')
@@ -749,95 +670,223 @@ class UsersTable
                             ucfirst($record->company?->status ?? 'N/A')
                           ),
                       ]),
+
+                      Grid::make(4)->schema([
+                        Placeholder::make('company_managers')
+                          ->label('Hiring Managers')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->users()
+                              ->whereHas('role', fn($q) => $q->where('role_name', 'hiring-manager'))
+                              ->count()
+                          ),
+
+                        Placeholder::make('company_recruiters')
+                          ->label('Recruiters')
+                          ->content(
+                            fn($record) =>
+                            $record->company?->users()
+                              ->whereHas('role', fn($q) => $q->where('role_name', 'recruiter'))
+                              ->count()
+                          ),
+                      ]),
                     ])
                     ->collapsible()
                     ->collapsed(),
 
-                  Section::make('Hiring Metrics')
+                  Section::make('Hiring Activity')
+                    ->icon('heroicon-o-briefcase')
+                    ->schema([
+
+                      Grid::make(4)->schema([
+                        Placeholder::make('manager_jobs')
+                          ->label('Jobs Created')
+                          ->content(fn($record) => $record->jobs()->count()),
+
+                        Placeholder::make('active_jobs')
+                          ->label('Active Jobs')
+                          ->content(
+                            fn($record) =>
+                            $record->jobs()->where('status', 'active')->count()
+                          ),
+
+                        Placeholder::make('applications_received')
+                          ->label('Applications')
+                          ->content(
+                            fn($record) =>
+                            $record->jobs()->withCount('applications')->get()->sum('applications_count')
+                          ),
+
+                        Placeholder::make('last_job_posted')
+                          ->label('Last Job')
+                          ->content(
+                            fn($record) =>
+                            optional($record->jobs()->latest()->first())?->created_at?->format('Y-m-d') ?? '—'
+                          ),
+                      ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                  Section::make('Hiring Performance')
                     ->icon('heroicon-o-chart-bar')
                     ->schema([
-                      Section::make('Jobs')->schema([
+
                       Grid::make(4)->schema([
-                          Placeholder::make('jobs_closed')
+                        Placeholder::make('jobs_closed')
                           ->label('Jobs Closed')
                           ->content(
                             fn($record) =>
-                            $record->jobs()
-                              ->where('status', 'closed')
+                            $record->jobs()->where('status', 'closed')->count()
+                          ),
+
+                        Placeholder::make('interviews_made')
+                          ->label('Interviews Made')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'interview')
                               ->count()
                           ),
                         Placeholder::make('hires_made')
                           ->label('Hires Made')
                           ->content(
                             fn($record) =>
-                            Application::whereIn(
-                              'job_id',
-                              $record->jobs()->pluck('job_id')
-                            )
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
                               ->where('status', 'hired')
                               ->count()
                           ),
+
                         Placeholder::make('avg_apps_per_job')
                           ->label('Avg Apps / Job')
                           ->content(function ($record) {
                             $jobs = $record->jobs()->withCount('applications')->get();
-                            if ($jobs->isEmpty())
-                              return '0';
-                            return round($jobs->avg('applications_count'), 1);
+                            return $jobs->isEmpty() ? '0' : round($jobs->avg('applications_count'), 1);
                           }),
-                        Placeholder::make('success_rate')
+
+                        Placeholder::make('hire_rate')
                           ->label('Hire Rate')
                           ->content(function ($record) {
                             $jobs = $record->jobs()->count();
                             if ($jobs === 0)
                               return '0%';
 
-                            $hires = Application::whereIn(
-                              'job_id',
-                              $record->jobs()->pluck('job_id')
-                            )->where('status', 'hired')->count();
+                            $hires = Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'hired')
+                              ->count();
 
                             return round(($hires / $jobs) * 100) . '%';
                           }),
-                      ])
-                      ])->columnSpanFull(),
-
-                      Section::make('offers')
-                        ->schema([
-                          Grid::make(3)->schema([
-                            Placeholder::make('offers_sent')
-                              ->label('Offers Sent')
-                              ->content(function ($record) {
-                                $offers = $record->offers_created_by()->count();
-                                if ($offers === 0)
-                                  return '0%';
-                                $offers_sent = Offer::where('status', 'sent')->count();
-                                return $offers_sent;
-                              }),
-                            Placeholder::make('offers_accepted')
-                              ->label('Offers Accepted')
-                              ->content(function ($record) {
-                                $offers = $record->offers_created_by()->count();
-                                if ($offers === 0)
-                                  return '0%';
-                                $offers_accepted = Offer::where('status', 'accepted')->count();
-                                return $offers_accepted;
-                              }),
-                            Placeholder::make('offers_rejected')
-                              ->label('Offers Rejected')
-                              ->content(function ($record) {
-                                $offers = $record->offers_created_by()->count();
-                                if ($offers === 0)
-                                  return '0%';
-                                $offers_rejected = Offer::where('status', 'rejected')->count();
-                                return $offers_rejected;
-                              }),
-                          ])
-                        ])->columnSpanFull()
+                      ]),
                     ])
                     ->collapsible()
                     ->collapsed(),
 
+                  Section::make('Application Funnel')
+                    ->schema([
+                      Grid::make(8)->schema([
+                        Placeholder::make('apps_new')
+                          ->label('New')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'new')->count()
+                          ),
+
+                        Placeholder::make('apps_reviewing')
+                          ->label('Reviewing')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'reviewing')->count()
+                          ),
+
+                        Placeholder::make('apps_shortlisted')
+                          ->label('Shortlisted')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'shortlisted')->count()
+                          ),
+
+                        Placeholder::make('apps_interview')
+                          ->label('Interview')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'interview')->count()
+                          ),
+
+                        Placeholder::make('apps_offer')
+                          ->label('Offer')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'offer')->count()
+                          ),
+
+                        Placeholder::make('apps_hired')
+                          ->label('Hired')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'hired')->count()
+                          ),
+
+                        Placeholder::make('apps_rejected')
+                          ->label('Rejected')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'rejected')->count()
+                          ),
+
+                        Placeholder::make('apps_withdraw')
+                          ->label('Withdraw')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('status', 'withdraw')->count()
+                          ),
+                      ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                  Section::make('Review Behavior')
+                    ->schema([
+                      Grid::make(3)->schema([
+
+                        Placeholder::make('unread_apps')
+                          ->label('Unread Apps')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->where('is_read', 0)->count()
+                          ),
+
+                        Placeholder::make('never_opened')
+                          ->label('Never Opened')
+                          ->content(
+                            fn($record) =>
+                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->whereNull('read_at')->count()
+                          ),
+
+                        Placeholder::make('oldest_pending')
+                          ->label('Oldest Pending')
+                          ->content(function ($record) {
+                            $app = Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                              ->whereIn('status', ['new', 'reviewing'])
+                              ->oldest()
+                              ->first();
+
+                            return $app ? $app->created_at->diffForHumans() : '—';
+                          }),
+                      ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed()
 
                 ];
               }
