@@ -4,7 +4,7 @@ Company User Management
     - view user company details ✅ 2/12/2026
     - view account Information ✅ 2/12/2026
     - view jobs posted by this user (hiring manager) 
-    - view applications for this user (hiring manager) 
+    - view applications for this user (job seeker) 
     * view last 2 job posted in this company ✅ 2/14/2026
 
   - Create Permissions

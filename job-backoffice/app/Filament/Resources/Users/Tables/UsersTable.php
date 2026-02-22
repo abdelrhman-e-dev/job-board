@@ -701,20 +701,24 @@ class UsersTable
                       Grid::make(4)->schema([
                         Placeholder::make('manager_jobs')
                           ->label('Jobs Created')
-                          ->content(fn($record) => $record->jobs()->count()),
+                          ->content(fn($record) => $record->jobs()->where('posted_by', $record->user_id)->count()),
 
                         Placeholder::make('active_jobs')
                           ->label('Active Jobs')
                           ->content(
                             fn($record) =>
-                            $record->jobs()->where('status', 'active')->count()
+                            $record->jobs()
+                              ->where('posted_by', $record->user_id)
+                              ->where('status', 'active')->count()
                           ),
 
                         Placeholder::make('applications_received')
                           ->label('Applications')
                           ->content(
                             fn($record) =>
-                            $record->jobs()->withCount('applications')->get()->sum('applications_count')
+                            $record->jobs()
+                              ->where('posted_by', $record->user_id)
+                              ->withCount('applications')->get()->sum('applications_count')
                           ),
 
                         Placeholder::make('last_job_posted')
@@ -732,27 +736,33 @@ class UsersTable
                     ->icon('heroicon-o-chart-bar')
                     ->schema([
 
-                      Grid::make(4)->schema([
+                      Grid::make(5)->schema([
                         Placeholder::make('jobs_closed')
                           ->label('Jobs Closed')
                           ->content(
                             fn($record) =>
-                            $record->jobs()->where('status', 'closed')->count()
+                            $record->jobs()
+                              ->where('closed_by', $record->user_id)
+                              ->where('status', 'closed')->count()
                           ),
-
                         Placeholder::make('interviews_made')
                           ->label('Interviews Made')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
-                              ->where('status', 'interview')
+                            Application::with('interviews')
+                              ->whereHas('interviews', function ($query) use ($record) {
+                                $query->where('interviewer_id', $record->user_id);
+                              })
                               ->count()
                           ),
                         Placeholder::make('hires_made')
                           ->label('Hires Made')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('interviews')
+                              ->whereHas('interviews', function ($query) use ($record) {
+                                $query->where('interviewer_id', $record->user_id);
+                              })
                               ->where('status', 'hired')
                               ->count()
                           ),
@@ -767,11 +777,17 @@ class UsersTable
                         Placeholder::make('hire_rate')
                           ->label('Hire Rate')
                           ->content(function ($record) {
-                            $jobs = $record->jobs()->count();
+                            $jobs = $record
+                              ->jobs()
+                              ->where('posted_by', $record->user_id)
+                              ->count();
                             if ($jobs === 0)
                               return '0%';
 
-                            $hires = Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            $hires = Application::with('interviews')
+                              ->whereHas('interviews', function ($query) use ($record) {
+                                $query->where('interviewer_id', $record->user_id);
+                              })
                               ->where('status', 'hired')
                               ->count();
 
@@ -783,70 +799,88 @@ class UsersTable
                     ->collapsed(),
 
                   Section::make('Application Funnel')
+                    ->icon('heroicon-o-document-text')
                     ->schema([
-                      Grid::make(8)->schema([
+                      Grid::make(4)->schema([
                         Placeholder::make('apps_new')
-                          ->label('New')
+                          ->label('Recent Applications Received')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'new')->count()
                           ),
 
                         Placeholder::make('apps_reviewing')
-                          ->label('Reviewing')
+                          ->label('Applicatons Reviewing')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'reviewing')->count()
                           ),
 
+
                         Placeholder::make('apps_shortlisted')
-                          ->label('Shortlisted')
+                          ->label('Applicatons Shortlisted')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'shortlisted')->count()
                           ),
 
                         Placeholder::make('apps_interview')
-                          ->label('Interview')
+                          ->label('Applicatons Scheduled for Interview')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'interview')->count()
                           ),
 
                         Placeholder::make('apps_offer')
-                          ->label('Offer')
+                          ->label('Applicatons Received Offer')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'offer')->count()
                           ),
 
                         Placeholder::make('apps_hired')
-                          ->label('Hired')
+                          ->label('Applicatons Hired')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'hired')->count()
                           ),
 
                         Placeholder::make('apps_rejected')
-                          ->label('Rejected')
+                          ->label('Applicatons Rejected')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
                               ->where('status', 'rejected')->count()
                           ),
 
                         Placeholder::make('apps_withdraw')
-                          ->label('Withdraw')
+                          ->label('Applicatons Withdraw')
                           ->content(
                             fn($record) =>
-                            Application::whereIn('job_id', $record->jobs()->pluck('job_id'))
-                              ->where('status', 'withdraw')->count()
+                            Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
+                              $query->where('posted_by', $record->user_id);
+                            })
+                              ->where('status', 'withdraw')->count()  
                           ),
                       ]),
                     ])
