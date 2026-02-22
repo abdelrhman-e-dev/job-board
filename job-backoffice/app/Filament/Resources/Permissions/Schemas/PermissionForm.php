@@ -70,7 +70,6 @@ class PermissionForm
                   ->multiple()
                   ->preload()
                   ->prefixIcon('heroicon-m-user-group')
-                  ->required()
                   ->native(false),
               ])
               ->columnSpan(1),
