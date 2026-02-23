@@ -5,6 +5,8 @@
 
  
 Job Board is a clean Laravel-based project that provides a comprehensive job listing and management platform. The project is architecturally separated into two main applications: a public-facing job application (job-app) and an administrative back-office system (job-backoffice). It includes detailed documentation with Product Requirements Documents (PRD), System Requirements Specifications (SRS), data flow diagrams, and Entity Relationship Diagrams (ERD). The project implements role-based access control with defined user roles and capabilities, uses Filament for admin resources management, and is built with modern Laravel conventions including Laravel Breeze for authentication.
+  
+####
 
 ### Main Function Points
 - Job listing and browsing functionality for end users
