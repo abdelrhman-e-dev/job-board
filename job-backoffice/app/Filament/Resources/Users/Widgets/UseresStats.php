@@ -28,10 +28,7 @@ class UseresStats extends StatsOverviewWidget
 
           Stat::make(
             'Active Accounts',
-            User::whereNotNull('email_verified_at')
-              ->with('role')->whereHas('role', function ($query) {
-                $query->where('role_name', '==', 'company-owner');
-              })->count()
+            User::whereNotNull('email_verified_at')->count()
           )
             ->description('Verified & active users')
             ->descriptionIcon('heroicon-m-check-circle')

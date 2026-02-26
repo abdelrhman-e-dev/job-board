@@ -82,6 +82,11 @@ class UsersTable
       ->filters([
         SelectFilter::make('role')
           ->relationship('role', 'role_name'),
+        SelectFilter::make('status')
+          ->options([
+            'Active' => 'Active',
+            'Inactive' => 'Inactive',
+          ]),
         TrashedFilter::make(),
       ])
       ->actions([
@@ -880,7 +885,7 @@ class UsersTable
                             Application::with('job_vacancies')->whereHas('job', function ($query) use ($record) {
                               $query->where('posted_by', $record->user_id);
                             })
-                              ->where('status', 'withdraw')->count()  
+                              ->where('status', 'withdraw')->count()
                           ),
                       ]),
                     ])
