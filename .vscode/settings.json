@@ -9,7 +9,7 @@
   "todo-tree.highlights.highlightDelay": 0,
   "todo-tree.highlights.customHighlight": {
     "TODO": {
-      "foreground": "#0000ff",
+      "foreground": "#7AAACE",
       "fontStyle": "bold"
     },
     "FIX": {
