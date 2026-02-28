@@ -14,7 +14,7 @@ class Company extends Model
   protected $keyType = 'string';
   public $incrementing = false;
   protected $primaryKey = 'company_id';
-    protected $fillable = [
+  protected $fillable = [
     'owner_id',
     'name',
     'slug',
@@ -70,5 +70,22 @@ class Company extends Model
   public function users()
   {
     return $this->hasMany(User::class, 'company_id', 'company_id');
+  }
+  // company hiring managers
+  public function hiringManagers()
+  {
+    return $this->hasMany(User::class, 'company_id', 'company_id')->where('role_id', "019c57ad-a219-7124-a4eb-942f9d7e2274");
+  }
+  // company recruiters
+  public function recruiters()
+  {
+    return $this->hasMany(User::class, 'company_id', 'company_id')->where('role_id', "019c57ad-c8e9-71d0-ada9-eacffd659479");
+  }
+  // company job seekers
+  public function HieghBoard()
+  {
+    return $this->hasMany(User::class, 'company_id', 'company_id')
+      ->where('role_id', "019c57ad-c8e9-71d0-ada9-eacffd659479")
+      ->orWhere('role_id', "019c57ad-a219-7124-a4eb-942f9d7e2274");
   }
 }

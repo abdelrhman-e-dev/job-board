@@ -124,3 +124,116 @@ NOTE:  2/15/2026
     - notes 
     - created_by 
     - updated_by 
+
+NOTE: 2/28/2026
+2. Company Management
+  2.1 View Permissions
+    Company Directory
+      View All Companies
+        Access complete list of registered companies ✅
+        View company profiles and details 
+        TODO:
+          - create view action button
+        View company size and industry ✅
+        View registration date and status ✅
+        View subscription plan and billing status ✅
+        View company verification status ✅
+        View company logo and branding ✅
+        NOTE:
+          - in view action 
+        View social media links and website 
+        View company description and culture information 
+    Advanced Company Search
+      Search by company name ✅
+      Filter by industry ✅
+      NOTE: Advanced feature
+      Export company list
+    Company Details
+      Profile Information
+        View complete company profile ✅
+        View all team members and their roles ✅
+        View all active job postings
+        View job posting history
+        View application statistics
+        View hiring metrics (time-to-hire, fill rate)
+    Company Analytics
+      View job posting performance
+      View application volume trends
+      View candidate quality metrics
+      View time-to-hire statistics
+      View cost-per-hire data
+      View dashboard usage analytics
+      View team collaboration metrics
+  2.2 Create Permissions
+    Manual Company Creation
+      Create company accounts directly
+      Set up initial company profile
+      Create company admin user
+      Assign subscription plan
+      Set job posting limits
+      Configure company settings
+      Upload company logo and branding
+      Send welcome and onboarding emails
+  2.3 Edit Permissions
+    Profile Management
+      Company Information
+        Edit company name and legal name
+        Update company description
+        Modify industry and category
+        Update company size
+        Change headquarters location
+        Update website and social links
+        Replace company logo
+        Edit company culture and benefits information
+    Settings Management
+      Modify notification settings
+      Update email preferences
+      Change privacy settings
+      Configure integrations
+      Update billing information
+      Modify subscription plan
+      Adjust job posting limits
+      Enable/disable features
+    Verification
+      Company Verification
+        Verify company legitimacy
+        Mark as verified/premium employer
+        Add verification badges
+        Set verification expiration
+        Document verification process
+        Remove verification status
+  2.4 Delete/Suspend Permissions
+    Account Suspension
+      Suspend company accounts with reason
+      Set suspension duration
+      Disable all job postings
+      Block new applications
+      Notify company admins
+      Maintain suspension log
+      Unsuspend and restore access
+    Account Closure
+      Close company accounts
+      Archive all job postings
+      Export company data
+      Handle active applications
+      Process refunds if applicable
+      Anonymize data for analytics
+      Maintain closure documentation
+  2.5 Special Actions
+    Subscription Management
+      Manually adjust subscription plans
+      Apply discounts and promotions
+      Extend trial periods
+      Waive fees or credits
+      Process refunds
+      Modify billing cycles
+    Job Posting Limits
+      Override job posting limits
+      Grant additional posting credits
+      Adjust posting duration limits
+      Enable premium features
+    Featured Listings
+      Promote company profile
+      Feature job postings
+      Boost visibility in search results
+      Set featured duration
