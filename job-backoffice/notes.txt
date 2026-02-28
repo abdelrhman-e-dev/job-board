@@ -152,9 +152,9 @@ NOTE: 2/28/2026
       Profile Information
         View complete company profile ✅
         View all team members and their roles ✅
-        View all active job postings
-        View job posting history
-        View application statistics
+        View all active job postings ✅
+        View job posting history ✅ v✅
+        View application statistics 
         View hiring metrics (time-to-hire, fill rate)
     Company Analytics
       View job posting performance

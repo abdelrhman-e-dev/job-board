@@ -50,7 +50,7 @@ class JobVacancy extends Model
 
   ];
   // relation between Job and User (posted_by)
-  public function user()
+  public function creator()
   {
     return $this->belongsTo(User::class, 'posted_by', 'user_id');
   }

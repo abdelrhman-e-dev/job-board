@@ -131,7 +131,9 @@ class CompaniesTable
                             ->implode('')
                         )
                       ),
-                  ]),
+                  ])->collapsible()
+                  ->collapsed()
+                ,
 
                 Section::make('Recruiters')
                   ->compact()
@@ -156,7 +158,76 @@ class CompaniesTable
                             ->implode('')
                         )
                       ),
-                  ]),
+                  ])->collapsible()
+                  ->collapsed()
+                ,
+              ])
+              ->collapsible()
+              ->collapsed(),
+            Section::make('Jobs')
+              ->icon('heroicon-o-briefcase')
+              ->schema([
+                Section::make('Active Jobs')
+                  ->compact()
+                  ->schema([
+                    Placeholder::make('active_jobs')
+                      ->hiddenLabel()
+                      ->content(
+                        fn($record) =>
+                        $record->jobs->where('status', 'active')->isEmpty()
+                        ? 'No Active Jobs Found'
+                        : new HtmlString(
+                          $record->jobs->where('status', 'active')
+                            ->map(fn($j) => "
+                                                <div class='py-1'>
+                                                    <p class='font-bold'>
+                                                    {$j->title}
+                                                    <span>(Publisted At {$j->created_at->format('M Y')})</span>
+                                                    </p>
+
+                                                </div>
+                                            ")
+                            ->implode('')
+                        )
+                      ),
+                  ])->collapsible()
+                  ->collapsed(),
+
+                Section::make('Job Posting History')
+                  ->compact()
+                  ->schema([
+                    Placeholder::make('job_posting_history')
+                      ->hiddenLabel()
+                      ->content(
+                        fn($record) =>
+                        $record->jobs->where('status', '!=', 'active')->isEmpty()
+                        ? 'No Non-Active Jobs Found'
+                        : new HtmlString(
+                          $record->jobs->where('status', '!=', 'active')
+                            ->map(fn($j) => "
+                                    <div class='py-1'>
+                                        <p class='font-bold'>{$j->title}</p>
+                                        <ol style='padding-left:15px'>
+                                            <li>Category: " . ($j->jobCategory?->name ?? '-') . "</li>
+                                            <li>Job Type: {$j->type}</li>
+                                            <li>Location: {$j->location}</li>
+                                            <li>Level: {$j->level}</li>
+                                            <li>Published At: " . ($j->published_at?->format('M Y') ?? '-') . "</li>
+                                            <li>Status: {$j->status}</li>
+                                            <li>Applications: {$j->applications_count}</li>
+                                            <li>Posted By: " . ($j->creator?->full_name ?? '-') . " - " . ($j->creator?->role->role_name ?? '-') . "</li>
+                                            " . ($j->status === 'closed' ? "<li>Closed At: " . ($j->closed_at?->format('M d, Y') ?? '-') . "</li>" : '') . "
+                                            <li>Deadline : " . ($j->deadline?->format('M Y') ?? '-') . "</li>
+                                        </ol>
+                                    </div>
+                                    </br>
+                                ")
+                            ->implode('')
+                        )
+                      ),
+                  ])->collapsible()
+                  ->collapsed()
+                ,
               ])
               ->collapsible()
               ->collapsed(),
