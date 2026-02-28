@@ -62,7 +62,7 @@ class CompaniesTable
           ->modalHeading('Company Details')
           ->modalWidth('7xl')
           ->schema([
-
+            // SECTION: Company Overview 
             Section::make('Company Overview')
               ->icon('heroicon-o-building-office-2')
               ->columns([
@@ -90,7 +90,7 @@ class CompaniesTable
                   ->content(fn($record) => $record->specialization ?? '-')
                   ->badge(),
               ]),
-
+            // SECTION: Employees
             Section::make('Employees')
               ->icon('heroicon-o-users')
               ->schema([
@@ -164,6 +164,7 @@ class CompaniesTable
               ])
               ->collapsible()
               ->collapsed(),
+            // SECTION: JOBS
             Section::make('Jobs')
               ->icon('heroicon-o-briefcase')
               ->schema([
@@ -228,6 +229,59 @@ class CompaniesTable
                   ])->collapsible()
                   ->collapsed()
                 ,
+              ])
+              ->collapsible()
+              ->collapsed(),
+            // SECTION Application Statistics
+            Section::make('Application Statistics')
+              ->icon('heroicon-o-chart-bar')
+              ->schema([
+                Placeholder::make('app_stats')
+                  ->hiddenLabel()
+                  ->content(function ($record) {
+                    $applications = $record->jobs->flatMap(fn($j) => $j->applications);
+
+                    $total = $applications->count();
+                    $new = $applications->where('status', 'new')->count();
+                    $reviewing = $applications->where('status', 'reviewing')->count();
+                    $interviews = $applications->where('status', 'interview')->count();
+                    $offering = $applications->where('status', 'offer')->count();
+                    $hired = $applications->where('status', 'hired')->count();
+                    $rejected = $applications->where('status', 'rejected')->count();
+
+                    return new HtmlString("
+              <div style='display:grid; grid-template-columns: repeat(7, 1fr); gap:12px; text-align:center;'>
+                  <div class='p-3 rounded-lg bg-gray-100'>
+                      <div class='text-2xl font-bold'>{$total}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Total</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-yellow-50'>
+                      <div class='text-2xl font-bold text-yellow-600'>{$new}</div>
+                      <div class='text-xs text-gray-500 mt-1'>New</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-blue-50'>
+                      <div class='text-2xl font-bold text-blue-600'>{$reviewing}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Reviewing</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-green-50'>
+                      <div class='text-2xl font-bold text-green-600'>{$interviews}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Interview</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-green-50'>
+                      <div class='text-2xl font-bold text-green-600'>{$offering}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Offering</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-green-50'>
+                      <div class='text-2xl font-bold text-green-600'>{$hired}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Hired</div>
+                  </div>
+                  <div class='p-3 rounded-lg bg-red-50'>
+                      <div class='text-2xl font-bold text-red-600'>{$rejected}</div>
+                      <div class='text-xs text-gray-500 mt-1'>Rejected</div>
+                  </div>
+              </div>
+          ");
+                  }),
               ])
               ->collapsible()
               ->collapsed(),

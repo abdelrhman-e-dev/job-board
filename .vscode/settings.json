@@ -1,11 +1,12 @@
+
 {
   "cSpell.words": [
     "abdelrhanm",
     "Heroicon",
     "jobseeker"
   ],
-  "todo-tree.regex.regex": "\\b(TODO|FIX|NOTE)\\b",
-  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.regex.regex": "\\b(TODO|FIX|NOTE|SECTION)\\b",
+  "todo-tree.regex.regexCaseSensitive": true,
   "todo-tree.highlights.highlightDelay": 0,
   "todo-tree.highlights.customHighlight": {
     "TODO": {
@@ -19,11 +20,16 @@
     "NOTE": {
       "foreground": "#00ff00",
       "fontStyle": "bold"
+    },
+    "SECTION": {
+      "foreground": "#ffcc00",
+      "fontStyle": "bold"
     }
   },
   "todo-tree.general.tags": [
     "TODO",
     "FIX",
-    "NOTE"
+    "NOTE",
+    "SECTION"
   ]
 }
