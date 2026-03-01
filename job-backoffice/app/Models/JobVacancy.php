@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,7 +55,6 @@ class JobVacancy extends Model
   {
     return $this->belongsTo(User::class, 'posted_by', 'user_id');
   }
-  // relation between Job and applications
   public function applications()
   {
     return $this->hasMany(Application::class, 'job_id', 'job_id');

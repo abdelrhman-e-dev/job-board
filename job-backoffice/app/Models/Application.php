@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,9 @@ class Application extends Model
     'rating',
     'status_history',
   ];
-
+  protected $casts = [
+    'status_history' => 'array',
+  ];
   // relation between Application and user (job seeker)
   public function jobSeeker()
   {
@@ -63,5 +66,29 @@ class Application extends Model
   public function offers()
   {
     return $this->hasMany(Offer::class, 'application_id', 'application_id');
+  }
+  // get the date when application reached a specific status
+  public function getStatusDate(string $status): ?Carbon
+  {
+    $history = collect($this->status_history);
+
+    $entry = $history->firstWhere('status', $status);
+
+    return $entry ? Carbon::parse($entry['changed_at']) : null;
+  }
+  // get current status (last entry)
+  public function getCurrentStatus(): string
+  {
+    return $this->status;
+  }
+
+  // get who hired (changed_by when status became hired)
+  public function getHiredBy(): ?string
+  {
+    $history = collect($this->status_history);
+
+    $entry = $history->firstWhere('status', 'hired');
+
+    return $entry['changed_by'] ?? null;
   }
 }
