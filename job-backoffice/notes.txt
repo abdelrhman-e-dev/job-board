@@ -155,14 +155,15 @@ NOTE: 2/28/2026
         View all active job postings ✅
         View job posting history ✅
         View application statistics  ✅
+    DATE: 3/1/2026
     Company Analytics
-      View job posting performance
-      View application volume trends
-      View candidate quality metrics
-      View time-to-hire statistics
-      View cost-per-hire data
-      View dashboard usage analytics
-      View team collaboration metrics
+      View job posting performance ✅
+      View application volume trends ✅
+      View candidate quality metrics ✅
+      View time-to-hire statistics ✅
+      View cost-per-hire data ✅
+      View dashboard usage analytics ✅
+      View team collaboration metrics ✅
   2.2 Create Permissions
     Manual Company Creation
       Create company accounts directly
