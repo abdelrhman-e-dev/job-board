@@ -43,7 +43,7 @@ class PermissionForm
                       ->maxLength(255),
                   ]),
                 TextInput::make('description')
-                  ->label('Description')
+                  ->label('Description')  
                   ->placeholder('Write a small description for this permission')
                   ->maxLength(255),
               ])
