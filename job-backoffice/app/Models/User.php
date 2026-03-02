@@ -140,11 +140,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
   // offers
   public function offers_created_by()
-  { 
+  {
     return $this->hasMany(Offer::class, 'created_by', 'user_id');
   }
   public function offers_updated_by()
   {
     return $this->hasMany(Offer::class, 'updated_by', 'user_id');
+  }
+  public static function getOwners()
+  {
+    return User::where('role_id', "019c57a6-0950-72a0-9941-f0d810d21bf3");
+  }
+
+  // company owner
+  public function companyOwner()
+  {
+    return $this->belongsTo(Role::class, 'role_id', 'role_id');
   }
 }

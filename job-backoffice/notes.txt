@@ -152,24 +152,24 @@ NOTE: 2/28/2026
       Profile Information
         View complete company profile ✅
         View all team members and their roles ✅
-        View all active job postings
-        View job posting history
-        View application statistics
-        View hiring metrics (time-to-hire, fill rate)
+        View all active job postings ✅
+        View job posting history ✅
+        View application statistics  ✅
+    DATE: 3/1/2026
     Company Analytics
-      View job posting performance
-      View application volume trends
-      View candidate quality metrics
-      View time-to-hire statistics
-      View cost-per-hire data
-      View dashboard usage analytics
-      View team collaboration metrics
+      View job posting performance ✅
+      View application volume trends ✅
+      View candidate quality metrics ✅
+      TODO: 
+        View time-to-hire statistics 
+        View cost-per-hire data 
+        View dashboard usage analytics 
+        View team collaboration metrics 
   2.2 Create Permissions
     Manual Company Creation
       Create company accounts directly
       Set up initial company profile
       Create company admin user
-      Assign subscription plan
       Set job posting limits
       Configure company settings
       Upload company logo and branding
@@ -191,7 +191,6 @@ NOTE: 2/28/2026
       Change privacy settings
       Configure integrations
       Update billing information
-      Modify subscription plan
       Adjust job posting limits
       Enable/disable features
     Verification
