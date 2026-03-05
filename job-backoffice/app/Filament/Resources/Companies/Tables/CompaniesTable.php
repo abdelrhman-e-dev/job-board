@@ -28,6 +28,7 @@ class CompaniesTable
 
       ->columns([
         ImageColumn::make('logo')
+          ->disk('public')
           ->circular(),
         TextColumn::make('name')
           ->searchable()
@@ -123,8 +124,8 @@ class CompaniesTable
                       ->content(
                         fn($record) =>
                         $record->owner
-                          ? "{$record->owner->full_name} ({$record->owner->email})"
-                          : 'No owner assigned'
+                        ? "{$record->owner->full_name} ({$record->owner->email})"
+                        : 'No owner assigned'
                       ),
                   ]),
 
@@ -138,10 +139,10 @@ class CompaniesTable
                       ->content(
                         fn($record) =>
                         $record->hiringManagers->isEmpty()
-                          ? 'No hiring managers found'
-                          : new HtmlString(
-                            $record->hiringManagers
-                              ->map(fn($m) => "
+                        ? 'No hiring managers found'
+                        : new HtmlString(
+                          $record->hiringManagers
+                            ->map(fn($m) => "
                                 <div class='py-1'>
                                   <span class='font-bold'>{$m->full_name}</span>
                                   <span class='text-red-500'>({$m->email})</span>
@@ -150,8 +151,8 @@ class CompaniesTable
                                   </span>
                                 </div>
                               ")
-                              ->implode('')
-                          )
+                            ->implode('')
+                        )
                       ),
                   ]),
 
@@ -165,10 +166,10 @@ class CompaniesTable
                       ->content(
                         fn($record) =>
                         $record->recruiters->isEmpty()
-                          ? 'No recruiters found'
-                          : new HtmlString(
-                            $record->recruiters
-                              ->map(fn($r) => "
+                        ? 'No recruiters found'
+                        : new HtmlString(
+                          $record->recruiters
+                            ->map(fn($r) => "
                                 <div class='py-1'>
                                   <span class='font-bold'>{$r->full_name}</span>
                                   <span class='text-gray-500'>({$r->email})</span>
@@ -177,8 +178,8 @@ class CompaniesTable
                                   </span>
                                 </div>
                               ")
-                              ->implode('')
-                          )
+                            ->implode('')
+                        )
                       ),
                   ]),
               ])
@@ -202,10 +203,10 @@ class CompaniesTable
                       ->content(
                         fn($record) =>
                         $record->jobs->where('status', 'active')->isEmpty()
-                          ? 'No Active Jobs Found'
-                          : new HtmlString(
-                            $record->jobs->where('status', 'active')
-                              ->map(fn($j) => "
+                        ? 'No Active Jobs Found'
+                        : new HtmlString(
+                          $record->jobs->where('status', 'active')
+                            ->map(fn($j) => "
                                 <div class='py-1'>
                                   <p class='font-bold'>
                                     {$j->title}
@@ -215,8 +216,8 @@ class CompaniesTable
                                   </p>
                                 </div>
                               ")
-                              ->implode('')
-                          )
+                            ->implode('')
+                        )
                       ),
                   ]),
 
@@ -230,10 +231,10 @@ class CompaniesTable
                       ->content(
                         fn($record) =>
                         $record->jobs->where('status', '!=', 'active')->isEmpty()
-                          ? 'No Job History Found'
-                          : new HtmlString(
-                            $record->jobs->where('status', '!=', 'active')
-                              ->map(fn($j) => "
+                        ? 'No Job History Found'
+                        : new HtmlString(
+                          $record->jobs->where('status', '!=', 'active')
+                            ->map(fn($j) => "
                                 <div class='py-2'>
                                   <p class='font-bold'>{$j->title}</p>
                                   <ol style='padding-left:15px'>
@@ -251,8 +252,8 @@ class CompaniesTable
                                 </div>
                                 <br>
                               ")
-                              ->implode('')
-                          )
+                            ->implode('')
+                        )
                       ),
                   ]),
               ])
@@ -270,13 +271,13 @@ class CompaniesTable
                   ->content(function ($record) {
                     $applications = $record->jobs->flatMap(fn($j) => $j->applications);
 
-                    $total     = $applications->count();
-                    $new       = $applications->filter(fn($a) => $a->getCurrentStatus() === 'new')->count();
+                    $total = $applications->count();
+                    $new = $applications->filter(fn($a) => $a->getCurrentStatus() === 'new')->count();
                     $reviewing = $applications->filter(fn($a) => $a->getCurrentStatus() === 'reviewing')->count();
                     $interview = $applications->filter(fn($a) => $a->getCurrentStatus() === 'interview')->count();
-                    $offer     = $applications->filter(fn($a) => $a->getCurrentStatus() === 'offer')->count();
-                    $hired     = $applications->filter(fn($a) => $a->getCurrentStatus() === 'hired')->count();
-                    $rejected  = $applications->filter(fn($a) => $a->getCurrentStatus() === 'rejected')->count();
+                    $offer = $applications->filter(fn($a) => $a->getCurrentStatus() === 'offer')->count();
+                    $hired = $applications->filter(fn($a) => $a->getCurrentStatus() === 'hired')->count();
+                    $rejected = $applications->filter(fn($a) => $a->getCurrentStatus() === 'rejected')->count();
 
                     return new HtmlString("
                       <div style='display:grid; grid-template-columns: repeat(7, 1fr); gap:12px; text-align:center;'>
@@ -324,7 +325,7 @@ class CompaniesTable
                 Placeholder::make('company_analytics')
                   ->hiddenLabel()
                   ->content(function ($record) {
-                    $jobs         = $record->jobs;
+                    $jobs = $record->jobs;
                     $applications = $record->jobs->flatMap(fn($j) => $j->applications);
 
                     $totalJobs = $jobs->count();
@@ -339,7 +340,7 @@ class CompaniesTable
                       : 0;
 
                     return new HtmlString("
-                      <div style='display:grid; grid-template-columns: repeat(2, 1fr); gap:16px;'>
+                      <div style='display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;'>
 
                         <div class='p-4 rounded-lg bg-gray-50'>
                           <div class='text-xs text-gray-500 mb-1'>Total Jobs Posted</div>
