@@ -44,13 +44,12 @@ class Company extends Model
   protected $dates = [
     'deleted_at' => 'datetime',
   ];
-  protected function cast()
-  {
-    return [
-      'founded_year' => 'date',
-      'deleted_at' => 'datetime',
-    ];
-  }
+  protected $casts = [
+    'founded_year' => 'date',
+    'deleted_at' => 'datetime',
+    'social_links' => 'array',
+  ];
+
   // relation between Company and User (owner)
   public function owner()
   {
