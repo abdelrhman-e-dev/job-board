@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Companies\Schemas;
 
+use App\Models\Company;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -67,40 +68,91 @@ class CompanyForm
               ->maxLength(1024)
               ->autosize()
               ->columnSpanFull(),
-            ]),
-            
-            // ── SECTION 2: Location ──────────────────────────────────────────
-            Section::make('Location')
-              ->description('Where the company is based.')
-              ->icon('heroicon-o-map-pin')
-              ->columns(1)
-              ->schema([
-                TextInput::make('address')
-                  ->placeholder('e.g. 123 Main St')
-                  ->helperText('Street address of the company.')
-                  ->prefixIcon('heroicon-o-home')
-                  ->label('Street Address')
-                  ->columnSpan(1),
-    
-                TextInput::make('city')
-                  ->placeholder('e.g. Anytown')
-                  ->helperText('City.')
-                  ->prefixIcon('heroicon-o-building-storefront')
-                  ->required()
-                  ->label('City'),
-    
-                TextInput::make('country')
-                  ->placeholder('e.g. USA')
-                  ->helperText('Country.')
-                  ->prefixIcon('heroicon-o-flag')
-                  ->required()
-                  ->label('Country'),
-              ]),
-        // ── SECTION 3: Media ─────────────────────────────────────────────
+          ])
+          ->columnSpanFull(),
+
+
+
+        // ── SECTION 2: Company Profile ───────────────────────────────────
+        Section::make('Company Profile')
+          ->description('Industry details and company characteristics.')
+          ->icon('heroicon-o-briefcase')
+          ->columns(2)
+          ->schema([
+            TextInput::make('industry')
+              ->label('Industry')
+              ->placeholder('e.g. Technology')
+              ->prefixIcon('heroicon-o-cpu-chip')
+              ->helperText('Type or select an industry')
+              ->datalist(
+                Company::query()->whereNotNull('industry')->distinct()->pluck('industry')->toArray()
+              )
+              ->live(onBlur: true)
+              ->afterStateUpdated(fn(Set $set, ?string $state) => $set('industry', Str::ucfirst($state)))
+              ->required(),
+
+            TextInput::make('specialization')
+              ->label('Specialization')
+              ->placeholder('e.g. Software')
+              ->prefixIcon('heroicon-o-wrench-screwdriver')
+              ->helperText('Type or select a specialization')
+              ->datalist(
+                Company::query()->whereNotNull('specialization')->distinct()->pluck('specialization')->toArray()
+              )
+              ->live(onBlur: true)
+              ->afterStateUpdated(fn(Set $set, ?string $state) => $set('specialization', Str::ucfirst($state)))
+              ->required(),
+
+            TextInput::make('size')
+              ->label('Company Size')
+              ->placeholder('e.g. 150')
+              ->helperText('Total number of employees.')
+              ->prefixIcon('heroicon-o-users')
+              ->integer()
+              ->minValue(1)
+              ->required(),
+            TextInput::make('founded_year')
+              ->label('Founded Year')
+              ->placeholder('e.g. 1999')
+              ->helperText('The year the company was founded.')
+              ->numeric()
+              ->maxLength(4)
+              ->minValue(1900)
+              ->maxValue(date('Y'))
+              ->required(),
+          ]),
+        // ── SECTION 3: Location ──────────────────────────────────────────
+        Section::make('Location')
+          ->description('Where the company is based.')
+          ->icon('heroicon-o-map-pin')
+          ->columns(2)
+          ->schema([
+            TextInput::make('address')
+              ->placeholder('e.g. 123 Main St')
+              ->helperText('Street address of the company.')
+              ->prefixIcon('heroicon-o-home')
+              ->label('Street Address')
+              ->columnSpan(2),
+
+            TextInput::make('city')
+              ->placeholder('e.g. Anytown')
+              ->helperText('City.')
+              ->prefixIcon('heroicon-o-building-storefront')
+              ->required()
+              ->label('City'),
+
+            TextInput::make('country')
+              ->placeholder('e.g. USA')
+              ->helperText('Country.')
+              ->prefixIcon('heroicon-o-flag')
+              ->required()
+              ->label('Country'),
+          ]),
+        // ── SECTION 4: Media ─────────────────────────────────────────────
         Section::make('Branding & Media')
           ->description('Upload the company logo and banner image.')
           ->icon('heroicon-o-photo')
-          ->columns(1)
+          ->columns(2)
           ->schema([
             FileUpload::make('logo')
               ->label('Company Logo')
@@ -118,7 +170,7 @@ class CompanyForm
               ->disk('public')
               ->directory('images/company/logos')
               ->getUploadedFileNameForStorageUsing(
-                fn($file) => $file->getClientOriginalName(),
+                fn($file) => uniqid() . '_' . $file->getClientOriginalName(),
               ),
 
             FileUpload::make('banner')
@@ -127,7 +179,14 @@ class CompanyForm
               ->required()
               ->image()
               ->imageEditor()
+              ->imageResizeTargetWidth(1200)
+              ->imageResizeTargetHeight(675)
               ->imageAspectRatio('16:9')
+              ->rules([
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg,webp',
+                'max:2048',
+              ])
               ->automaticallyOpenImageEditorForAspectRatio()
               ->loadingIndicatorPosition('right')
               ->panelLayout('integrated')
@@ -137,49 +196,10 @@ class CompanyForm
               ->disk('public')
               ->directory('images/company/banners')
               ->getUploadedFileNameForStorageUsing(
-                fn($file) => $file->getClientOriginalName(),
+                fn($file) => uniqid() . '_' . $file->getClientOriginalName(),
               ),
-          ]),
+          ])->columnSpanFull(),
 
-
-        // ── SECTION 4: Company Profile ───────────────────────────────────
-        Section::make('Company Profile')
-          ->description('Industry details and company characteristics.')
-          ->icon('heroicon-o-briefcase')
-          ->columns(2)
-          ->schema([
-            TextInput::make('industry')
-              ->label('Industry')
-              ->placeholder('e.g. Technology')
-              ->prefixIcon('heroicon-o-cpu-chip')
-              ->helperText('The industry the company operates in.')
-              ->required(),
-
-            TextInput::make('specialization')
-              ->label('Specialization')
-              ->placeholder('e.g. Software Development')
-              ->prefixIcon('heroicon-o-wrench-screwdriver')
-              ->helperText('The company\'s main area of expertise.')
-              ->required(),
-
-            TextInput::make('size')
-              ->label('Company Size')
-              ->placeholder('e.g. 150')
-              ->helperText('Total number of employees.')
-              ->prefixIcon('heroicon-o-users')
-              ->integer()
-              ->minValue(1)
-              ->required(),
-
-            DatePicker::make('founded_year')
-              ->label('Founded Year')
-              ->placeholder('e.g. 1999')
-              ->displayFormat('Y')
-              ->helperText('The year the company was founded.')
-              ->native(false)
-              ->maxDate(now())
-              ->dehydrateStateUsing(fn($state) => $state ? Carbon::parse($state)->format('Y') : null),
-          ]),
 
         // ── SECTION 5: Social Links ──────────────────────────────────────
         Section::make('Social Media')
@@ -215,7 +235,7 @@ class CompanyForm
 
             Select::make('owner_id')
               ->label('Company Owner')
-              ->relationship('user', 'name')
+              ->relationship('users', 'name')
               ->options(
                 User::getOwners()->get()->mapWithKeys(fn($user) => [$user->user_id => "{$user->first_name} {$user->last_name}"])
 
