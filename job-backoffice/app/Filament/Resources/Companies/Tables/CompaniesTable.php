@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Companies\Tables;
 
+use App\Filament\Actions\SendWelcomeEmailAction;
 use App\Models\Company;
+use App\Services\Contracts\EmailServiceInterface;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -367,28 +370,25 @@ class CompaniesTable
 
           ]),
         EditAction::make(),
-
-        Action::make('verify')
-          ->label('Verify')
-          ->icon('heroicon-o-check-circle')
-          ->color('success')
-          ->visible(fn($record) => !$record->verified)
-          ->requiresConfirmation()
-          ->action(function ($record) {
-            $record->update(['verified' => 1]);
-          })
-          ->successNotificationTitle('Company verified successfully'),
-
-        Action::make('unverify')
-          ->label('Unverify')
-          ->icon('heroicon-o-x-circle')
-          ->color('danger')
-          ->visible(fn($record) => $record->verified)
-          ->requiresConfirmation()
-          ->action(function ($record) {
-            $record->update(['verified' => 0]);
-          })
-          ->successNotificationTitle('Company unverified successfully'),
+        ActionGroup::make([
+          SendWelcomeEmailAction::make(app(EmailServiceInterface::class)),
+          Action::make('verify')
+            ->label('Verify')
+            ->icon('heroicon-o-check-circle')
+            ->color('success')
+            ->visible(fn($record) => !$record->verified)
+            ->requiresConfirmation()
+            ->action(fn($record) => $record->update(['verified' => 1]))
+            ->successNotificationTitle('Company verified successfully'),
+          Action::make('unverify')
+            ->label('Unverify')
+            ->icon('heroicon-o-x-circle')
+            ->color('danger')
+            ->visible(fn($record) => $record->verified)
+            ->requiresConfirmation()
+            ->action(fn($record) => $record->update(['verified' => 0]))
+            ->successNotificationTitle('Company unverified successfully'),
+        ]),
       ])
       ->toolbarActions([
         BulkActionGroup::make([
