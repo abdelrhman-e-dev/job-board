@@ -40,6 +40,7 @@ class Company extends Model
     'contact_email',
     'social_links',
     'job_posting_limit',
+    'verified',
   ];
   protected $dates = [
     'deleted_at' => 'datetime',
