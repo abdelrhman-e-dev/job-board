@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Observers\CompanyObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(CompanyObserver::class)]
 class Company extends Model
 {
   use HasFactory, HasUlids, SoftDeletes;
@@ -40,17 +43,17 @@ class Company extends Model
     'contact_email',
     'social_links',
     'job_posting_limit',
+    'verified',
   ];
   protected $dates = [
     'deleted_at' => 'datetime',
   ];
-  protected function cast()
-  {
-    return [
-      'founded_year' => 'date',
-      'deleted_at' => 'datetime',
-    ];
-  }
+  protected $casts = [
+    'founded_year' => 'date',
+    'deleted_at' => 'datetime',
+    'social_links' => 'array',
+  ];
+
   // relation between Company and User (owner)
   public function owner()
   {

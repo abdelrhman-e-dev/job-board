@@ -7,6 +7,7 @@ Company User Management
     - view applications for this user (job seeker) 
     * view last 2 job posted in this company ✅ 2/14/2026
 
+  TODO
   - Create Permissions
     - Create company admin accounts
     - Create hiring manager accounts
@@ -164,16 +165,19 @@ NOTE: 2/28/2026
         View time-to-hire statistics 
         View cost-per-hire data 
         View dashboard usage analytics 
-        View team collaboration metrics 
+        View team collaboration metrics
+  NOTE: 3/5/2026
   2.2 Create Permissions
     Manual Company Creation
-      Create company accounts directly
-      Set up initial company profile
-      Create company admin user
-      Set job posting limits
-      Configure company settings
-      Upload company logo and branding
-      Send welcome and onboarding emails
+      Create company accounts directly ✅
+      Set up initial company profile ✅
+      Create company admin user ✅
+      Set job posting limits ✅
+      Configure company settings ✅
+      Upload company logo and branding ✅
+      TODO:
+        - in create action (create button to set company verified) ✅
+      Send welcome and onboarding emails ✅
   2.3 Edit Permissions
     Profile Management
       Company Information
