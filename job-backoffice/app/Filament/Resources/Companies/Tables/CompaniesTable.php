@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Companies\Tables;
 
 use App\Filament\Actions\SendWelcomeEmailAction;
+use App\Filament\Actions\SuspendCompanyAction;
 use App\Models\Company;
 use App\Services\Contracts\EmailServiceInterface;
+use App\Services\EmailService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -382,6 +384,7 @@ class CompaniesTable
           ]),
         EditAction::make(),
         ActionGroup::make([
+          SuspendCompanyAction::make(app(EmailService::class)),
           SendWelcomeEmailAction::make(app(EmailServiceInterface::class)),
           Action::make('verify')
             ->label('Verify')
