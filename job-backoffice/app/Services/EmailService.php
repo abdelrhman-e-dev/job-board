@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Mail\CompanySuspensionEmail;
+use App\Mail\CompanyVerificationEmail;
 use App\Mail\CompanyWelcomeEmail;
 use App\Models\Company;
 use App\Services\Contracts\EmailServiceInterface;
@@ -41,8 +43,39 @@ class EmailService implements EmailServiceInterface
       return false;
     }
   }
+  public function sendVerificationEmail(Company $company)
+  {
+    try {
+      Mail::to($company->contact_email)->queue(new CompanyVerificationEmail($company));
 
+      Log::info('company verification email queued', [
+        'company_id' => $company->company_id,
+        'email' => $company->contact_email,
+      ]);
 
+      return true;
+    } catch (Throwable $e) {
+      $this->logError('company verification email failed', $company->contact_email, $e);
+      return false;
+    }
+  }
+
+  public function sendCompanySuspensionEmail(Company $company)
+  {
+    try {
+      Mail::to($company->contact_email)->queue(new CompanySuspensionEmail($company));
+
+      Log::info('company suspension email queued', [
+        'company_id' => $company->company_id,
+        'email' => $company->contact_email,
+      ]);
+
+      return true;
+    } catch (Throwable $e) {
+      $this->logError('company suspension email failed', $company->contact_email, $e);
+      return false;
+    }
+  }
   /**
    * Log email errors for debugging
    *

@@ -231,7 +231,8 @@ class CompanyForm
               ->prefixIcon('heroicon-o-document-text')
               ->integer()
               ->minValue(1)
-              ->required(),
+              ->required()
+              ->columnSpanFull(),
 
             Select::make('owner_id')
               ->label('Company Owner')
@@ -244,6 +245,17 @@ class CompanyForm
               ->searchable()
               ->prefixIcon('heroicon-m-user-group')
               ->helperText('Assign a user with the Company Owner role.')
+              ->native(false),
+
+            Select::make('status')
+              ->label('Status')
+              ->options([
+                'pending' => 'Pending',
+                'approved' => 'Approved',
+                'rejected' => 'Rejected',
+                'suspended' => 'Suspended',
+              ])
+              ->required()
               ->native(false),
           ]),
       ]);

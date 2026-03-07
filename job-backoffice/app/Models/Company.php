@@ -44,15 +44,21 @@ class Company extends Model
     'social_links',
     'job_posting_limit',
     'verified',
+    'verification_expires_at',
+    'verified_at',
     'welcome_email_sent',
   ];
   protected $dates = [
     'deleted_at' => 'datetime',
+    'verification_expires_at' => 'datetime',
+    'verified_at' => 'datetime',
   ];
   protected $casts = [
     'founded_year' => 'date',
     'deleted_at' => 'datetime',
     'social_links' => 'array',
+    'verification_expires_at' => 'datetime',
+    'verified_at' => 'datetime',
   ];
 
   // relation between Company and User (owner)

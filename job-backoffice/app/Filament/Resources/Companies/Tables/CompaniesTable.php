@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Companies\Tables;
 
 use App\Filament\Actions\SendWelcomeEmailAction;
+use App\Filament\Actions\SuspendCompanyAction;
 use App\Models\Company;
 use App\Services\Contracts\EmailServiceInterface;
+use App\Services\EmailService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -16,6 +18,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -46,6 +49,16 @@ class CompaniesTable
         IconColumn::make('verified')
           ->boolean()
           ->sortable(),
+        // 'pending','approved','rejected','suspended'
+        BadgeColumn::make('status')
+          ->colors([
+            'warning' => 'pending',
+            'success' => 'approved',
+            'danger' => 'rejected',
+            'gray' => 'suspended',
+          ])
+          ->sortable(),
+
         TextColumn::make('created_at')
           ->label('Jioned At')
           ->dateTime('d, MY')
@@ -371,6 +384,7 @@ class CompaniesTable
           ]),
         EditAction::make(),
         ActionGroup::make([
+          SuspendCompanyAction::make(app(EmailService::class)),
           SendWelcomeEmailAction::make(app(EmailServiceInterface::class)),
           Action::make('verify')
             ->label('Verify')
@@ -378,7 +392,14 @@ class CompaniesTable
             ->color('success')
             ->visible(fn($record) => !$record->verified)
             ->requiresConfirmation()
-            ->action(fn($record) => $record->update(['verified' => 1]))
+            ->action(function ($record) {
+              $record->update([
+                'verified_at' => now(),
+                'verification_expires_at' => now()->addYear(), // one year
+                'verified' => 1,
+              ]);
+              app(EmailServiceInterface::class)->sendVerificationEmail($record);
+            })
             ->successNotificationTitle('Company verified successfully'),
           Action::make('unverify')
             ->label('Unverify')
@@ -386,7 +407,11 @@ class CompaniesTable
             ->color('danger')
             ->visible(fn($record) => $record->verified)
             ->requiresConfirmation()
-            ->action(fn($record) => $record->update(['verified' => 0]))
+            ->action(fn($record) => $record->update([
+              'verified_at' => null,
+              'verification_expires_at' => null,
+              'verified' => 0
+            ]))
             ->successNotificationTitle('Company unverified successfully'),
         ]),
       ])
