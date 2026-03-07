@@ -378,7 +378,11 @@ class CompaniesTable
             ->color('success')
             ->visible(fn($record) => !$record->verified)
             ->requiresConfirmation()
-            ->action(fn($record) => $record->update(['verified' => 1]))
+            ->action(fn($record) => $record->update([
+              'verified_at' => now(),
+              'verification_expires_at' => now()->addYear(), // one year
+              'verified' => 1
+            ]))
             ->successNotificationTitle('Company verified successfully'),
           Action::make('unverify')
             ->label('Unverify')
@@ -386,7 +390,11 @@ class CompaniesTable
             ->color('danger')
             ->visible(fn($record) => $record->verified)
             ->requiresConfirmation()
-            ->action(fn($record) => $record->update(['verified' => 0]))
+            ->action(fn($record) => $record->update([
+              'verified_at' => null,
+              'verification_expires_at' => null,
+              'verified' => 0
+            ]))
             ->successNotificationTitle('Company unverified successfully'),
         ]),
       ])
