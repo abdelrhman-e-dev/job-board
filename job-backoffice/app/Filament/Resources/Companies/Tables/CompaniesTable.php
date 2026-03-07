@@ -378,11 +378,14 @@ class CompaniesTable
             ->color('success')
             ->visible(fn($record) => !$record->verified)
             ->requiresConfirmation()
-            ->action(fn($record) => $record->update([
-              'verified_at' => now(),
-              'verification_expires_at' => now()->addYear(), // one year
-              'verified' => 1
-            ]))
+            ->action(function ($record) {
+              $record->update([
+                'verified_at' => now(),
+                'verification_expires_at' => now()->addYear(), // one year
+                'verified' => 1,
+              ]);
+              app(EmailServiceInterface::class)->sendVerificationEmail($record);
+            })
             ->successNotificationTitle('Company verified successfully'),
           Action::make('unverify')
             ->label('Unverify')
