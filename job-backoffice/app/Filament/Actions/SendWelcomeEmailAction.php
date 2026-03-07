@@ -9,31 +9,33 @@ use Filament\Notifications\Notification;
 
 class SendWelcomeEmailAction
 {
-    public static function make(EmailServiceInterface $emailService): Action
-    {
-        return Action::make('sendWelcomeEmail')
-            ->label('Send Welcome Email')
-            ->icon('heroicon-o-envelope')
-            ->action(function (Company $record) use ($emailService) {
-                $sent = $emailService->sendWelcomeEmail($record);
+  public static function make(EmailServiceInterface $emailService): Action
+  {
+    return Action::make('sendWelcomeEmail')
+      ->label('Send Welcome Email')
+      ->icon('heroicon-o-envelope')
+      ->action(function (Company $record) use ($emailService) {
+        $sent = $emailService->sendWelcomeEmail($record);
 
-                if ($sent) {
-                    Notification::make()
-                        ->success()
-                        ->title('Email Queued')
-                        ->body('Welcome email has been queued for sending.')
-                        ->send();
-                } else {
-                    Notification::make()
-                        ->danger()
-                        ->title('Error')
-                        ->body('Failed to queue welcome email.')
-                        ->send();
-                }
-            })
-            ->requiresConfirmation()
-            ->modalHeading('Send Welcome Email')
-            ->modalDescription('Send the welcome email to this company?')
-            ->modalSubmitActionLabel('Send');
-    }
+        if ($sent) {
+          Notification::make()
+            ->success()
+            ->title('Email Queued')
+            ->body('Welcome email has been queued for sending.')
+            ->send();
+        } else {
+          Notification::make()
+            ->danger()
+            ->title('Error')
+            ->body('Failed to queue welcome email.')
+            ->send();
+        }
+      })
+      ->action(fn($record) => $record->update(['welcome_email_sent' => 1]))
+      ->visible(fn($record) => !$record->welcome_email_sent)
+      ->requiresConfirmation()
+      ->modalHeading('Send Welcome Email')
+      ->modalDescription('Send the welcome email to this company?')
+      ->modalSubmitActionLabel('Send');
+  }
 }

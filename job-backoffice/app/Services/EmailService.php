@@ -20,11 +20,18 @@ class EmailService implements EmailServiceInterface
 
   public function sendWelcomeEmail(Company $company)
   {
+    if ($company->welcome_email_sent) {
+      Log::info('Welcome email already sent', [
+        'company_id' => $company->company_id,
+        'email' => $company->contact_email,
+      ]);
+      return false;
+    }
     try {
       Mail::to($company->contact_email)->queue(new CompanyWelcomeEmail($company));
 
       Log::info('Welcome email queued', [
-        'company_id' => $company->id,
+        'company_id' => $company->company_id,
         'email' => $company->contact_email,
       ]);
 

@@ -178,17 +178,17 @@ NOTE: 2/28/2026
       TODO:
         - in create action (create button to set company verified) ✅
       Send welcome and onboarding emails ✅
-  2.3 Edit Permissions
-    Profile Management
-      Company Information
-        Edit company name and legal name
-        Update company description
-        Modify industry and category
-        Update company size
-        Change headquarters location
-        Update website and social links
-        Replace company logo
-        Edit company culture and benefits information
+  DATE: 3/7/2026
+  2.3 Edit Permissions 
+    Profile Management 
+      Company Information ✅
+        Edit company name and legal name ✅
+        Update company description ✅
+        Modify industry and category ✅
+        Update company size ✅
+        Update website and social links ✅
+        Replace company logo ✅
+    NOTE: Will be avilable in cooming updates
     Settings Management
       Modify notification settings
       Update email preferences
@@ -197,14 +197,15 @@ NOTE: 2/28/2026
       Update billing information
       Adjust job posting limits
       Enable/disable features
+
     Verification
       Company Verification
-        Verify company legitimacy
-        Mark as verified/premium employer
-        Add verification badges
-        Set verification expiration
+        Verify company legitimacy ✅
+        Mark as verified employer ✅
+        Add verification badges ✅
+        Set verification expiration ✅
         Document verification process
-        Remove verification status
+        Remove verification status ✅
   2.4 Delete/Suspend Permissions
     Account Suspension
       Suspend company accounts with reason
