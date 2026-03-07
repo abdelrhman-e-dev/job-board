@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\CompanySuspensionEmail;
 use App\Mail\CompanyVerificationEmail;
 use App\Mail\CompanyWelcomeEmail;
 use App\Models\Company;
@@ -42,7 +43,8 @@ class EmailService implements EmailServiceInterface
       return false;
     }
   }
-  public function sendVerificationEmail(Company $company){
+  public function sendVerificationEmail(Company $company)
+  {
     try {
       Mail::to($company->contact_email)->queue(new CompanyVerificationEmail($company));
 
@@ -58,6 +60,22 @@ class EmailService implements EmailServiceInterface
     }
   }
 
+  public function sendCompanySuspensionEmail(Company $company)
+  {
+    try {
+      Mail::to($company->contact_email)->queue(new CompanySuspensionEmail($company));
+
+      Log::info('company suspension email queued', [
+        'company_id' => $company->company_id,
+        'email' => $company->contact_email,
+      ]);
+
+      return true;
+    } catch (Throwable $e) {
+      $this->logError('company suspension email failed', $company->contact_email, $e);
+      return false;
+    }
+  }
   /**
    * Log email errors for debugging
    *
