@@ -206,11 +206,19 @@ NOTE: 2/28/2026
         Set verification expiration ✅
         Document verification process
         Remove verification status ✅
+  DATE: 3/8/2026
   2.4 Delete/Suspend Permissions
     Account Suspension
       Suspend company accounts with reason
+        - add Suspend action button in companies table ✅
+        - update status of the company in database ✅
+        - send email to the company email address ✅
+      TODO:
+        - create suspension duration field in companies table and update email body
       Set suspension duration
       Disable all job postings
+      TODO:
+        - update status of JobVacancy -> add blocked status 
       Block new applications
       Notify company admins
       Maintain suspension log
