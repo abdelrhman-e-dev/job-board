@@ -16,6 +16,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -46,6 +47,16 @@ class CompaniesTable
         IconColumn::make('verified')
           ->boolean()
           ->sortable(),
+        // 'pending','approved','rejected','suspended'
+        BadgeColumn::make('status')
+          ->colors([
+            'warning' => 'pending',
+            'success' => 'approved',
+            'danger' => 'rejected',
+            'gray' => 'suspended',
+          ])
+          ->sortable(),
+
         TextColumn::make('created_at')
           ->label('Jioned At')
           ->dateTime('d, MY')
