@@ -44,6 +44,7 @@ class Company extends Model
     'social_links',
     'job_posting_limit',
     'verified',
+    'welcome_email_sent',
   ];
   protected $dates = [
     'deleted_at' => 'datetime',
