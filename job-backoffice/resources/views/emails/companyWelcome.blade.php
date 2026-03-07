@@ -2,11 +2,11 @@
     <h1 style="color: #333;">Welcome to {{ $appName }}! 👋</h1>
 
     <p style="color: #666; font-size: 16px; line-height: 1.6;">
-        Hi {{ $user->name }},
+        Hi {{ $company->name }},
     </p>
 
     <p style="color: #666; font-size: 16px; line-height: 1.6;">
-        Thank you for creating an account. We're excited to have you on board!
+        Thank you for registering your company on {{ $appName }}. We're excited to have you on board!
     </p>
 
     <p style="color: #666; font-size: 16px; line-height: 1.6;">
@@ -14,9 +14,9 @@
     </p>
 
     <ul style="color: #666; font-size: 16px; line-height: 1.8;">
-        <li>Complete your profile</li>
-        <li>Explore our features</li>
-        <li>Connect with other users</li>
+        <li>Complete your company profile</li>
+        <li>Post your first job vacancy</li>
+        <li>Start reviewing applications</li>
     </ul>
 
     <div style="margin-top: 30px; padding: 20px; background-color: #f5f5f5; border-radius: 5px;">
