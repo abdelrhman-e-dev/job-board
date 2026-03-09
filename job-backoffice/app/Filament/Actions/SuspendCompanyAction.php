@@ -1,6 +1,7 @@
 <?php
 namespace App\Filament\Actions;
 
+use App\Models\JobVacancy;
 use App\Services\Contracts\EmailServiceInterface;
 use App\Services\EmailService;
 use Filament\Actions\Action;
@@ -19,17 +20,11 @@ class SuspendCompanyAction
       ->modalDescription('Are you sure you want to suspend this company?')
       ->modalSubmitActionLabel('Suspend')
       ->modalCancelActionLabel('Cancel')
-      ->visible(fn($record) => $record->status !== 'aproved')
+      ->visible(fn($record) => $record->status !== 'suspended')
       ->action(function ($record) use ($emailService) {
-        $record->update([
-          'verified' => false,
-          'verified_at' => null,
-          'verification_expires_at' => null,
-          'status' => 'suspended',
-          'suspended_at' => now()
-        ]);
         $sent = $emailService->sendCompanySuspensionEmail($record);
         if ($sent) {
+          $record->suspend();
           Notification::make()
             ->success()
             ->title('Email Queued')

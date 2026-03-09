@@ -37,6 +37,7 @@ class CompanySuspensionEmail extends Mailable
       view: 'emails.companySuspensionSuccessfully',
       with: [
         'company' => $this->company,
+
         'appName' => config('app.name')
       ],
     );

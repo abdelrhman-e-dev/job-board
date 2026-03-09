@@ -69,9 +69,14 @@ class CompaniesTable
           ->options(
             Company::all()->pluck('industry', 'industry')->toArray()
           ),
-        SelectFilter::make('industry')
+        SelectFilter::make('status')
           ->options(
-            Company::all()->pluck('industry', 'industry')->toArray()
+            [
+              'pending' => 'Pending',
+              'approved' => 'Approved',
+              'rejected' => 'Rejected',
+              'suspended' => 'Suspended',
+            ]
           ),
         TrashedFilter::make(),
       ])

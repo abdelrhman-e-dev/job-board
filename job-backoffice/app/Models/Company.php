@@ -34,6 +34,7 @@ class Company extends Model
     'approved_at',
     'rejected_at',
     'suspended_at',
+    'suspended_until',
     'specialization',
     'banner',
     'address',
@@ -52,6 +53,8 @@ class Company extends Model
     'deleted_at' => 'datetime',
     'verification_expires_at' => 'datetime',
     'verified_at' => 'datetime',
+    'suspended_at' => 'datetime',
+    'suspended_until' => 'datetime',
   ];
   protected $casts = [
     'founded_year' => 'date',
@@ -59,6 +62,8 @@ class Company extends Model
     'social_links' => 'array',
     'verification_expires_at' => 'datetime',
     'verified_at' => 'datetime',
+    'suspended_at' => 'datetime',
+    'suspended_until' => 'datetime',
   ];
 
   // relation between Company and User (owner)
@@ -97,5 +102,31 @@ class Company extends Model
     return $this->hasMany(User::class, 'company_id', 'company_id')
       ->where('role_id', "019c57ad-c8e9-71d0-ada9-eacffd659479")
       ->orWhere('role_id', "019c57ad-a219-7124-a4eb-942f9d7e2274");
+  }
+
+  // suspend method
+  public function suspend()
+  {
+    $this->update([
+      'status' => 'suspended',
+      'suspended_at' => now(),
+      'suspended_until' => now()->addDays(7)
+    ]);
+    JobVacancy::where('company_id', $this->company_id)->where('status', '!=', 'closed')->update([
+      'status' => 'blocked'
+    ]);
+  }
+
+  // unsuspend method
+  public function unsuspend()
+  {
+    $this->update([
+      'status' => 'approved',
+      'suspended_at' => null,
+      'suspended_until' => null
+    ]);
+    JobVacancy::where('company_id', $this->company_id)->where('status', '!=', 'closed')->update([
+      'status' => 'active'
+    ]);
   }
 }
