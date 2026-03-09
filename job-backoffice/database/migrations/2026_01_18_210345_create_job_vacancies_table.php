@@ -29,7 +29,7 @@ return new class extends Migration {
       $table->decimal('salary_max', 10, 2)->nullable();
       $table->string('salary_currency', 3)->nullable();
       $table->json('screening_questions')->nullable();
-      $table->enum('status', ['draft', 'active','closed', 'expired'])->default('draft');
+      $table->enum('status', ['draft', 'active','closed', 'expired', 'blocked'])->default('draft');
       $table->integer('views_count')->default(0);
       $table->integer('applications_count')->default(0);
       $table->timestamp('deadline')->nullable();
