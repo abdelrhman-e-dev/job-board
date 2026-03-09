@@ -1,6 +1,7 @@
 <?php
 namespace App\Filament\Actions;
 
+use App\Models\JobVacancy;
 use App\Services\Contracts\EmailServiceInterface;
 use App\Services\EmailService;
 use Filament\Actions\Action;
@@ -23,11 +24,7 @@ class SuspendCompanyAction
       ->action(function ($record) use ($emailService) {
         $sent = $emailService->sendCompanySuspensionEmail($record);
         if ($sent) {
-          $record->update([
-            'status' => 'suspended',
-            'suspended_at' => now(),
-            'suspended_until' => now()->addDays(7)
-          ]);
+          $record->suspend();
           Notification::make()
             ->success()
             ->title('Email Queued')
