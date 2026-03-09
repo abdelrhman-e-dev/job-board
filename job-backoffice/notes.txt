@@ -215,12 +215,12 @@ NOTE: 2/28/2026
         - send email to the company email address ✅
       TODO:
         - create suspension duration field in companies table and update email body ✅
-      Set suspension duration
-      Disable all job postings
+      Set suspension duration ✅
+      Disable all job postings for suspended companies ✅
       TODO:
-        - update status of JobVacancy -> add blocked status 
-      Block new applications
-      Notify company admins
+        - update status of JobVacancy -> add blocked status ✅
+      Block new applications ✅
+      Notify company admins ✅
       Maintain suspension log
       Unsuspend and restore access
     Account Closure
