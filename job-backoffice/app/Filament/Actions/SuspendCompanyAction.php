@@ -19,14 +19,12 @@ class SuspendCompanyAction
       ->modalDescription('Are you sure you want to suspend this company?')
       ->modalSubmitActionLabel('Suspend')
       ->modalCancelActionLabel('Cancel')
-      ->visible(fn($record) => $record->status !== 'aproved')
+      ->visible(fn($record) => $record->status !== 'suspended')
       ->action(function ($record) use ($emailService) {
         $record->update([
-          'verified' => false,
-          'verified_at' => null,
-          'verification_expires_at' => null,
           'status' => 'suspended',
-          'suspended_at' => now()
+          'suspended_at' => now(),
+          'suspended_until' => now()->addDays(7)
         ]);
         $sent = $emailService->sendCompanySuspensionEmail($record);
         if ($sent) {
