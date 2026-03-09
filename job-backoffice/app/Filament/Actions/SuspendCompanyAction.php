@@ -21,13 +21,13 @@ class SuspendCompanyAction
       ->modalCancelActionLabel('Cancel')
       ->visible(fn($record) => $record->status !== 'suspended')
       ->action(function ($record) use ($emailService) {
-        $record->update([
-          'status' => 'suspended',
-          'suspended_at' => now(),
-          'suspended_until' => now()->addDays(7)
-        ]);
         $sent = $emailService->sendCompanySuspensionEmail($record);
         if ($sent) {
+          $record->update([
+            'status' => 'suspended',
+            'suspended_at' => now(),
+            'suspended_until' => now()->addDays(7)
+          ]);
           Notification::make()
             ->success()
             ->title('Email Queued')
