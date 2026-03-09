@@ -34,6 +34,7 @@ class Company extends Model
     'approved_at',
     'rejected_at',
     'suspended_at',
+    'suspended_until',
     'specialization',
     'banner',
     'address',
@@ -52,6 +53,8 @@ class Company extends Model
     'deleted_at' => 'datetime',
     'verification_expires_at' => 'datetime',
     'verified_at' => 'datetime',
+    'suspended_at' => 'datetime',
+    'suspended_until' => 'datetime',
   ];
   protected $casts = [
     'founded_year' => 'date',
@@ -59,6 +62,8 @@ class Company extends Model
     'social_links' => 'array',
     'verification_expires_at' => 'datetime',
     'verified_at' => 'datetime',
+    'suspended_at' => 'datetime',
+    'suspended_until' => 'datetime',
   ];
 
   // relation between Company and User (owner)
