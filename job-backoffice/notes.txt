@@ -221,8 +221,12 @@ NOTE: 2/28/2026
         - update status of JobVacancy -> add blocked status ✅
       Block new applications ✅
       Notify company admins ✅
-      Maintain suspension log
+      DATE: 3/11/2026
       Unsuspend and restore access
+        - add Unsuspend action button in companies table ✅
+        - update status of the company in database ✅
+        - send email to the company email address ✅
+        - update status of JobVacancy -> remove blocked status ✅
     Account Closure
       Close company accounts
       Archive all job postings
