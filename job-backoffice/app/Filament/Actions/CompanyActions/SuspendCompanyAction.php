@@ -1,15 +1,12 @@
 <?php
-namespace App\Filament\Actions;
-
-use App\Models\JobVacancy;
-use App\Services\Contracts\EmailServiceInterface;
+namespace App\Filament\Actions\CompanyActions;
 use App\Services\EmailService;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 
 class SuspendCompanyAction
 {
-  public static function make(EmailServiceInterface $emailService): Action
+  public static function make(EmailService $emailService): Action
   {
     return Action::make('suspend')
       ->label('Suspend')
