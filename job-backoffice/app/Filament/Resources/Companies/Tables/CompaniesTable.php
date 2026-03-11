@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Companies\Tables;
 
 use App\Filament\Actions\SendWelcomeEmailAction;
 use App\Filament\Actions\SuspendCompanyAction;
+use App\Filament\Actions\UnsuspendCompanyAction;
 use App\Models\Company;
 use App\Services\Contracts\EmailServiceInterface;
 use App\Services\EmailService;
@@ -390,7 +391,8 @@ class CompaniesTable
         EditAction::make(),
         ActionGroup::make([
           SuspendCompanyAction::make(app(EmailService::class)),
-          SendWelcomeEmailAction::make(app(EmailServiceInterface::class)),
+          UnsuspendCompanyAction::make(app(EmailService::class)),
+          SendWelcomeEmailAction::make(app(EmailService::class)),
           Action::make('verify')
             ->label('Verify')
             ->icon('heroicon-o-check-circle')
@@ -403,7 +405,7 @@ class CompaniesTable
                 'verification_expires_at' => now()->addYear(), // one year
                 'verified' => 1,
               ]);
-              app(EmailServiceInterface::class)->sendVerificationEmail($record);
+              app(EmailService::class)->sendVerificationEmail($record);
             })
             ->successNotificationTitle('Company verified successfully'),
           Action::make('unverify')
