@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\Companies\Tables;
 
-use App\Filament\Actions\SendWelcomeEmailAction;
-use App\Filament\Actions\SuspendCompanyAction;
-use App\Filament\Actions\UnsuspendCompanyAction;
+use App\Filament\Actions\CompanyActions\SendWelcomeEmailAction;
+use App\Filament\Actions\CompanyActions\SuspendCompanyAction;
+use App\Filament\Actions\CompanyActions\UnsuspendCompanyAction;
 use App\Models\Company;
-use App\Services\Contracts\EmailServiceInterface;
 use App\Services\EmailService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
