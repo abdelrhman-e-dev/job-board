@@ -227,8 +227,9 @@ NOTE: 2/28/2026
         - update status of the company in database ✅
         - send email to the company email address ✅
         - update status of JobVacancy -> remove blocked status ✅
-    Account Closure
-      Close company accounts
+
+    FEATURE: Account Closure
+      Close company accounts  
       Archive all job postings
       Export company data
       Handle active applications
@@ -253,3 +254,60 @@ NOTE: 2/28/2026
       Feature job postings
       Boost visibility in search results
       Set featured duration
+    
+
+3. Job categories management
+  3.1 View Permissions
+    Category Directory
+      View All Categories
+        Access complete list of job categories
+        View category name and description
+        View slug and parent category (hierarchical)
+        View total jobs in each category
+        View category icon/image
+        View status (active/inactive)
+    Advanced Category Search
+      Search by category name
+      Filter by parent category
+      Filter by active status
+    Category Analytics
+      View job posting counts per category
+      View application volume per category
+      View popular/trending categories
+
+  3.2 Create Permissions
+    Manual Category Creation
+      Create new job categories directly
+      Set name, slug, and description
+      Assign parent category (optional)
+      Upload category icon or branding image
+      Set initial status
+      Configure SEO meta data (title, description)
+
+  3.3 Edit Permissions
+    Category Management
+      Update category name and slug
+      Modify descriptions
+      Change parent category (re-nesting)
+      Replace icons or images
+      Update SEO information
+    Status Management
+      Activate/Deactivate categories
+      Set visibility on frontend
+      Feature certain categories on homepage
+
+  3.4 Delete/Archive Permissions
+    Category Deletion
+      Soft delete categories
+      Force delete empty categories
+      Handle jobs in deleted categories (reassign to "Uncategorized" or other)
+      Archive legacy categories
+
+  3.5 Special Actions
+    Featured Categories
+      Promote categories to homepage
+      Set featured display order
+      Boost jobs within featured categories
+    Localization
+      Manage category translations (Multi-language support)
+      Update localized slugs
