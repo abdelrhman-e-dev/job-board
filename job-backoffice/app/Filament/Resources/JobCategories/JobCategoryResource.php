@@ -21,7 +21,7 @@ class JobCategoryResource extends Resource
 {
   protected static ?string $model = JobCategory::class;
 
-  protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::Tag;
 
   protected static ?string $recordTitleAttribute = 'Job Categoreis';
 

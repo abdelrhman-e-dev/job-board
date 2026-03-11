@@ -19,6 +19,7 @@ class JobCategory extends Model
         'name',
         'slug',
         'parent_id',
+        'status'
     ];
     protected $dates  =[ 
       'deleted_at'
