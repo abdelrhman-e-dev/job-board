@@ -37,15 +37,26 @@ class JobCategoryForm
                   ->unique(JobCategory::class, 'slug', ignoreRecord: true)
                   ->required(),
               ]),
-            Select::make('parent_id')
-              ->label('Parent Category')
-              ->placeholder('Select a parent category')
-              ->helperText('Optional: Assign this category to a parent for hierarchical organization.')
-              ->prefixIcon('heroicon-o-folder-open')
-              ->options(JobCategory::query()->whereNull('parent_id')->pluck('name', 'category_id'))
-              ->searchable()
-              ->default(null),
-          ])->columnSpanFull()
+            Grid::make(2)
+              ->schema([
+                Select::make('parent_id')
+                  ->label('Parent Category')
+                  ->placeholder('Select a parent category')
+                  ->helperText('Optional: Assign this category to a parent for hierarchical organization.')
+                  ->prefixIcon('heroicon-o-folder-open')
+                  ->options(JobCategory::query()->whereNull('parent_id')->pluck('name', 'category_id'))
+                  ->searchable()
+                  ->default(null),
+                Select::make('status')
+                  ->label('Status')
+                  ->options([
+                    'active' => 'Active',
+                    'inactive' => 'Inactive',
+                  ])
+                  ->default('active')
+                  ->required(),
+              ])
+          ])->columnSpanFull(),
       ]);
   }
 }
