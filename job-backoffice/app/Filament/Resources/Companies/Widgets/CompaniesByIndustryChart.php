@@ -8,7 +8,7 @@ use Filament\Widgets\ChartWidget;
 class CompaniesByIndustryChart extends ChartWidget
 {
     protected ?string $heading = 'Companies By Industry Chart';
-
+  protected ?string $maxHeight = '400px';
     protected function getData(): array
     {
         $data = Company::select('industry', 'company_id')
