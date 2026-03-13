@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 class CompanyGrowthChart extends ChartWidget
 {
   protected ?string $heading = 'Company Registration Growth';
-
+  protected ?string $maxHeight = '400px';
   protected function getData(): array
   {
     $registrations = Company::selectRaw('DATE(created_at) as date, COUNT(*) as count')
