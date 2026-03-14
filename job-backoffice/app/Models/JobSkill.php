@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class JobSkill extends Model
 {
-    use HasFactory, HasUlids, SoftDeletes;
+    use HasFactory, HasUlids;
 
     protected $table = 'job_skills';
     protected $keyType = 'string';
@@ -20,4 +19,9 @@ class JobSkill extends Model
         'skill_id',
         'is_required',
     ];
+
+    public function skill()
+    {
+        return $this->belongsTo(Skill::class, 'skill_id', 'skill_id');
+    }
 }
