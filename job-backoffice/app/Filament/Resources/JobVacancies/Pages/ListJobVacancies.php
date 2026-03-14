@@ -5,6 +5,7 @@ namespace App\Filament\Resources\JobVacancies\Pages;
 use App\Filament\Resources\JobVacancies\JobVacancyResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ListJobVacancies extends ListRecords
 {
@@ -16,4 +17,9 @@ class ListJobVacancies extends ListRecords
             CreateAction::make(),
         ];
     }
+    public function getTitle(): string | Htmlable
+    {
+        return 'Jobs';
+    }
+
 }
