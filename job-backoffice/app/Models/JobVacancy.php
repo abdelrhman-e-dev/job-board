@@ -50,6 +50,13 @@ class JobVacancy extends Model
     'deleted_at' => 'datetime',
 
   ];
+  // In your Job model
+  protected $VISIBILITY_OPTIONS = [
+    'public' => 'Public',
+    'private' => 'Private (link only)',
+    'members_only' => 'Members only',
+    'unlisted' => 'Unlisted',
+  ];
   // relation between Job and User (posted_by)
   public function creator()
   {
@@ -72,7 +79,7 @@ class JobVacancy extends Model
   // relation between Job and skills
   public function skills()
   {
-    return $this->hasMany(JobSkill::class, 'job_id', 'job_skill_id');
+    return $this->hasMany(JobSkill::class, 'job_id', 'job_id');
   }
   // relation between job and job category
   public function jobCategory()

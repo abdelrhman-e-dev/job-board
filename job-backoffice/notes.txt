@@ -294,3 +294,98 @@ DATE: 3/12/2026
       Soft delete categories ✅
       Handle jobs in deleted categories (reassign to "Uncategorized" or other) ✅
       Archive legacy categories ✅
+
+DATE: 3/14/2026
+Job Management
+4.1 View Permissions
+    Job Listings
+      View All Jobs
+        Access complete job posting database ✅
+        View active, draft, closed, and archived jobs ✅
+        View job details (title, description, requirements) ✅
+        View job metadata (category, location, salary, type) ✅
+        View posting date and expiration ✅
+        View job status and visibility ✅
+        View application count per job ✅
+      Advanced Job Search
+        Search by job title ✅
+        Filter by company   ✅
+        Filter by status (active, draft, closed, expired) ✅
+        Filter by category and industry ✅
+        Filter by salary range
+        Filter by job type ✅
+        Filter by posting date ✅
+        Filter by application count ✅
+    Job Analytics
+      Performance Metrics
+        View job posting views ✅
+        View application conversion rate ✅
+        View quality of applicants score ✅
+        View source of applications ✅
+4.2 Create Permissions
+    Manual Job Creation
+      Create job postings on behalf of companies
+      Set all job attributes and requirements
+      Upload job descriptions
+      Configure screening questions
+      Set application deadline
+      Assign hiring managers
+      Set job visibility and status
+4.3 Edit Permissions
+    Job Information
+      Job Details Modification
+        Edit job title and description
+        Update job requirements
+        Modify salary range
+        Change job location
+        Update job type and category
+        Edit benefits and perks
+        Modify application questions
+        Update required documents
+    Job Settings
+      Change job status (draft, active, paused, closed)
+      Extend expiration dates
+      Modify visibility settings
+      Update featured status
+      Change application limits
+      Configure notifications
+      Adjust screening criteria
+    Moderation Actions
+      Flag inappropriate content
+      Edit for compliance
+      Add moderation notes
+      Require company revision
+      Approve pending jobs
+4.4 Delete/Suspend Permissions
+  Job Status Management
+    Pause active job postings
+    Close job postings immediately
+    Archive old job postings
+    Soft delete jobs (hide from searches)
+    Hard delete jobs (permanent removal)
+    Restore archived jobs
+  Compliance Actions
+    Remove non-compliant job postings
+    Suspend fraudulent listings
+    Block discriminatory content
+    Remove duplicate postings
+    Document removal reasons
+4.5 Special Actions
+  Job Promotion
+    Feature job postings
+    Boost in search rankings
+    Highlight in recommendations
+    Set promotion duration
+    Apply promotional pricing
+  Bulk Operations
+    Bulk status updates
+    Bulk expiration date changes
+    Bulk archive or delete
+    Bulk company reassignment
+    Export multiple jobs
+  Quality Control
+    Review flagged jobs
+    Approve premium listings
+    Verify salary information
+    Check for duplicate postings
+    Validate job requirements
