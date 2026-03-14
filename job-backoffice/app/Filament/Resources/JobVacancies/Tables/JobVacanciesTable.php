@@ -4,9 +4,10 @@ namespace App\Filament\Resources\JobVacancies\Tables;
 
 use App\Models\Company;
 use App\Models\JobVacancy;
+use App\Filament\Exports\JobVacancyExporter;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
-use Filament\Forms;
+use Filament\Actions\ExportBulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -546,16 +547,21 @@ class JobVacanciesTable
               ])
               ->collapsible()
               ->collapsed(),
-
           ]),
 
         EditAction::make(),
+      ])
+      ->headerActions([
+        ExportAction::make()
+          ->exporter(JobVacancyExporter::class)
       ])
       ->bulkActions([
         BulkActionGroup::make([
           DeleteBulkAction::make(),
           RestoreBulkAction::make(),
           ForceDeleteBulkAction::make(),
+          ExportBulkAction::make()
+            ->exporter(JobVacancyExporter::class),
         ]),
       ])
       ->defaultSort('created_at', 'desc');
