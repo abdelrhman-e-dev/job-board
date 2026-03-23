@@ -17,15 +17,28 @@ class JobVacancy extends Model
   protected $primaryKey = 'job_id';
   protected $fillable = [
     'company_id',
-    'posted_by',
     'category_id',
+    'posted_by',
+    'closed_by',
     'title',
     'slug',
     'description',
     'requirements',
     'type',
-    'level',
     'location',
+    'address',
+    'city',
+    'level',
+    'education',
+    'experience_years',
+    'is_featured',
+    'approved_by',
+    'approved_at',
+    'flags_count',
+    'visibility',
+    'boost_expires_at',
+    'source',
+    'external_url',
     'salary_min',
     'salary_max',
     'salary_currency',
@@ -36,6 +49,9 @@ class JobVacancy extends Model
     'deadline',
     'published_at',
     'deleted_at',
+    'created_at',
+    'updated_at',
+    'closed_at'
   ];
   protected $dates = [
     'deadline' => 'datetime',
@@ -50,12 +66,52 @@ class JobVacancy extends Model
     'deleted_at' => 'datetime',
 
   ];
-  // In your Job model
-  protected $VISIBILITY_OPTIONS = [
+
+
+  // 'full-time','part-time','contract','internship'
+  public const TYPE_OPTIONS = [
+    'full-time' => 'Full Time',
+    'part-time' => 'Part Time',
+    'contract' => 'Contract',
+    'internship' => 'Internship',
+  ];
+  // 'entry','mid','senior','lead','manager'
+  public const LEVEL_OPTIONS = [
+    'entry' => 'Entry',
+    'mid' => 'Mid',
+    'senior' => 'Senior',
+    'lead' => 'Lead',
+    'manager' => 'Manager',
+  ];
+
+  // 'public','private','members_only','unlisted'
+  public const VISIBILITY_OPTIONS = [
     'public' => 'Public',
     'private' => 'Private (link only)',
-    'members_only' => 'Members only',
-    'unlisted' => 'Unlisted',
+  ];
+  public const CURRENCY_OPTIONS = [
+    'USD' => 'USD',
+    'EUR' => 'EUR',
+    'GBP' => 'GBP',
+    'EGP' => 'EGP',
+    'SAR' => 'SAR',
+    'AED' => 'AED',
+    'KWD' => 'KWD',
+    'QAR' => 'QAR',
+  ];
+  // 'draft','active','closed','expired','blocked','archive'
+  public const STATUS_OPTIONS = [
+    'draft' => 'Draft',
+    'active' => 'Active',
+    'closed' => 'Closed',
+    'expired' => 'Expired',
+    'blocked' => 'Blocked',
+    'archive' => 'Archive',
+  ];
+  public const LOCATION_TYPE_OPTIONS = [
+    'remote' => 'Remote',
+    'hybrid' => 'Hybrid',
+    'onsite' => 'On Site',
   ];
   // relation between Job and User (posted_by)
   public function creator()
