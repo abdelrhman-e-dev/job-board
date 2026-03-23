@@ -7,5 +7,9 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateJobVacancy extends CreateRecord
 {
-    protected static string $resource = JobVacancyResource::class;
+  protected static string $resource = JobVacancyResource::class;
+  protected function getRedirectUrl(): string
+  {
+    return static::getResource()::getUrl('index');
+  }
 }
