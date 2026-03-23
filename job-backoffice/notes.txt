@@ -323,6 +323,7 @@ Job Management
         View quality of applicants score ✅
         View source of applications ✅
 4.2 Create Permissions
+    NOTE: check post limits before create 
     Manual Job Creation
       Create job postings on behalf of companies
       Set all job attributes and requirements

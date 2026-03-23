@@ -14,7 +14,8 @@ class ListJobVacancies extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+            ->label('Create Job'),
         ];
     }
     public function getTitle(): string | Htmlable

@@ -356,53 +356,40 @@ class JobVacanciesTable
             // ─── Description & Requirements ───────────────────────────────────────────
             Section::make('Description & Requirements')
               ->schema([
-                Grid::make(3)
+                Grid::make(2)
                   ->schema([
                     Placeholder::make('description')
                       ->label('Description')
                       ->content(fn($record) => new HtmlString(
                         str($record->description ?? '')->markdown()
                       )),
-
                     Placeholder::make('requirements')
                       ->label('Requirements')
                       ->content(fn($record) => new HtmlString(
                         str($record->requirements ?? '')->markdown()
                       )),
-
-                    Placeholder::make('benefits')
-                      ->label('Benefits / Perks')
-                      ->content(fn($record) => new HtmlString(
-                        str($record->benefits ?? '*Not specified*')->markdown()
-                      )),
-
                     Placeholder::make('screening_questions')
                       ->label('Screening Questions')
                       ->content(function ($record) {
                         $questions = $record->screening_questions;
                         if (empty($questions) || !is_array($questions))
                           return '—';
-
                         return new HtmlString(
                           collect($questions)
-                            ->map(function ($item, $index) {
+                            ->map(function ($answer, $question) {
                               return sprintf(
                                 '<div class="mb-2 border-b border-gray-100 pb-2">
-                          <span class="text-gray-500 text-xs">#%d</span>
-                          <div>%s</div>
-                          %s
-                        </div>',
-                                $index + 1,
-                                e($item['question']),
-                                $item['required']
-                                ? '<span class="text-danger-600 text-xs font-semibold">(Required)</span>'
-                                : '<span class="text-gray-400 text-xs">(Optional)</span>'
+              <span class="text-sm font-medium">%s</span>
+              <span class="text-gray-400 text-sm">: </span>
+              <span class="text-gray-600 text-sm">%s</span>
+            </div>',
+                                e((string) $question),
+                                e((string) $answer)
                               );
                             })
                             ->implode('')
                         );
-                      })
-                      ->columnSpan(3),
+                      }),
                   ]),
               ])
               ->collapsible()
@@ -551,10 +538,10 @@ class JobVacanciesTable
 
         EditAction::make(),
       ])
-      ->headerActions([
-        ExportAction::make()
-          ->exporter(JobVacancyExporter::class)
-      ])
+      // ->headerActions([
+      //   ExportAction::make()
+      //     ->exporter(JobVacancyExporter::class)
+      // ])
       ->bulkActions([
         BulkActionGroup::make([
           DeleteBulkAction::make(),
