@@ -1,0 +1,444 @@
+{
+  "name": "cv analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1Rcl1g5Enn9CaiA_u34dNFKIGFGUUSqBO",
+          "mode": "list",
+          "cachedResultName": "CVs",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1Rcl1g5Enn9CaiA_u34dNFKIGFGUUSqBO"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -192
+      ],
+      "id": "f0bcd6c3-623c-415b-971f-eaf3890281de",
+      "name": "Google Drive Trigger",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "LawRjoxLrLjjcDzW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -176,
+        -192
+      ],
+      "id": "0895d5b5-4b08-42f1-bcbd-bc74dc77d069",
+      "name": "Download file",
+      "notesInFlow": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "LawRjoxLrLjjcDzW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        -192
+      ],
+      "id": "47043a51-e479-4778-8fef-fd1024e660b9",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze this CV and return ONLY a valid JSON object:\n\n{{ $json.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert ATS (Applicant Tracking System) analyst and career coach.\n\nWhen given a CV, you must:\n1. Score it from 0-100 based on ATS compatibility\n2. Identify top 5 strengths\n3. Identify top 5 weaknesses\n4. Give 5 actionable improvement suggestions\n5. List keywords found and any missing standard sections\n\nAlways return a valid JSON object only. No extra text or explanation outside the JSON."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        240,
+        -208
+      ],
+      "id": "79189785-bf74-4bc3-938e-14d23e203e60",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"atsScore\": \"number\",\n  \"strengths\": \"array\",\n  \"weaknesses\": \"array\",\n  \"suggestions\": \"array\",\n  \"keywordsFound\": \"array\",\n  \"missingSections\": \"array\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        -48
+      ],
+      "id": "2574fa8e-6bef-4913-a3b1-bfb90d635611",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Google Drive Trigger').item.json.name }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        48
+      ],
+      "id": "dc99af30-dcb0-4a9c-84ea-0b4b5aff5f4d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        32
+      ],
+      "id": "8f88498e-ff5a-4dfc-97fe-59c120b4f2ec",
+      "name": "Code Tool"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        48
+      ],
+      "id": "b2b7ab24-e95a-4c26-a67d-861adc88945e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QeHfPyrVT9zdWK9Y",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const result = $input.item.json;\nconst fileName = $('Google Drive Trigger').item.json.name;\n\nreturn [{\n  json: {\n    fileName: fileName + '_result.json',\n    analyzedAt: new Date().toISOString(),\n    atsScore: result.output.atsScore,\n    strengths: result.output.strengths,\n    weaknesses: result.output.weaknesses,\n    suggestions: result.output.suggestions,\n    keywordsFound: result.output.keywordsFound,\n    missingSections: result.output.missingSections\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -272
+      ],
+      "id": "e1616e79-9617-4b5d-b3db-f23450b1a996",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "=",
+        "options": {
+          "fileName": "={{ $json.fileName }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        -224
+      ],
+      "id": "4b251dca-8336-4e2e-b3bb-fdc7d3689ead",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1DQ0JVE-iai5djZ4NsL5GJ3ZEWbTr5GH-8NbaNyftMuo",
+          "mode": "list",
+          "cachedResultName": " CV Analysis Results. ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DQ0JVE-iai5djZ4NsL5GJ3ZEWbTr5GH-8NbaNyftMuo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DQ0JVE-iai5djZ4NsL5GJ3ZEWbTr5GH-8NbaNyftMuo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fileName": "={{ $('Code in JavaScript').item.json.fileName }}",
+            "atsScore": "={{ $('Code in JavaScript').item.json.atsScore }}",
+            "analyzedAt": "={{ $('Code in JavaScript').item.json.analyzedAt }}",
+            "strengths": "={{ $('Code in JavaScript').item.json.strengths }}",
+            "weaknesses": "={{ $('Code in JavaScript').item.json.weaknesses }}",
+            "suggestions": "={{ $('Code in JavaScript').item.json.suggestions }}",
+            "keywordsFound": "={{ $('Code in JavaScript').item.json.keywordsFound }}",
+            "missingSections": "={{ $('Code in JavaScript').item.json.missingSections }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fileName",
+              "displayName": "fileName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyzedAt",
+              "displayName": "analyzedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atsScore",
+              "displayName": "atsScore",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "strengths",
+              "displayName": "strengths",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "weaknesses",
+              "displayName": "weaknesses",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "suggestions",
+              "displayName": "suggestions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "keywordsFound",
+              "displayName": "keywordsFound",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "missingSections",
+              "displayName": "missingSections",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1024,
+        -224
+      ],
+      "id": "7fbd29b9-40aa-410c-bb59-3d53db1c0383",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "HrGTqo8XcwgVjt6h",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Africa/Cairo"
+  },
+  "versionId": "88178f59-9970-4927-bf07-785a2539b2f5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e4d61278abe8878100aa94c1869f67549e3204b8caff63d9dc780ead885a4da3"
+  },
+  "id": "1tRpNdpY5uoLzIi1",
+  "tags": []
+}
