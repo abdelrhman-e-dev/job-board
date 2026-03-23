@@ -56,6 +56,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     'remember_token',
   ];
 
+
   /**
    * Get the attributes that should be cast.
    *
@@ -156,5 +157,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   public function companyOwner()
   {
     return $this->belongsTo(Role::class, 'role_id', 'role_id');
+  }
+
+  // admins 
+  public static function admins()
+  {
+    return User::where('role_id', "019c57a2-dc2e-72e0-90fe-c4caddb33907");
   }
 }
