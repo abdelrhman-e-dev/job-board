@@ -32,6 +32,7 @@ class JobVacanciesTable
   public static function configure(Table $table): Table
   {
     return $table
+      ->heading('All Job Vacancies')
       ->columns([
         TextColumn::make('title')
           ->searchable()
