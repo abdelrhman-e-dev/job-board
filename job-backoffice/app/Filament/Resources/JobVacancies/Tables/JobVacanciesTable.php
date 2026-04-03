@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\JobVacancies\Tables;
 
-use App\Models\Company;
 use App\Models\JobVacancy;
 use App\Filament\Exports\JobVacancyExporter;
 use Filament\Actions\Action;
-use Filament\Actions\ExportAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -28,7 +26,6 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
-use PhpParser\Node\Stmt\Label;
 
 class JobVacanciesTable
 {
@@ -207,6 +204,7 @@ class JobVacanciesTable
             }
             return null;
           }),
+        TrashedFilter::make(),
       ])
       ->filtersLayout(FiltersLayout::AboveContentCollapsible)
       ->filtersTriggerAction(
@@ -360,29 +358,54 @@ class JobVacanciesTable
                   ->schema([
                     Placeholder::make('description')
                       ->label('Description')
-                      ->content(fn($record) => new HtmlString(
-                        str($record->description ?? '')->markdown()
-                      )),
+                      ->content(function ($record) {
+                        $data = is_string($record->description) ? json_decode($record->description, true) : $record->description;
+                        if (!is_array($data))
+                          return new HtmlString(nl2br(e($record->description)));
+
+                        $text = '';
+                        array_walk_recursive($data, function ($item, $key) use (&$text) {
+                          if ($key === 'text') {
+                            $text .= $item . ' ';
+                          }
+                        });
+
+                        return trim($text) ?: '—';
+                      }),
+
                     Placeholder::make('requirements')
                       ->label('Requirements')
-                      ->content(fn($record) => new HtmlString(
-                        str($record->requirements ?? '')->markdown()
-                      )),
+                      ->content(function ($record) {
+                        $data = is_string($record->requirements) ? json_decode($record->requirements, true) : $record->requirements;
+                        if (!is_array($data))
+                          return new \Illuminate\Support\HtmlString(nl2br(e($record->requirements)));
+
+                        $text = '';
+                        array_walk_recursive($data, function ($item, $key) use (&$text) {
+                          if ($key === 'text') {
+                            $text .= $item . ' ';
+                          }
+                        });
+
+                        return trim($text) ?: '—';
+                      }),
+
                     Placeholder::make('screening_questions')
                       ->label('Screening Questions')
                       ->content(function ($record) {
                         $questions = $record->screening_questions;
-                        if (empty($questions) || !is_array($questions))
+                        if (empty($questions) || !is_array($questions)) {
                           return '—';
+                        }
                         return new HtmlString(
                           collect($questions)
                             ->map(function ($answer, $question) {
                               return sprintf(
                                 '<div class="mb-2 border-b border-gray-100 pb-2">
-              <span class="text-sm font-medium">%s</span>
-              <span class="text-gray-400 text-sm">: </span>
-              <span class="text-gray-600 text-sm">%s</span>
-            </div>',
+                                            <span class="text-sm font-medium">%s</span>
+                                            <span class="text-gray-400 text-sm">: </span>
+                                            <span class="text-gray-600 text-sm">%s</span>
+                                        </div>',
                                 e((string) $question),
                                 e((string) $answer)
                               );
@@ -390,12 +413,18 @@ class JobVacanciesTable
                             ->implode('')
                         );
                       }),
+                    Placeholder::make('required_documents')
+                      ->label('Required Documents')
+                      ->content(function ($record) {
+                        $documents = $record->required_documents;
+                        return $documents;
+                      }),
                   ]),
               ])
               ->collapsible()
               ->collapsed(),
 
-            // ─── Applications Overview (Admin Insight) ────────────────────────────────
+            // ─── Applications Overview (Admin Insight)  ────────────────────────────────
             Section::make('Applications Overview')
               ->schema([
                 Grid::make(8)
