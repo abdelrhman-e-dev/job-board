@@ -362,3 +362,33 @@ Job Management
     Soft delete jobs (hide from searches) ✅
     Hard delete jobs (permanent removal) ✅
     Restore archived jobs ✅
+
+5.1 Add Job status widget in jobs list page ✅
+  1. StatsOverviewWidget — Key Numbers at a Glance
+      StatField
+        Total Vacancies
+          count all
+        Active / Published
+          status = published
+        Featured Listings
+          is_featured = true
+        Expiring Soon
+          deadline within 7 days
+        Expired
+          deadline < today
+  2. ChartWidget — Jobs by Type/Level/Category
+      Based on your type, level, and category_id fields:
+        Bar chart: Vacancies by type (full-time, part-time, etc.)
+        Donut chart: Vacancies by level (junior, senior, etc.)
+        Bar chart: Top categories by vacancy count
+  3. ChartWidget — Jobs by Location Type
+      From your location field (LOCATION_TYPE_OPTIONS — likely remote/hybrid/onsite):
+        Pie/donut chart: Remote vs. Hybrid vs. On-site breakdown
+  4. StatsOverviewWidget — Salary Insights
+      From salary_min, salary_max, salary_currency:
+        Average salary range across active listings
+        Count of jobs per currency (useful if multi-currency)
+  5. TableWidget — Deadlines Dashboard
+      From deadline + status + title + company_id:
+        A mini table showing jobs expiring in the next 14 days with their status — useful for quick action before they lapse.
+    
