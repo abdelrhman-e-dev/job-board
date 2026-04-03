@@ -24,6 +24,7 @@ class JobVacancy extends Model
     'slug',
     'description',
     'requirements',
+    'required_documents',
     'type',
     'location',
     'address',
@@ -61,6 +62,9 @@ class JobVacancy extends Model
   protected $casts = [
 
     'screening_questions' => 'array',
+    'description' => 'array',
+    'requirements' => 'array',
+    'required_documents' => 'array',
     'deadline' => 'datetime',
     'published_at' => 'datetime',
     'deleted_at' => 'datetime',
@@ -74,6 +78,13 @@ class JobVacancy extends Model
     'part-time' => 'Part Time',
     'contract' => 'Contract',
     'internship' => 'Internship',
+  ];
+  // required documents 
+  public const REQUIRED_DOCUMENTS_OPTIONS = [
+    'cv' => 'CV',
+    'cover_letter' => 'Cover Letter',
+    'certificate' => 'Certificate',
+    'license' => 'License',
   ];
   // 'entry','mid','senior','lead','manager'
   public const LEVEL_OPTIONS = [
@@ -99,13 +110,20 @@ class JobVacancy extends Model
     'KWD' => 'KWD',
     'QAR' => 'QAR',
   ];
-  // 'draft','active','closed','expired','blocked','archive'
-  public const STATUS_OPTIONS = [
+  // 'draft','active','closed','expired','blocked','archive' , 'trashed'
+  public const STATUS_OPTIONS_FOR_ADMIN = [
     'draft' => 'Draft',
     'active' => 'Active',
     'closed' => 'Closed',
     'expired' => 'Expired',
     'blocked' => 'Blocked',
+    'archive' => 'Archive',
+    'trashed' => 'Trashed',
+  ];
+  public const STATUS_OPTIONS_FOR_COMPANY = [
+    'draft' => 'Draft',
+    'active' => 'Active',
+    'closed' => 'Closed',
     'archive' => 'Archive',
   ];
   public const LOCATION_TYPE_OPTIONS = [

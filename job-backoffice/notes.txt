@@ -323,34 +323,31 @@ Job Management
         View quality of applicants score ✅
         View source of applications ✅
 4.2 Create Permissions
-    NOTE: check post limits before create 
+    NOTE: check post limits before create ✅
     Manual Job Creation
-      Create job postings on behalf of companies
-      Set all job attributes and requirements
-      Upload job descriptions
-      Configure screening questions
-      Set application deadline
-      Assign hiring managers
-      Set job visibility and status
+      Create job postings on behalf of companies ✅
+      Set all job attributes and requirements ✅
+      Upload job descriptions ✅
+      Configure screening questions ✅
+      Set application deadline ✅
+      Assign hiring managers ✅
+      Set job visibility and status ✅
 4.3 Edit Permissions
     Job Information
       Job Details Modification
-        Edit job title and description
-        Update job requirements
-        Modify salary range
-        Change job location
-        Update job type and category
-        Edit benefits and perks
-        Modify application questions
-        Update required documents
+        Edit job title and description ✅
+        Update job requirements ✅
+        Modify salary range ✅
+        Change job location ✅
+        Update job type and category ✅
+        Modify application questions ✅
+        Update required documents   ✅
     Job Settings
-      Change job status (draft, active, paused, closed)
-      Extend expiration dates
-      Modify visibility settings
-      Update featured status
-      Change application limits
-      Configure notifications
-      Adjust screening criteria
+      Change job status (draft, active, paused, closed) ✅
+      Extend expiration dates ✅
+      Modify visibility settings ✅
+      Update featured status ✅
+      Change application limits ✅
     Moderation Actions
       Flag inappropriate content
       Edit for compliance
@@ -359,34 +356,39 @@ Job Management
       Approve pending jobs
 4.4 Delete/Suspend Permissions
   Job Status Management
-    Pause active job postings
-    Close job postings immediately
-    Archive old job postings
-    Soft delete jobs (hide from searches)
-    Hard delete jobs (permanent removal)
-    Restore archived jobs
-  Compliance Actions
-    Remove non-compliant job postings
-    Suspend fraudulent listings
-    Block discriminatory content
-    Remove duplicate postings
-    Document removal reasons
-4.5 Special Actions
-  Job Promotion
-    Feature job postings
-    Boost in search rankings
-    Highlight in recommendations
-    Set promotion duration
-    Apply promotional pricing
-  Bulk Operations
-    Bulk status updates
-    Bulk expiration date changes
-    Bulk archive or delete
-    Bulk company reassignment
-    Export multiple jobs
-  Quality Control
-    Review flagged jobs
-    Approve premium listings
-    Verify salary information
-    Check for duplicate postings
-    Validate job requirements
+    Pause active job postings ✅
+    Close job postings immediately ✅
+    Archive old job postings ✅
+    Soft delete jobs (hide from searches) ✅
+    Hard delete jobs (permanent removal) ✅
+    Restore archived jobs ✅
+
+5.1 Add Job status widget in jobs list page ✅
+  1. StatsOverviewWidget — Key Numbers at a Glance
+      StatField
+        Total Vacancies
+          count all
+        Active / Published
+          status = published
+        Featured Listings
+          is_featured = true
+        Expiring Soon
+          deadline within 7 days
+        Expired
+          deadline < today
+  2. ChartWidget — Jobs by Type/Level/Category
+      Based on your type, level, and category_id fields:
+        Bar chart: Vacancies by type (full-time, part-time, etc.)
+        Donut chart: Vacancies by level (junior, senior, etc.)
+        Bar chart: Top categories by vacancy count
+  3. ChartWidget — Jobs by Location Type
+      From your location field (LOCATION_TYPE_OPTIONS — likely remote/hybrid/onsite):
+        Pie/donut chart: Remote vs. Hybrid vs. On-site breakdown
+  4. StatsOverviewWidget — Salary Insights
+      From salary_min, salary_max, salary_currency:
+        Average salary range across active listings
+        Count of jobs per currency (useful if multi-currency)
+  5. TableWidget — Deadlines Dashboard
+      From deadline + status + title + company_id:
+        A mini table showing jobs expiring in the next 14 days with their status — useful for quick action before they lapse.
+    

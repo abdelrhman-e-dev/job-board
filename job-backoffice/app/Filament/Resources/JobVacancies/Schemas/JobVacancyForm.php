@@ -7,8 +7,9 @@ use App\Models\JobCategory;
 use App\Models\JobVacancy;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor\ToolbarButtonGroup;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -31,7 +32,7 @@ class JobVacancyForm
           ->columns(2)
           ->schema([
             TextInput::make('title')
-              ->label('Job Title')
+              ->label('hadeer hassan')
               ->unique(ignoreRecord: true)
               ->live(onBlur: true)
               ->afterStateUpdated(function ($state, callable $set) {
@@ -59,7 +60,7 @@ class JobVacancyForm
             Select::make('posted_by')
               ->label('Posted By')
               ->options(
-                User::admins()->get()->mapWithKeys(fn($user) => [$user->user_id => "{$user->first_name} {$user->last_name}"])
+                User::all()->mapWithKeys(fn($user) => [$user->user_id => "{$user->first_name} {$user->last_name}"])
               )
               ->searchable()
               ->required()
@@ -108,18 +109,40 @@ class JobVacancyForm
         Section::make('Job Details')
           ->icon('heroicon-o-document-text')
           ->schema([
-            Textarea::make('description')
+            RichEditor::make('description')
               ->label('Description')
-              ->rows(3)
+              ->json()
+              ->toolbarButtons([
+                'bold',
+                'italic',
+                'underline',
+                'bulletList',
+                'orderedList',
+                'h2',
+                'h3',
+              ])
               ->required(),
-            Textarea::make('requirements')
+            RichEditor::make('requirements')
               ->label('Requirements')
-              ->rows(3)
+              ->json()
+              ->toolbarButtons([
+                'bold',
+                'italic',
+                'underline',
+                'bulletList',
+                'orderedList',
+                'h2',
+                'h3',
+              ])
               ->required(),
             KeyValue::make('screening_questions')
               ->label('Screening Questions')
               ->keyLabel('Question')
               ->valueLabel('Answer'),
+            Select::make('required_documents')
+              ->label('Required Documents')
+              ->options(JobVacancy::REQUIRED_DOCUMENTS_OPTIONS)
+              ->multiple(),
           ])->columnSpanFull(),
 
         // ─── Classification ───────────────────────────────────────────
@@ -152,7 +175,7 @@ class JobVacancyForm
           ->schema([
             Select::make('status')
               ->label('Status')
-              ->options(JobVacancy::STATUS_OPTIONS)
+              ->options(JobVacancy::STATUS_OPTIONS_FOR_ADMIN)
               ->required(),
             Select::make('visibility')
               ->label('Visibility')
