@@ -14,56 +14,65 @@ use Filament\Tables\Table;
 
 class ApplicationsTable
 {
-    public static function configure(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('application_id')
-                    ->searchable(),
-                TextColumn::make('job_id')
-                    ->searchable(),
-                TextColumn::make('job_seeker_id')
-                    ->searchable(),
-                TextColumn::make('document_id')
-                    ->searchable(),
-                TextColumn::make('aiGeneratedScore')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->badge(),
-                TextColumn::make('rating')
-                    ->numeric()
-                    ->sortable(),
-                IconColumn::make('is_read')
-                    ->boolean(),
-                TextColumn::make('read_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                TrashedFilter::make(),
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
-            ]);
-    }
+  public static function configure(Table $table): Table
+  {
+    return $table
+      ->columns([
+        TextColumn::make('jobSeeker.name')
+          ->label("Applicant Name")
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('job.title')
+          ->label("Job Title")
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('company.name')
+          ->label("Company Name")
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('status')
+          ->badge()
+          ->color(fn($state): string => match ($state) {
+            'new' => 'primary',
+            'reviewing' => 'info',
+            'shortlisted' => 'warning',
+            'interview' => 'warning',
+            'offer' => 'info',
+            'hired' => 'success',
+            'rejected' => 'danger',
+            'withdraw' => 'gray',
+          })
+          ->label("Status")
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('aiGeneratedScore')
+          ->label("AI Score")
+          ->suffix("%")
+          ->searchable()
+          ->sortable(),
+        IconColumn::make('is_read')
+          ->boolean()
+          ->label("Read")
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('created_at')
+          ->label("Applied At")
+          ->date('d, M Y')
+          ->searchable()
+          ->sortable(),
+      ])
+      ->filters([
+        TrashedFilter::make(),
+      ])
+      ->recordActions([
+        EditAction::make(),
+      ])
+      ->toolbarActions([
+        BulkActionGroup::make([
+          DeleteBulkAction::make(),
+          ForceDeleteBulkAction::make(),
+          RestoreBulkAction::make(),
+        ]),
+      ]);
+  }
 }

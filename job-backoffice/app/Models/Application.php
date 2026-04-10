@@ -37,6 +37,11 @@ class Application extends Model
   {
     return $this->belongsTo(User::class, 'job_seeker_id', 'user_id');
   }
+  // relation between Application and comapny 
+  public function company()
+  {
+    return $this->belongsTo(Company::class, 'company_id', 'company_id');
+  }
   // relation between Application and Job
   public function job()
   {
