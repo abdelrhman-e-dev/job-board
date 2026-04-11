@@ -28,6 +28,11 @@ class Application extends Model
     'status',
     'rating',
     'status_history',
+    'is_read',
+    'read_at',
+    'deleted_at',
+    'created_at',
+    'updated_at',
   ];
   protected $casts = [
     'status_history' => 'array',
@@ -106,14 +111,5 @@ class Application extends Model
     'hired' => 'Hired',
     'rejected' => 'Rejected',
     'withdraw' => 'Withdraw',
-  ];
-  // 'screening','hr','technical','panel','final','offer_discussion'
-  public const APPLICATION_STAGE = [
-    'screening' => 'Screening',
-    'hr' => 'HR',
-    'technical' => 'Technical',
-    'panel' => 'Panel',
-    'final' => 'Final',
-    'offer_discussion' => 'Offer Discussion',
   ];
 }
