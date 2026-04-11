@@ -28,7 +28,12 @@ class Interview extends Model
     'result',
     'created_by',
     'updated_by',
-    'deleted_at'
+    'deleted_at',
+    'created_at',
+    'updated_at',
+    'interview_stage',
+    'location',
+    'meeting_link'
   ];
   protected $dates = [
     'deleted_at',
@@ -65,4 +70,13 @@ class Interview extends Model
   {
     return $this->belongsTo(JobVacancy::class, 'job_id', 'job_id');
   }
+    // 'screening','hr','technical','panel','final','offer_discussion'
+  public const INTERVIEW_STAGE = [
+    'screening' => 'Screening',
+    'hr' => 'HR',
+    'technical' => 'Technical',
+    'panel' => 'Panel',
+    'final' => 'Final',
+    'offer_discussion' => 'Offer Discussion',
+  ];
 }
