@@ -96,4 +96,24 @@ class Application extends Model
 
     return $entry['changed_by'] ?? null;
   }
+
+  public const STATUS_OPTIONS = [
+    'new' => 'New',
+    'reviewing' => 'Reviewing',
+    'shortlisted' => 'Shortlisted',
+    'interview' => 'Interview',
+    'offer' => 'Offer',
+    'hired' => 'Hired',
+    'rejected' => 'Rejected',
+    'withdraw' => 'Withdraw',
+  ];
+  // 'screening','hr','technical','panel','final','offer_discussion'
+  public const APPLICATION_STAGE = [
+    'screening' => 'Screening',
+    'hr' => 'HR',
+    'technical' => 'Technical',
+    'panel' => 'Panel',
+    'final' => 'Final',
+    'offer_discussion' => 'Offer Discussion',
+  ];
 }
