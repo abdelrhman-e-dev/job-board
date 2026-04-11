@@ -399,7 +399,7 @@ TODO
   5.1 View Permissions
     Application Database
       View All Applications
-        Access complete application database across all companies 
+        Access complete application database across all companies  ✅
         View application details (cover letter, answers, documents) 
         View applicant profile information 
         View job applied to
@@ -409,15 +409,12 @@ TODO
         View application source (direct, recommended, etc.)
         View resume/CV submissions
     Advanced Application Search
-      Search by applicant name
-      Filter by job posting
-      Filter by company
-      Filter by application status
-      Filter by application date range
-      Filter by hiring manager
-      Filter by rating/score
-      Filter by application stage
-      Export application data
+      Search by applicant name ✅
+      Filter by job posting ✅
+      Filter by company ✅
+      Filter by application status ✅
+      Filter by application date range ✅
+      Filter by application stage ✅
     Application Analytics
       Performance Metrics
         View application-to-hire conversion rates
