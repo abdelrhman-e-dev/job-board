@@ -28,6 +28,11 @@ class Application extends Model
     'status',
     'rating',
     'status_history',
+    'is_read',
+    'read_at',
+    'deleted_at',
+    'created_at',
+    'updated_at',
   ];
   protected $casts = [
     'status_history' => 'array',
@@ -36,6 +41,11 @@ class Application extends Model
   public function jobSeeker()
   {
     return $this->belongsTo(User::class, 'job_seeker_id', 'user_id');
+  }
+  // relation between Application and comapny 
+  public function company()
+  {
+    return $this->belongsTo(Company::class, 'company_id', 'company_id');
   }
   // relation between Application and Job
   public function job()
@@ -91,4 +101,15 @@ class Application extends Model
 
     return $entry['changed_by'] ?? null;
   }
+
+  public const STATUS_OPTIONS = [
+    'new' => 'New',
+    'reviewing' => 'Reviewing',
+    'shortlisted' => 'Shortlisted',
+    'interview' => 'Interview',
+    'offer' => 'Offer',
+    'hired' => 'Hired',
+    'rejected' => 'Rejected',
+    'withdraw' => 'Withdraw',
+  ];
 }
