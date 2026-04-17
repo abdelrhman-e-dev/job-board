@@ -164,4 +164,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   {
     return User::where('role_id', "019c57a2-dc2e-72e0-90fe-c4caddb33907");
   }
+  // get the high board of the company (onwers, hiring manager and recruiters) based on the company id which be provided 
+  public static function highBoard($company_id)
+  {
+    return User::whereIn('role_id', ["019c57a6-0950-72a0-9941-f0d810d21bf3", "019c57ad-a219-7124-a4eb-942f9d7e2274", "019c57ad-c8e9-71d0-ada9-eacffd659479" ,"019c57a2-dc2e-72e0-90fe-c4caddb33907"])->where('company_id', $company_id);
+  }
 }

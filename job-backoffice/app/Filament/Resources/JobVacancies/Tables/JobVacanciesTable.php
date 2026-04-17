@@ -355,7 +355,7 @@ class JobVacanciesTable
             // ─── Description & Requirements ───────────────────────────────────────────
             Section::make('Description & Requirements')
               ->schema([
-                Grid::make(2)
+                Grid::make(1)
                   ->schema([
                     Placeholder::make('description')
                       ->label('Description')
@@ -400,7 +400,7 @@ class JobVacanciesTable
                         }
                         return new HtmlString(
                           collect($questions)
-                            ->map(function ($answer, $question) {
+                            ->map(function ($question) {
                               return sprintf(
                                 '<div class="mb-2 border-b border-gray-100 pb-2">
                                             <span class="text-sm font-medium">%s</span>
@@ -408,7 +408,6 @@ class JobVacanciesTable
                                             <span class="text-gray-600 text-sm">%s</span>
                                         </div>',
                                 e((string) $question),
-                                e((string) $answer)
                               );
                             })
                             ->implode('')
@@ -416,6 +415,7 @@ class JobVacanciesTable
                       }),
                     Placeholder::make('required_documents')
                       ->label('Required Documents')
+                      ->placeholder('No Required Documents')
                       ->content(function ($record) {
                         $documents = $record->required_documents;
                         return $documents;
