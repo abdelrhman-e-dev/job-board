@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('offers', function (Blueprint $table) {
             $table->enum('offer_type', ['full_time', 'part_time', 'contract', 'temporary', 'internship'])->default('full_time');
             $table->text('rejected_reason')->nullable();
-            $table->text('notes')->nullable();
         });
     }
 
