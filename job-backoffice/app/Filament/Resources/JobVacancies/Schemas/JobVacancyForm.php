@@ -7,6 +7,7 @@ use App\Models\JobCategory;
 use App\Models\JobVacancy;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor\ToolbarButtonGroup;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\RichEditor;
@@ -32,8 +33,7 @@ class JobVacancyForm
           ->columns(2)
           ->schema([
             TextInput::make('title')
-              ->label('hadeer hassan')
-              ->unique(ignoreRecord: true)
+              ->label('Job Title')
               ->live(onBlur: true)
               ->afterStateUpdated(function ($state, callable $set) {
                 $set('slug', Str::slug($state));
@@ -42,12 +42,13 @@ class JobVacancyForm
               ->columnSpan(1),
             TextInput::make('slug')
               ->label('Slug')
-              ->readOnly()
+              ->unique(ignoreRecord: true)
               ->required()
               ->columnSpan(1),
             Select::make('company_id')
               ->label('Company')
               ->options(Company::all()->pluck('name', 'company_id'))
+              ->live()
               ->searchable()
               ->required()
               ->columnSpan(1),
@@ -59,9 +60,15 @@ class JobVacancyForm
               ->columnSpan(1),
             Select::make('posted_by')
               ->label('Posted By')
-              ->options(
-                User::all()->mapWithKeys(fn($user) => [$user->user_id => "{$user->first_name} {$user->last_name}"])
-              )
+              ->options(function (Get $get) {
+                $companyId = $get('company_id');
+                if (!$companyId) {
+                  return [];
+                }
+                return User::highBoard($companyId)
+                  ->get()
+                  ->mapWithKeys(fn($user) => [$user->user_id => "{$user->first_name} {$user->last_name} - {$user->role->role_name}"]);
+              })
               ->searchable()
               ->required()
               ->columnSpanFull(),
@@ -78,9 +85,11 @@ class JobVacancyForm
               ->required(),
             TextInput::make('city')
               ->label('City')
+              ->placeholder('city')
               ->required(),
             TextInput::make('address')
               ->label('Address')
+              ->placeholder('address')
               ->required(),
           ]),
 
@@ -135,10 +144,14 @@ class JobVacancyForm
                 'h3',
               ])
               ->required(),
-            KeyValue::make('screening_questions')
+            Repeater::make('screening_questions')
               ->label('Screening Questions')
-              ->keyLabel('Question')
-              ->valueLabel('Answer'),
+              ->simple(
+                TextInput::make('question')
+                  ->placeholder('Enter the screening question...')
+                  ->required(),
+              )
+              ->addActionLabel('Add Question'),
             Select::make('required_documents')
               ->label('Required Documents')
               ->options(JobVacancy::REQUIRED_DOCUMENTS_OPTIONS)

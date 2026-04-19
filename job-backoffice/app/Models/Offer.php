@@ -61,4 +61,20 @@ class Offer extends Model
   {
     return $this->belongsTo(JobVacancy::class, 'job_id', 'job_id');
   }
+  // 'draft','sent','accepted','rejected','expired'
+  public const OFFER_STATUS = [
+    'draft' => 'Draft',
+    'sent' => 'Sent',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
+    'expired' => 'Expired',
+  ];
+  // 'full_time','part_time','contract','temporary','internship'
+  public const OFFER_TYPE = [
+    'full_time' => 'Full Time',
+    'part_time' => 'Part Time',
+    'contract' => 'Contract',
+    'temporary' => 'Temporary',
+    'internship' => 'Internship',
+  ];
 }

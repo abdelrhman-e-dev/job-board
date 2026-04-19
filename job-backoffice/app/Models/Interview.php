@@ -79,4 +79,19 @@ class Interview extends Model
     'final' => 'Final',
     'offer_discussion' => 'Offer Discussion',
   ];
+  // 'phone','video','onsite','async_video','take_home'
+  public const INTERVIEW_TYPE = [
+    'phone' => 'Phone',
+    'video' => 'Video',
+    'onsite' => 'Onsite',
+    'async_video' => 'Async Video',
+    'take_home' => 'Take Home',
+  ];
+  // ('pending', 'pass', 'fail', 'no_show')
+  public const INTERVIEW_RESULT = [
+    'pending' => 'Pending',
+    'pass' => 'Pass',
+    'fail' => 'Fail',
+    'no_show' => 'No Show',
+  ];
 }
