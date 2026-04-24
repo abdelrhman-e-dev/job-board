@@ -439,7 +439,7 @@ class ApplicationsTable
                           ->contained(true),
                       ])
                   ])->collapsed(),
-                Section::make('offers')
+                Section::make('Offers')
                   ->schema([
                     Grid::make(1)
                       ->schema([
@@ -517,6 +517,40 @@ class ApplicationsTable
                           ])
                           ->columns(3)
                           ->contained(true),
+                      ])
+                  ])->collapsed(),
+                Section::make('Status History')
+                  ->schema([
+                    Grid::make(1)
+                      ->schema([
+                        // [{"status":"new", "changed_at":"2026-01-22 23:10:42", "changed_by":"system"}]
+                        RepeatableEntry::make('status_history')
+                          ->label('Status History')
+                          ->state(fn($record) => $record->status_history ?? [])
+                          ->schema([
+                            TextEntry::make('status')
+                              ->badge()
+                              ->color(fn($state) => match ($state) {
+                                'new' => 'primary',
+                                'reviewing' => 'info',
+                                'shortlisted' => 'warning',
+                                'interview' => 'warning',
+                                'offer' => 'info',
+                                'hired' => 'success',
+                                'rejected' => 'danger',
+                                'withdraw' => 'gray',
+                              }),
+
+                            TextEntry::make('changed_at')
+                              ->label('Changed At')
+                              ->dateTime('M d, Y - h:i A')
+                              ->icon('heroicon-o-clock'),
+
+                            TextEntry::make('changed_by')
+                              ->state(fn($record) => $record->changed_by ?? "Administrator")
+                              ->label('Changed By'),
+                          ])
+                          ->columns(3)
                       ])
                   ])->collapsed(),
               ])
