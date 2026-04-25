@@ -6,9 +6,11 @@ use App\Models\Application;
 use App\Models\Interview;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
@@ -35,15 +37,10 @@ class ApplicationsTable
     return $table
       ->columns([
         TextColumn::make('jobSeeker.name')
-          ->label("Applicant Name")
-          // ->searchable()
+          ->label("Applicant")
           ->sortable(),
         TextColumn::make('job.title')
-          ->label("Job Title")
-          ->searchable()
-          ->sortable(),
-        TextColumn::make('company.name')
-          ->label("Company Name")
+          ->label("Job")
           ->searchable()
           ->sortable(),
         TextColumn::make('status')
@@ -59,22 +56,18 @@ class ApplicationsTable
             'withdraw' => 'gray',
           })
           ->label("Status")
-          ->searchable()
           ->sortable(),
-        TextColumn::make('aiGeneratedScore')
-          ->label("AI Score")
-          ->suffix("%")
-          ->searchable()
+        IconColumn::make('is_flagged')
+          ->boolean()
+          ->label("Flagged")
           ->sortable(),
         IconColumn::make('is_read')
           ->boolean()
           ->label("Read")
-          ->searchable()
           ->sortable(),
         TextColumn::make('created_at')
-          ->label("Applied At")
+          ->label("Applied")
           ->date('d, M Y')
-          ->searchable()
           ->sortable(),
       ])
       ->filters([
@@ -141,7 +134,7 @@ class ApplicationsTable
               ->schema([
                 Section::make()
                   ->schema([
-                    Grid::make(3)
+                    Grid::make(4)
                       ->schema([
                         TextEntry::make('job_seeker_name')
                           ->state(fn($record) => $record->jobSeeker->name)
@@ -152,6 +145,10 @@ class ApplicationsTable
                         TextEntry::make('company_name')
                           ->state(fn($record) => $record->company->name)
                           ->label('Company Name'),
+                        TextEntry::make('ai_generated_score')
+                          ->state(fn($record) => $record->aiGeneratedScore)
+                          ->label('AI Score')
+                          ->placeholder('No AI score available'),
                         TextEntry::make('status')
                           ->state(fn($record) => $record->status)
                           ->badge()
@@ -166,10 +163,23 @@ class ApplicationsTable
                             'withdraw' => 'gray',
                           })
                           ->label('Status'),
-                        TextEntry::make('ai_generated_score')
-                          ->state(fn($record) => $record->aiGeneratedScore)
-                          ->label('AI Score')
-                          ->placeholder('No AI score available'),
+                        TextEntry::make('priority')
+                          ->state(fn($record) => $record->priority)
+                          ->badge()
+                          ->color(fn($state): string => match ($state) {
+                            'low' => 'primary',
+                            'medium' => 'info',
+                            'high' => 'success',
+                          })
+                          ->label('Priority'),
+                        TextEntry::make('is_flagged')
+                          ->icon(fn($state) => $state ? 'heroicon-s-flag' : 'heroicon-o-flag')
+                          ->iconColor(fn($state): string => match ($state) {
+                            true => 'danger',
+                            false => 'gray',
+                          })
+                          ->formatStateUsing(fn() => '')
+                          ->label('Flagged'),
                         TextEntry::make('created_at')
                           ->state(fn($record) => $record->created_at)
                           ->date('d, M Y')
@@ -556,12 +566,23 @@ class ApplicationsTable
               ])
           ]),
         EditAction::make(),
+        DeleteAction::make()
+          ->visible(fn($record) => $record->deleted_at == null)
+          ->requiresConfirmation()
+          ->modalHeading(fn($record) => "Delete Application of {$record->jobSeeker->name} for {$record->job->title}")
+          ->modalSubheading(fn($record) => "Are you sure you want to delete this application?"),
+        RestoreAction::make()
+          ->visible(fn($record) => $record->deleted_at != null)
+          ->requiresConfirmation()
+          ->modalHeading(fn($record) => "Restore Application of {$record->jobSeeker->name} for {$record->job->title}")
+          ->modalSubheading(fn($record) => "Are you sure you want to restore this application?"),
       ])
       ->toolbarActions([
         BulkActionGroup::make([
-          DeleteBulkAction::make(),
-          ForceDeleteBulkAction::make(),
-          RestoreBulkAction::make(),
+          DeleteBulkAction::make()
+            ->requiresConfirmation(),
+          RestoreBulkAction::make()
+            ->requiresConfirmation(),
         ]),
       ]);
   }
