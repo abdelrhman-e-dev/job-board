@@ -20,22 +20,25 @@ class Application extends Model
   protected $fillable = [
     'job_id',
     'job_seeker_id',
+    'company_id',
     'document_id',
-    'aiGeneratedScore',
-    'ai_feedback',
     'cover_letter',
     'screening_questions',
+    'aiGeneratedScore',
+    'ai_feedback',
     'status',
-    'rating',
     'status_history',
     'is_read',
     'read_at',
     'deleted_at',
     'created_at',
     'updated_at',
+    'priority',
+    'is_flagged'
   ];
   protected $casts = [
     'status_history' => 'array',
+    'is_flagged' => 'boolean',
   ];
   // relation between Application and user (job seeker)
   public function jobSeeker()
@@ -92,6 +95,19 @@ class Application extends Model
     return $this->status;
   }
 
+  // append status history
+  public function appendStatusHistory(string $newStatus): array
+  {
+    $history = is_array($this->status_history) ? $this->status_history : [];
+    $history[] = [
+      'status' => $newStatus,
+      'changed_at' => now()->toDateTimeString(),
+      'changed_by' => auth()->user()?->name ?? 'admin',
+    ];
+
+    return $history;
+  }
+
   // get who hired (changed_by when status became hired)
   public function getHiredBy(): ?string
   {
@@ -111,5 +127,10 @@ class Application extends Model
     'hired' => 'Hired',
     'rejected' => 'Rejected',
     'withdraw' => 'Withdraw',
+  ];
+  public const PRIORITY_OPTIONS = [
+    'low' => 'Low',
+    'medium' => 'Medium',
+    'high' => 'High',
   ];
 }
