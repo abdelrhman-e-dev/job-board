@@ -423,42 +423,15 @@ TODO
         View most common rejection reasons
         View application quality scores
         Identify application trends
-  5.2 Create Permissions
-    Manual Application Entry
-      Create applications on behalf of job seekers
-      Upload candidate documents
-      Set initial application status
-      Add admin notes
-      Bypass screening questions if needed
+  DATE: 4/25/2026
   5.3 Edit Permissions
     Application Modification
-      Application Details
-        Edit application responses
-        Update attached documents
-        Modify application date
-        Change application source
-        Update contact information
-        Add or edit cover letters
       Status Management
-        Change application status
-        Move between pipeline stages
-        Set interview schedules
-        Update review status
-        Add hiring manager notes
-        Assign ratings and scores
-      Candidate Information
-        Update applicant contact details
-        Modify candidate availability
-        Edit salary expectations
-        Update candidate notes
+        Change application status ✅
+        Change application priority ✅
   5.4 Delete/Suspend Permissions
     Application Removal
-      Delete applications (soft delete)
-      Permanently remove applications (hard delete)
-      Archive old applications
-      Bulk delete by criteria
-      Export before deletion
-      Maintain deletion logs
+      Delete applications (soft delete) ✅
     Spam/Fraud Management
       Flag spam applications
       Remove fraudulent submissions
@@ -471,13 +444,10 @@ TODO
       Duplicate applications for multiple positions
       Merge duplicate applications
     Bulk Operations
-      Bulk status updates
-      Bulk stage transitions
+      Bulk status updates : TODO
       Bulk export applications
-      Bulk archive or delete
-      Mass communication to applicants
+      Bulk archie or delete  ✅
+      Mass communication to applicants NOTE: will be Modified with notification service
     Priority Management
-      Mark applications as priority
-      Flag for urgent review
-      Assign to specific reviewers
-      Set review deadlines
+      Mark applications as priority ✅
+      Flag for urgent review ✅
