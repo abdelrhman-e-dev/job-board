@@ -21,13 +21,13 @@ class ApplicationResource extends Resource
 {
   protected static ?string $model = Application::class;
 
-  protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::Square2Stack;
 
   protected static ?string $recordTitleAttribute = 'Applications';
   protected static ?string $navigationLabel = "Job Application";
-    protected static string | UnitEnum | null $navigationGroup = "Jobs Management";
+  protected static string|UnitEnum|null $navigationGroup = "Jobs Management";
   protected static ?int $navigationSort = 5;
-   public static function form(Schema $schema): Schema
+  public static function form(Schema $schema): Schema
   {
     return ApplicationForm::configure($schema);
   }
@@ -44,11 +44,25 @@ class ApplicationResource extends Resource
     ];
   }
 
+  public static function canCreate(): bool
+  {
+    return false;
+  }
+
+
+  public static function canDelete($record): bool
+  {
+    return false;
+  }
+
+  public static function canDeleteAny(): bool
+  {
+    return false;
+  }
   public static function getPages(): array
   {
     return [
       'index' => ListApplications::route('/'),
-      'create' => CreateApplication::route('/create'),
       'edit' => EditApplication::route('/{record}/edit'),
     ];
   }
