@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Applications\Pages;
 
 use App\Filament\Resources\Applications\ApplicationResource;
+use App\Filament\Resources\Applications\Widgets\ApplicationToHire;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +15,13 @@ class ListApplications extends ListRecords
     {
         return [
             
+        ];
+    }
+
+    public function getHeaderWidgets(): array
+    {
+        return [
+            ApplicationToHire::class
         ];
     }
 }
