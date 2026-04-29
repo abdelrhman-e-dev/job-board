@@ -27,9 +27,12 @@ class ApplicationForm
               ->required()
               ->live()
               ->afterStateUpdated(function ($state, $set, $record) {
-                  if ($record && $state !== $record->getOriginal('status')) {
-                      $set('status_history', $record->appendStatusHistory($state));
+                if ($record && $state !== $record->getOriginal('status')) {
+                  $set('status_history', $record->appendStatusHistory($state));
+                  if ($state === 'hired') {
+                    $set('hired_at', now());
                   }
+                }
               })
               ->columnSpanFull(),
             Hidden::make('status_history'),
