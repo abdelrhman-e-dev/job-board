@@ -417,7 +417,7 @@ TODO
       Filter by application stage ✅
     Application Analytics
       Performance Metrics
-        View application-to-hire conversion rates
+        View application-to-hire conversion rates ✅
         View average time-to-hire by job/company
         View application abandonment rates
         View most common rejection reasons
