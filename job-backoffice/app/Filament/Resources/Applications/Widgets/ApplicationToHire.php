@@ -8,6 +8,7 @@ use Filament\Widgets\ChartWidget;
 class ApplicationToHire extends ChartWidget
 {
   protected ?string $heading = 'Application To Hire';
+  protected bool $isCollapsible = true;
 
   protected function getData(): array
   {
@@ -26,7 +27,7 @@ class ApplicationToHire extends ChartWidget
           ],
         ],
       ],
-      'labels' => ['Hired Applications ('. $hired_applications.')', 'Not Hired Applications ('. $not_hired_applications.')'],
+      'labels' => ['Hired Applications (' . $hired_applications . ')', 'Not Hired Applications (' . $not_hired_applications . ')'],
     ];
   }
 
