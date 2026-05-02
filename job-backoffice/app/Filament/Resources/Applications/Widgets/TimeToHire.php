@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Applications\Widgets;
 
 use App\Models\Application;
 use Filament\Widgets\ChartWidget;
+use function Laravel\Prompts\select;
 
 class TimeToHire extends ChartWidget
 {
@@ -24,6 +25,7 @@ class TimeToHire extends ChartWidget
     // determine range based on filter 
     $months = match ($this->filter) {
       '3months' => 3,
+      '6months' => 6,
       '12months' => 12,
       default => 6,
     };
@@ -36,12 +38,14 @@ class TimeToHire extends ChartWidget
       $labels[] = $month->format('M Y');
       $avgDays = Application::where('status', 'hired')
         ->whereNotNull('hired_at')
+        ->select('job_id')
+        ->selectRaw('avg(DATEDIFF(hired_at, created_at)) as avg_days')
         ->whereMonth('created_at', $month->month)
         ->whereYear('created_at', $month->year)
-        ->selectRaw('avg(DATEDIFF(hired_at, created_at)) as avg_days')
-        ->value('avg_days');
+        ->groupBy('job_id')
+        ->get();
 
-      $data[] = round($avgDays ?? 0, 1);
+      $data[] = round($avgDays->avg('avg_days') ?? 0, 1);
     }
     return [
       'datasets' => [
