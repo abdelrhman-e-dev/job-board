@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-  return redirect('/admin');
+  return view('welcome');
 });
 
 // Email Verification Routes

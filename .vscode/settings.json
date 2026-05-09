@@ -5,7 +5,7 @@
     "Heroicon",
     "jobseeker"
   ],
-  "todo-tree.regex.regex": "\\b(TODO|FIX|NOTE|SECTION|DATE|FEATURE)\\b",
+  "todo-tree.regex.regex": "\\b(TODO|FIX|NOTE|SECTION|DATE|FEATURE|TITLE)\\b",
   "todo-tree.regex.regexCaseSensitive": true,
   "todo-tree.highlights.highlightDelay": 0,
   "todo-tree.highlights.customHighlight": {
@@ -32,6 +32,11 @@
     "FEATURE": {
       "foreground": "#00ffff",
       "fontStyle": "bold"
+    },
+    "TITLE": {
+      "foreground": "#ff6600",
+      "fontStyle": "bold",
+      "underline": true
     }
   },
   "todo-tree.general.tags": [
@@ -40,7 +45,8 @@
     "NOTE",
     "SECTION",
     "DATE",
-    "FEATURE"
+    "FEATURE",
+    "TITLE"
   ]
 }
 
