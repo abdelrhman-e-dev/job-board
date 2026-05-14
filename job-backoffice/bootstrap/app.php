@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Company\CompanyApproved;
 use App\Http\Middleware\Company\CompanyAuth;
+use App\Http\Middleware\Company\CompanyGuest;
 use App\Http\Middleware\Company\CompanyRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     commands: __DIR__ . '/../routes/console.php',
     health: '/up',
     then: function () {
-      Route::prefix('company')->middleware(['CompanyRole', 'CompanyAuth', 'CompanyApproved'])
+      Route::prefix('company')
+      ->middleware('web')
         ->name('company.')
         ->group(function () {
           require __DIR__ . '/../routes/company.php';
@@ -22,9 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
   )
   ->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
-      'CompanyRole' => CompanyRole::class,
-      'CompanyAuth' => CompanyAuth::class,
-      'CompanyApproved' => CompanyApproved::class,
+      'company.role' => CompanyRole::class,
+      'company.auth' => CompanyAuth::class,
+      'company.approved' => CompanyApproved::class,
+      'company.guest' => CompanyGuest::class,
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions): void {
