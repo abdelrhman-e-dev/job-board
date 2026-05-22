@@ -1,5 +1,5 @@
 @extends('company.layouts.auth')
-
+@section('title' , 'Login')
 @section('content')
     <div dir="rtl" class="min-h-screen bg-neutral-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -23,6 +23,12 @@
                     <p class="mt-2 text-sm text-neutral-500">Sign in to manage your posted jobs</p>
                 </div>
 
+                <!-- Success message -->
+                @if (session('success-verification'))
+                    <div class="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                        <p class="text-sm font-medium text-center text-green-800">{{ session('success-verification') }}</p>
+                    </div>
+                @endif
                 <!-- Error message -->
                 @if ($errors->any())
                     <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
@@ -111,7 +117,7 @@
             <!-- Footer below card -->
             <p class="mt-8 text-center text-sm text-neutral-700">
                 Don't have an account?
-                <a href="#" class="font-semibold text-primary hover:text-primary-dark transition-colors">
+                <a href="{{ route('company.register') }}" class="font-semibold text-primary hover:text-primary-dark transition-colors">
                   Create new account
                 </a>
             </p>

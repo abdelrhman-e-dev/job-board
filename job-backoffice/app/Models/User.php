@@ -4,6 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Mail\Company\CompanyEmailVerification;
+use App\Mail\CompanyVerificationEmail;
+use App\Mail\CompanyWelcomeEmail;
+use App\Services\EmailService;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -12,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -56,6 +61,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     'remember_token',
   ];
 
+
+  // Roles of the company 
+  public const ROLES = [
+    'system-admin' => '019c57a2-dc2e-72e0-90fe-c4caddb33907',
+    'company-owner' => '019c57a6-0950-72a0-9941-f0d810d21bf3',
+    'job-seeker' => '019c57ad-13c9-731a-a54f-506254f11f18',
+    'hiring-manager' => '019c57ad-a219-7124-a4eb-942f9d7e2274',
+    'recruiter' => '019c57ad-c8e9-71d0-ada9-eacffd659479',
+  ];
 
   /**
    * Get the attributes that should be cast.
@@ -167,6 +181,24 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   // get the high board of the company (onwers, hiring manager and recruiters) based on the company id which be provided 
   public static function highBoard($company_id)
   {
-    return User::whereIn('role_id', ["019c57a6-0950-72a0-9941-f0d810d21bf3", "019c57ad-a219-7124-a4eb-942f9d7e2274", "019c57ad-c8e9-71d0-ada9-eacffd659479" ,"019c57a2-dc2e-72e0-90fe-c4caddb33907"])->where('company_id', $company_id);
+    return User::whereIn('role_id', ["019c57a6-0950-72a0-9941-f0d810d21bf3", "019c57ad-a219-7124-a4eb-942f9d7e2274", "019c57ad-c8e9-71d0-ada9-eacffd659479", "019c57a2-dc2e-72e0-90fe-c4caddb33907"])->where('company_id', $company_id);
+  }
+  // virify user email
+  public function hasVerifiedEmail()
+  {
+    return $this->email_verified_at;
+  }
+  public function markEmailAsVerified()
+  {
+    $this->email_verified_at = now();
+  }
+  public function sendEmailVerificationNotification()
+  {
+    Mail::to($this->email)->send(new CompanyEmailVerification($this));
+  }
+  // only for company onwers
+  public function sendCompanyEmailVerificationNotification()
+  {
+    Mail::to($this->email)->send(new CompanyWelcomeEmail($this->company));
   }
 }
