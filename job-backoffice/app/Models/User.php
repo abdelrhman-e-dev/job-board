@@ -40,11 +40,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     'role',
     'company_id',
     'phone',
+    'status',
     'avatar',
     'bio',
     'city',
     'country',
     'settings',
+    'deleted_at',
+    'role_id',
+    'last_login_at',
+    'last_login_ip_address',
+    'email_verified_at'
   ];
 
   /**
@@ -191,6 +197,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   public function markEmailAsVerified()
   {
     $this->email_verified_at = now();
+    // update user status
+    $this->status = 'active';
+    return $this->save();
   }
   public function sendEmailVerificationNotification()
   {
