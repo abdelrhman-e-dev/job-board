@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
  * Verify email page
  * Invitation page
  */
+
+
 Route::middleware('company.guest')->get('/', function () {
   return redirect()->route('company.login');
 });
@@ -29,7 +31,9 @@ Route::middleware('company.guest')->group(function () {
   Route::get('/invitation/{token}', [InvitationController::class, 'show'])->name('invitation');
   Route::post('/invitation', [InvitationController::class, 'store'])->name('invitation.store');
 });
-
+Route::middleware('company.auth')->group(function () {
+  Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
 // Show verify email notice page
 Route::get('email/verify', function () {
   return view('company.auth.verify-email');
