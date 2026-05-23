@@ -5,7 +5,6 @@ use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Auth\RegisterController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 //NOTE: only non-logged-in users can access.
 /**
  * Login page
@@ -15,6 +14,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
  * Verify email page
  * Invitation page
  */
+
+
 Route::middleware('company.guest')->get('/', function () {
   return redirect()->route('company.login');
 });
@@ -30,7 +31,9 @@ Route::middleware('company.guest')->group(function () {
   Route::get('/invitation/{token}', [InvitationController::class, 'show'])->name('invitation');
   Route::post('/invitation', [InvitationController::class, 'store'])->name('invitation.store');
 });
-
+Route::middleware('company.auth')->group(function () {
+  Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
 // Show verify email notice page
 Route::get('email/verify', function () {
   return view('company.auth.verify-email');
@@ -57,10 +60,7 @@ Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $h
   }
   // mark as verified
   $user->markEmailAsVerified();
-  // update user status
-  $user->update([
-    'status' => 'active',
-  ]);
+
   // Log user out
   Auth::guard('company')->logout();
   request()->session()->invalidate();
