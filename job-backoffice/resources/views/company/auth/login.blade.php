@@ -1,7 +1,7 @@
 @extends('company.layouts.auth')
-@section('title' , 'Login')
+@section('title', 'Login')
 @section('content')
-    <div dir="rtl" class="min-h-screen bg-neutral-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
+    <div dir="ltr" class="min-h-screen bg-neutral-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <!-- Card -->
             <div class="bg-white py-10 px-6 shadow-sm sm:rounded-xl sm:px-12 border border-neutral-300/40">
@@ -24,9 +24,9 @@
                 </div>
 
                 <!-- Success message -->
-                @if (session('success-verification'))
+                @if (session('success'))
                     <div class="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
-                        <p class="text-sm font-medium text-center text-green-800">{{ session('success-verification') }}</p>
+                        <p class="text-sm font-medium text-center text-green-800">{{ session('success') }}</p>
                     </div>
                 @endif
                 <!-- Error message -->
@@ -43,11 +43,13 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-neutral-700">Email</label>
                         <div class="mt-2">
-                            <input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email"
-                                required placeholder="name@company.com" class="block w-full rounded-md border-0 py-2.5
+                            <input id="email" name="email" type="email" value="{{ old('email') }}"
+                                autocomplete="email" required placeholder="name@company.com"
+                                class="block w-full rounded-md border-0 py-2.5
                                  text-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-300 
                                  placeholder:text-neutral-500 focus:ring-2 focus:ring-inset 
-                                 focus:ring-primary sm:text-sm sm:leading-6 text-left" dir="ltr">
+                                 focus:ring-primary sm:text-sm sm:leading-6 text-left"
+                                dir="ltr">
                         </div>
                     </div>
 
@@ -55,17 +57,18 @@
                     <div>
                         <div class="flex items-center justify-between">
                             <label for="password" class="block text-sm font-medium text-neutral-700">Password</label>
-                            <div class="text-sm">
-                                <a href="#"
-                                    class="font-medium text-primary hover:text-primary-dark transition-colors">Forgot
-                                    password?</a>
-                            </div>
                         </div>
                         <div class="mt-2">
                             <input id="password" name="password" type="password" autocomplete="current-password" required
                                 placeholder="••••••••"
                                 class="block w-full rounded-md border-0 py-2.5 text-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 text-left tracking-widest"
                                 dir="ltr">
+                        </div>
+                        <div class="text-sm">
+                            <a href="{{ route('company.forget-password') }}"
+                                class="font-medium text-primary hover:text-primary-dark transition-colors">
+                                Forgot password ?
+                            </a>
                         </div>
                     </div>
 
@@ -117,8 +120,9 @@
             <!-- Footer below card -->
             <p class="mt-8 text-center text-sm text-neutral-700">
                 Don't have an account?
-                <a href="{{ route('company.register') }}" class="font-semibold text-primary hover:text-primary-dark transition-colors">
-                  Create new account
+                <a href="{{ route('company.register') }}"
+                    class="font-semibold text-primary hover:text-primary-dark transition-colors">
+                    Create new account
                 </a>
             </p>
 

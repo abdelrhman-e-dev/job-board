@@ -5,6 +5,7 @@ use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Auth\RegisterController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 //NOTE: only non-logged-in users can access.
 /**
  * Login page
@@ -14,8 +15,11 @@ use Illuminate\Support\Facades\Route;
  * Verify email page
  * Invitation page
  */
-
-
+Route::get('/test', function () {
+  $user = User::where('email', 'aecoding24@gmail.com')->first();
+  $user->sendCompanyPasswordUpdatedNotification();
+  return 'Email sent successfully';
+});
 Route::middleware('company.guest')->get('/', function () {
   return redirect()->route('company.login');
 });
@@ -26,8 +30,8 @@ Route::middleware('company.guest')->group(function () {
   Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
   Route::get('/forget-password', [ForgotPasswordController::class, 'show'])->name('forget-password');
   Route::post('/forget-password', [ForgotPasswordController::class, 'store'])->name('forget-password.store');
-  Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('reset-password');
-  Route::post('/reset-password', [ForgotPasswordController::class, 'resetStore'])->name('reset-password.store');
+  Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
+  Route::post('/reset-password', [ForgotPasswordController::class, 'update'])->name('password.reset.store');
   Route::get('/invitation/{token}', [InvitationController::class, 'show'])->name('invitation');
   Route::post('/invitation', [InvitationController::class, 'store'])->name('invitation.store');
 });
@@ -65,5 +69,5 @@ Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $h
   Auth::guard('company')->logout();
   request()->session()->invalidate();
   request()->session()->regenerateToken();
-  return redirect()->route('company.login')->with('success-verification', 'Email verified successfully. Your company account is pending admin approval. We will notify you once reviewed.');
+  return redirect()->route('company.login')->with('success', 'Email verified successfully. Your company account is pending admin approval. We will notify you once reviewed.');
 })->middleware('signed')->name('email.verification');
