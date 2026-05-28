@@ -1,7 +1,7 @@
 @extends('company.layouts.auth')
 @section('title', 'Account Under Review')
 @section('content')
-    <div dir="rtl" class="min-h-screen bg-neutral-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
+    <div dir="ltr" class="min-h-screen bg-neutral-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
         <div class="sm:mx-auto sm:w-full sm:max-w-[440px]">
             <!-- Card -->
             <div class="bg-white py-10 px-6 shadow-sm sm:rounded-xl sm:px-8 border border-neutral-300 text-center relative">
