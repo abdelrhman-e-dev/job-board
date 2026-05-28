@@ -5,18 +5,22 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Mail\Company\CompanyEmailVerification;
+use App\Mail\Company\PasswordUpdated;
 use App\Mail\CompanyVerificationEmail;
 use App\Mail\CompanyWelcomeEmail;
 use App\Services\EmailService;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Str;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -94,6 +98,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   public function canAccessPanel(Panel $panel): bool
   {
     return $this->role->role_name === 'system-admin' && $this->role->active;
+  }
+  public static function getUser(string $email)
+  {
+    return self::where('email', '=', $email)->first();
   }
   /**
    * Check if user has any of the given roles
@@ -205,9 +213,29 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   {
     Mail::to($this->email)->send(new CompanyEmailVerification($this));
   }
-  // only for company onwers
+  // only for company owners
   public function sendCompanyEmailVerificationNotification()
   {
     Mail::to($this->email)->send(new CompanyWelcomeEmail($this->company));
+  }
+  public function sendCompanyPasswordUpdatedNotification()
+  {
+    Mail::to($this->email)->send(new PasswordUpdated($this));
+  }
+
+
+  public function generateAndSaveResetToken(): string
+  {
+    $token = Str::random(60);
+
+    DB::table('password_reset_tokens')->updateOrInsert(
+      ['email' => $this->email],
+      [
+        'token' => bcrypt($token),
+        'created_at' => now(),
+      ]
+    );
+
+    return $token;
   }
 }
