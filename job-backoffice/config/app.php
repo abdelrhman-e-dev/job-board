@@ -123,4 +123,22 @@ return [
     'store' => env('APP_MAINTENANCE_STORE', 'database'),
   ],
 
+  'passwords' => [
+
+    // Default broker (for system admin)
+    'users' => [
+      'provider' => 'users',
+      'table' => 'password_reset_tokens',
+      'expire' => 60,
+      'throttle' => 60,
+    ],
+
+    'company_users' => [
+      'provider' => 'company_users',
+      'table' => 'password_reset_tokens',
+      'expire' => 60,
+      'throttle' => 60,
+    ],
+
+  ],
 ];
