@@ -3,6 +3,7 @@ use App\Http\Controllers\Company\Auth\ForgotPasswordController;
 use App\Http\Controllers\Company\Auth\InvitationController;
 use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Auth\RegisterController;
+use App\Http\Controllers\Company\DashboardController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -15,11 +16,6 @@ use Illuminate\Http\Request;
  * Verify email page
  * Invitation page
  */
-Route::get('/test', function () {
-  $user = User::where('email', 'aecoding24@gmail.com')->first();
-  $user->sendCompanyPasswordUpdatedNotification();
-  return 'Email sent successfully';
-});
 Route::middleware('company.guest')->get('/', function () {
   return redirect()->route('company.login');
 });
@@ -71,3 +67,8 @@ Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $h
   request()->session()->regenerateToken();
   return redirect()->route('company.login')->with('success', 'Email verified successfully. Your company account is pending admin approval. We will notify you once reviewed.');
 })->middleware('signed')->name('email.verification');
+
+// company dashboard routes
+Route::middleware(['company.auth', 'company.role', 'company.approved', 'company.verified'])->group(function () {
+  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
