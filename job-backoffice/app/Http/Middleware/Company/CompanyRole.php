@@ -14,10 +14,11 @@ class CompanyRole
    *
    * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
    */
-  public function handle(Request $request, Closure $next, string $role): Response
+  public function handle(Request $request, Closure $next): Response
   {
     $user = Auth::guard('company')->user();
-    if ($user->role->role_name !== $role) {
+    $allowedRoles = ['company-owner', 'hiring-manager'];
+    if (!$user || !in_array($user->role->role_name, $allowedRoles)) {
       abort(403, 'Unauthorized');
     }
     return $next($request);

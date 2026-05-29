@@ -13,8 +13,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="h-full">
-    @yield('content')
+<body class="bg-background text-on-surface">
+    {{-- SideNavBar --}}
+    @include('company.layouts.partials.sidebar')
+    {{-- Header --}}
+    @include('company.layouts.partials.header')
+    <main class="ml-[240px] pt-[64px] p-lg min-h-screen">
+      @yield('content')
+    </main>
 </body>
 
 </html>
