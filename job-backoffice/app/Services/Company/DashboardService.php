@@ -30,6 +30,12 @@ class DashboardService
     return $this->repository->recentApplications($limit);
   }
 
+  // get recent jobs
+  public function getRecentJobs(int $limit = 5)
+  {
+    return $this->repository->recentJobs($limit);
+  }
+
   // get missing data
   public function getMissingData()
   {
