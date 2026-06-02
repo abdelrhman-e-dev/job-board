@@ -79,4 +79,13 @@ class DashboardRepository
     $company = Company::select($fields)->find($this->company_id);
     return collect($fields)->filter(fn($field) => empty($company->$field))->values();
   }
+  // get recent jobs
+  public function recentJobs(int $limit = 5)
+  {
+    return JobVacancy::with(['applications', 'creator'])
+      ->where('company_id', $this->company_id)
+      ->latest()
+      ->limit($limit)
+      ->get();
+  }
 }
