@@ -17,8 +17,9 @@
     <!-- Recent Applications Table Section -->
     <section class="bg-white rounded-xl shadow-md border border-neutral-300 overflow-hidden">
         <x-company.recent-applications :recentApplications="$recentApplications" />
-        {{-- @php
-            dd($recentApplications);
-        @endphp --}}
+    </section>
+    <!-- Recent Jobs Table Section -->
+    <section class="bg-white rounded-xl shadow-md border border-neutral-300 overflow-hidden mt-8">
+        <x-company.recent-jobs :recentJobs="$recentJobs" />
     </section>
 @endsection
