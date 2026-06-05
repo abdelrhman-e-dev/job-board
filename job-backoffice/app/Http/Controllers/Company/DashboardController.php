@@ -17,6 +17,7 @@ class DashboardController extends Controller
     return view('company.dashboard.index', [
       'stats' => $this->service->getStats(),
       'recentApplications' => $this->service->getRecentApplications(),
+      'recentJobs' => $this->service->getRecentJobs(),
       'missingData' => $this->service->getMissingData()['missing'],
       'missingPercentage' => $this->service->getMissingData()['percentage'],
     ]);
