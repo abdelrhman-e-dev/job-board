@@ -3,8 +3,8 @@
             <span class="text-headline-md font-headline-md text-white">Shaghalni</span>
         </div>
         <nav class="flex-1 space-y-sm">
-            <a class="flex items-center gap-md py-sm px-md bg-primary-container text-on-primary-container rounded-lg mx-2 transition-all duration-200"
-                href="#">
+            <a class="flex items-center gap-md py-sm px-md {{ Route::is('company.dashboard') ? 'bg-primary-container text-on-primary-container' : 'text-neutral-300 hover:text-white hover:bg-neutral-700' }} rounded-lg mx-2 transition-all duration-200"
+                href="{{ route('company.dashboard') }}">
                 <span class="material-symbols-outlined fill-icon" data-icon="dashboard">dashboard</span>
                 <span class="font-label-md text-label-md">Dashboard</span>
             </a>
@@ -28,9 +28,9 @@
                 <span class="material-symbols-outlined" data-icon="group">group</span>
                 <span class="font-label-md text-label-md">Team</span>
             </a>
-            <a class="flex items-center gap-md py-sm px-md text-neutral-300 hover:text-white mx-2 hover:bg-neutral-700 transition-colors duration-200"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="person">person</span>
+            <a class="flex items-center gap-md py-sm px-md {{ Route::is('company.profile') ? 'bg-primary-container text-on-primary-container' : 'text-neutral-300 hover:text-white hover:bg-neutral-700' }} rounded-lg mx-2 transition-all duration-200"
+                href="{{ route('company.profile') }}">
+                <span class="material-symbols-outlined fill-icon" data-icon="person">person</span>
                 <span class="font-label-md text-label-md">Profile</span>
             </a>
         </nav>

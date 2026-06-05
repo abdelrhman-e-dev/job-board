@@ -18,9 +18,10 @@
     @include('company.layouts.partials.sidebar')
     {{-- Header --}}
     @include('company.layouts.partials.header')
-    <main class="ml-[240px] pt-[64px] p-lg min-h-screen">
+    <main class="ml-[240px] pt-[64px] mt-6 p-lg min-h-screen">
       @yield('content')
     </main>
+    <x-toaster-hub />
 </body>
 
 </html>
