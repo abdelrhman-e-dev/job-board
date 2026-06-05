@@ -4,6 +4,7 @@ use App\Http\Controllers\Company\Auth\InvitationController;
 use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Auth\RegisterController;
 use App\Http\Controllers\Company\DashboardController;
+use App\Http\Controllers\Company\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -71,4 +72,5 @@ Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $h
 // company dashboard routes
 Route::middleware(['company.auth', 'company.role', 'company.approved', 'company.verified'])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+  Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
