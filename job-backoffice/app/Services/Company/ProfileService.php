@@ -63,4 +63,18 @@ class ProfileService
       return false;
     }
   }
+  // get company profile
+  // get company basic info
+  public function getBasicInfo()
+  {
+    return $this->profile->getBasicInfo();
+  }
+  public function getCompanySizes()
+  {
+    return $this->profile->getCompanySizes();
+  }
+  public function saveBasicInfo(array $data)
+  {
+    return $this->profile->updateBasicInfo($data);
+  }
 }

@@ -57,7 +57,7 @@ class Company extends Model
     'suspended_until' => 'datetime',
   ];
   protected $casts = [
-    'founded_year' => 'date',
+
     'deleted_at' => 'datetime',
     'social_links' => 'array',
     'verification_expires_at' => 'datetime',
@@ -66,6 +66,13 @@ class Company extends Model
     'suspended_until' => 'datetime',
   ];
 
+  const COMPANY_SIZES = [
+    '1-10' => '1-10 employees',
+    '11-50' => '11-50 employees',
+    '51-200' => '51-200 employees',
+    '201-500' => '201-500 employees',
+    '500+' => '500+ employees',
+  ];
   // relation between Company and User (owner)
   public function owner()
   {

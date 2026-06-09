@@ -39,4 +39,20 @@ class ProfileRepository
     $logoPath = $company->logo;
     return $logoPath;
   }
+
+  // get company basic info
+  public function getBasicInfo()
+  {
+    $company = Company::findOrFail($this->company_id)->select('name', 'description', 'industry', 'specialization', 'size', 'founded_year', 'website')->first();
+    return $company;
+  }
+  // get company sizes
+  public function getCompanySizes()
+  {
+    return Company::COMPANY_SIZES;
+  }
+  public function updateBasicInfo($data)
+  {
+    return Company::where('company_id', $this->company_id)->update($data);
+  }
 }
