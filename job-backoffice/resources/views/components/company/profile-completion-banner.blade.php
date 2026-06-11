@@ -21,10 +21,10 @@
                     Complete these to attract more talent.
                 </p>
             </div>
-            <button
+            <a href="{{ route('company.profile') }}"
                 class="bg-primary text-on-primary font-label-md text-label-md px-lg py-[10px] rounded-lg hover:bg-primary-dark transition-all shadow-md shrink-0">
                 Complete Profile
-            </button>
+            </a>
         </div>
     </section>
 @endif

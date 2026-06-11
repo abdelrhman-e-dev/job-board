@@ -26,57 +26,9 @@
         <!-- Sidebar Sections -->
         <div class="lg:col-span-4 space-y-lg">
             <!-- Section 3: Location -->
-            <section class="bg-white rounded-xl shadow-md p-lg">
-                <h3 class="font-title-md text-title-md flex items-center gap-2 mb-lg">
-                    <span class="material-symbols-outlined text-primary">location_on</span> Location
-                </h3>
-                <div class="space-y-md">
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">Address</label>
-                        <input
-                            class="w-full rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                            placeholder="123 Business Way" type="text" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">City</label>
-                        <input
-                            class="w-full rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                            placeholder="Dubai" type="text" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">Country</label>
-                        <input
-                            class="w-full rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                            placeholder="United Arab Emirates" type="text" />
-                    </div>
-                    <div class="pt-2">
-                        <button
-                            class="w-full border border-primary text-primary px-lg py-2 rounded-lg font-label-md hover:bg-primary-light transition-colors">
-                            Save Location
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <livewire:company.profile.location />
             <!-- Section 4: Contact Info -->
-            <section class="bg-white rounded-xl shadow-md p-lg">
-                <h3 class="font-title-md text-title-md flex items-center gap-2 mb-lg">
-                    <span class="material-symbols-outlined text-primary">contact_mail</span> Contact Info
-                </h3>
-                <div class="space-y-md">
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">Contact Phone</label>
-                        <input
-                            class="w-full rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                            placeholder="+971 00 000 0000" type="tel" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">Contact Email</label>
-                        <input
-                            class="w-full rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                            placeholder="hr@shaghalni.com" type="email" />
-                    </div>
-                </div>
-            </section>
+            <livewire:company.profile.contact-info />
             <!-- Section 5: Social Links -->
             <section class="bg-white rounded-xl shadow-md p-lg">
                 <h3 class="font-title-md text-title-md flex items-center gap-2 mb-lg">
