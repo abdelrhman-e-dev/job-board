@@ -77,4 +77,23 @@ class ProfileService
   {
     return $this->profile->updateBasicInfo($data);
   }
+  // get company location
+  public function getLocation()
+  {
+    return $this->profile->getLocation();
+  }
+  public function saveLocation(array $data)
+  {
+    return $this->profile->updateLocation($data);
+  }
+  // get company contact info
+  public function getContactInfo()
+  {
+    return $this->profile->getContactInfo();
+  }
+  public function saveContactInfo(array $data)
+  {
+    return $this->profile->updateContactInfo($data);
+  }
+  
 }

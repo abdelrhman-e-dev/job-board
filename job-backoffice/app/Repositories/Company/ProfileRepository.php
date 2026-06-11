@@ -43,7 +43,8 @@ class ProfileRepository
   // get company basic info
   public function getBasicInfo()
   {
-    $company = Company::findOrFail($this->company_id)->select('name', 'description', 'industry', 'specialization', 'size', 'founded_year', 'website')->first();
+    $company = Company::select('name', 'description', 'industry', 'specialization', 'size', 'founded_year', 'website')
+      ->where('company_id', $this->company_id)->first();
     return $company;
   }
   // get company sizes
@@ -55,4 +56,25 @@ class ProfileRepository
   {
     return Company::where('company_id', $this->company_id)->update($data);
   }
+  // get company location
+  public function getLocation()
+  {
+    $company = Company::select('address', 'city', 'country')->where('company_id', $this->company_id)->first();
+    return $company;
+  }
+  public function updateLocation($data)
+  {
+    return Company::where('company_id', $this->company_id)->update($data);
+  }
+  // get company contact info
+  public function getContactInfo()
+  {
+    $company = Company::select('contact_email', 'contact_phone')->where('company_id', $this->company_id)->first();
+    return $company;
+  }
+  public function updateContactInfo($data)
+  {
+    return Company::where('company_id', $this->company_id)->update($data);
+  }
+
 }
