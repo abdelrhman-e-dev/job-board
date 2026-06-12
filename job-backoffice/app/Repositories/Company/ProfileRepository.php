@@ -77,4 +77,13 @@ class ProfileRepository
     return Company::where('company_id', $this->company_id)->update($data);
   }
 
+  // social links
+  public function getSocialLinks()
+  {
+    return Company::where('company_id', $this->company_id)->select('social_links')->first();
+  }
+  public function updateSocialLinks($data)
+  {
+    return Company::where('company_id', $this->company_id)->update(['social_links' => $data]);
+  }
 }

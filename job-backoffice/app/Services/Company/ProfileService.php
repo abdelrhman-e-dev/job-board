@@ -63,7 +63,7 @@ class ProfileService
       return false;
     }
   }
-  // get company profile
+  // company profile
   // get company basic info
   public function getBasicInfo()
   {
@@ -96,4 +96,13 @@ class ProfileService
     return $this->profile->updateContactInfo($data);
   }
   
+  // social links
+  public function getSocialLinks()
+  {
+    return $this->profile->getSocialLinks();
+  }
+  public function saveSocialLinks(array $data)
+  {
+    return $this->profile->updateSocialLinks($data);
+  }
 }
