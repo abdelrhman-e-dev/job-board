@@ -30,33 +30,7 @@
             <!-- Section 4: Contact Info -->
             <livewire:company.profile.contact-info />
             <!-- Section 5: Social Links -->
-            <section class="bg-white rounded-xl shadow-md p-lg">
-                <h3 class="font-title-md text-title-md flex items-center gap-2 mb-lg">
-                    <span class="material-symbols-outlined text-primary">share</span> Social Links
-                </h3>
-                <div class="space-y-md">
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">LinkedIn URL</label>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">link</span>
-                            <input
-                                class="w-full pl-10 rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                                placeholder="linkedin.com/company/..." type="url" />
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-on-surface-variant">Facebook URL</label>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">social_leaderboard</span>
-                            <input
-                                class="w-full pl-10 rounded-lg border-neutral-300 focus:border-primary focus:ring-1 focus:ring-primary transition-all p-2.5 font-body-md outline-none"
-                                placeholder="facebook.com/shaghalni" type="url" />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <livewire:company.profile.social-links />
         </div>
     </div>
 @endsection
