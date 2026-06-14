@@ -1,0 +1,40 @@
+/* SIDEBAR */
+aside {
+  transition: width 0.3s ease;
+  width: 240px;
+}
+
+aside.sidebar-collapsed {
+  width: 72px;
+}
+
+/* hide text inside sidebar when collapsed */
+aside.sidebar-collapsed .nav-text,
+aside.sidebar-collapsed .logo-text {
+  display: none;
+}
+
+/* center icons when collapsed */
+aside.sidebar-collapsed .nav-item {
+  justify-content: center;
+}
+
+/* HEADER */
+header {
+  transition: all 0.3s ease;
+  width: calc(100% - 240px);
+}
+
+header.sidebar-collapsed-width {
+  width: calc(100% - 72px);
+}
+
+/* MAIN */
+main {
+  transition: margin-left 0.3s ease;
+  margin-left: 240px;
+}
+
+main.sidebar-collapsed-padding {
+  margin-left: 72px;
+}

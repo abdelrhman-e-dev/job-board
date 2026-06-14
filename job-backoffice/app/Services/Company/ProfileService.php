@@ -63,7 +63,7 @@ class ProfileService
       return false;
     }
   }
-  // get company profile
+  // company profile
   // get company basic info
   public function getBasicInfo()
   {
@@ -76,5 +76,33 @@ class ProfileService
   public function saveBasicInfo(array $data)
   {
     return $this->profile->updateBasicInfo($data);
+  }
+  // get company location
+  public function getLocation()
+  {
+    return $this->profile->getLocation();
+  }
+  public function saveLocation(array $data)
+  {
+    return $this->profile->updateLocation($data);
+  }
+  // get company contact info
+  public function getContactInfo()
+  {
+    return $this->profile->getContactInfo();
+  }
+  public function saveContactInfo(array $data)
+  {
+    return $this->profile->updateContactInfo($data);
+  }
+  
+  // social links
+  public function getSocialLinks()
+  {
+    return $this->profile->getSocialLinks();
+  }
+  public function saveSocialLinks(array $data)
+  {
+    return $this->profile->updateSocialLinks($data);
   }
 }
