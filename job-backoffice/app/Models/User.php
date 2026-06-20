@@ -54,7 +54,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     'role_id',
     'last_login_at',
     'last_login_ip_address',
-    'email_verified_at'
+    'email_verified_at',
+    'invitation_token',
+    'invitation_expires_at',
+    'invitation_accepted_at'
   ];
 
   /**
@@ -91,6 +94,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     'email_verified_at' => 'datetime',
     'password' => 'hashed',
     'deleted_at' => 'datetime',
+    'invitation_expires_at' => 'datetime',
+    'invitation_accepted_at' => 'datetime',
   ];
 
   // implementing FilamentUser interface
@@ -237,5 +242,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     );
 
     return $token;
+  }
+  public function InvitationIsPending()
+  {
+    return $this->invitation_token && $this->invitation_accepted_at === null;
+  }
+  public function InvitationIsDeactivated()
+  {
+    return $this->status === 'inactive' && $this->invitation_accepted_at;
+  }
+  public function InvitationHasAccepted()
+  {
+    return $this->invitation_accepted_at;
+  }
+  public function InvitationHasExpired()
+  {
+    return $this->invitation_expires_at < now();
   }
 }
