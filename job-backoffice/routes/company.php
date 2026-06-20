@@ -49,6 +49,7 @@ Route::post('/email/resend', function (Request $request) {
   $user->sendEmailVerificationNotification();
   return back()->with('success-resend', 'Verification email resent successfully');
 })->middleware('throttle:1,30')->name('verification.resend');
+
 Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $hash) {
   // find the user
   $user = User::findOrFail($id);
@@ -70,7 +71,11 @@ Route::get('email/verification/{id}/{hash}', function (Request $request, $id, $h
   return redirect()->route('company.login')->with('success', 'Email verified successfully. Your company account is pending admin approval. We will notify you once reviewed.');
 })->middleware('signed')->name('email.verification');
 
-// company dashboard routes
+
+Route::get('member/invitation/{id}/{token}', [InvitationController::class, 'show'])->name('member.invitation');
+Route::post('member/invitation/{id}/{token}', [InvitationController::class, 'store'])->name('member.invitation.store');
+
+// company dashboard routes`
 Route::middleware(['company.auth', 'company.role', 'company.approved', 'company.verified'])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

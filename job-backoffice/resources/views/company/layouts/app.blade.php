@@ -24,6 +24,7 @@
     </main>
     <x-toaster-hub />
     <script src="{{ asset('js/company/main.js') }}"></script>
+    @vite('resources/js/app.js')
 </body>
 
 </html>
