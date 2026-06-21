@@ -27,7 +27,7 @@ class InvitationController extends Controller
   public function store(InvitationRequest $request)
   {
     $validator = $request->validated();
-    $data = $this->teamService->acceptInvitation($validator['user_id'], $validator['password']);
+    $data = $this->teamService->acceptInvitation($validator['user_id'], $validator['password'] ,$validator['token']);
     return redirect()->route('company.login')->with('success', 'Invitation accepted successfully. Your company account is pending admin approval. We will notify you once reviewed.');
   }
 }
