@@ -66,8 +66,13 @@ class TeamService
     }
     return $user;
   }
-  public function acceptInvitation($id, $password)
+  public function acceptInvitation($id, $password, $token)
   {
+    // verify token
+    $user = $this->teamRepository->findByInvitationToken($token);
+    if (!$user) {
+      throw new \Exception('Invalid invitation token');
+    }
     return $this->teamRepository->acceptInvitation($id, $password);
   }
 }
