@@ -24,8 +24,11 @@ class TeamRepository
 
   public function getCompanyMembers()
   {
+    $currentUserId = auth()->guard('company')->id();
     return User::where('company_id', $this->company_id)
+      ->with('role')
       ->whereIn('role_id', $this->allowedRolles)
+      ->orderByRaw("CASE WHEN user_id = '{$currentUserId}' THEN 0 ELSE 1 END")
       ->latest()
       ->paginate(10);
   }
@@ -43,7 +46,7 @@ class TeamRepository
   {
     return User::where('invitation_token', $invitation_token)->first();
   }
-  public function createInvitedUser($data, $token) : User
+  public function createInvitedUser($data, $token): User
   {
     $user = User::create([
       'first_name' => $data['first_name'],
