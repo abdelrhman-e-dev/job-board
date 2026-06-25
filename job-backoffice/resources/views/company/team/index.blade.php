@@ -38,11 +38,12 @@
             <span class="material-symbols-outlined">person_add</span>
             Invite Member
         </button>
-
+    </div>
+    <div>
+        {{-- limit banner --}}
+        <x-company.team.limit-banner :reachLimit="$reachLimit" :current="$current" />
     </div>
     <!-- Members Table Card -->
     <livewire:company.team.team-list />
     <!-- Bento Info Section -->
 @endsection
-
-

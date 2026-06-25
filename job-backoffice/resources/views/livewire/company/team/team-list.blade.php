@@ -1,19 +1,40 @@
 <div class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-hidden"
     id="limit-banner">
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead class="border-b border-neutral-300 bg-neutral-100">
-                <tr class="bg-neutral-100">
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700">MEMBER</th>
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700">EMAIL</th>
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700">ROLE</th>
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700">STATUS</th>
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700">JOINED DATE</th>
-                    <th class="px-md py-md text-sm font-semibold text-neutral-700 text-right">ACTIONS
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-100">
+        {{-- empty state when no hiring managers exist --}}
+        @if ($members->isEmpty())
+            <div class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-hidden"
+                id="limit-banner">
+                <div class="flex flex-col items-center justify-center py-3xl text-center px-lg">
+                    <div class="w-[80px] h-[80px] rounded-full bg-neutral-100 flex items-center justify-center mb-md">
+                        <span class="material-symbols-outlined text-neutral-300" style="font-size: 40px;">group</span>
+                    </div>
+                    <h3 class="text-headline-md font-headline-md text-neutral-900 mb-xs">No team members yet</h3>
+                    <p class="text-body-md text-neutral-500 max-w-[320px] mb-lg">Invite hiring managers to
+                        collaborate
+                        on job postings and review applications together.</p>
+                    <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+                        class="flex items-center justify-center gap-sm bg-primary text-on-primary px-[20px] py-[10px] rounded-lg font-label-md text-label-md hover:bg-primary-dark transition-all active:scale-95 shadow-md"
+                        type="button">
+                        <span class="material-symbols-outlined">add</span>
+                        Invite Your First Member
+                    </button>
+                </div>
+            </div>
+        @else
+            <table class="w-full text-left border-collapse">
+                <thead class="border-b border-neutral-300 bg-neutral-100">
+                    <tr class="bg-neutral-100">
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700">MEMBER</th>
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700">EMAIL</th>
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700">ROLE</th>
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700">STATUS</th>
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700">JOINED DATE</th>
+                        <th class="px-md py-md text-sm font-semibold text-neutral-700 text-right">ACTIONS
+                        </th>
+                    </tr>
+                </thead>
+
                 @foreach ($members as $member)
                     @if (Auth::guard('company')->user()->user_id == $member->user_id)
                         <tr class="hover:bg-surface-bright transition-colors">
@@ -41,13 +62,29 @@
                                         class="bg-success-light text-success text-xs font-medium px-1.5 py-0.5 rounded">{{ $member->status }}</span>
                                 </div>
                             </td>
-                            <td class="px-md py-md text-secondary text-sm">{{ $member->created_at->format('M d, Y') }}
+                            <td class="px-md py-md text-secondary text-sm">
+                                {{ $member->created_at->format('M d, Y') }}
                             </td>
                             <td class="px-md py-md text-right text-secondary">
-                                <button
-                                    class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
-                                    <span class="material-symbols-outlined">drag_indicator</span>
-                                </button>
+                                <x-dropdown align="right" width="48">
+                                    <x-slot name="trigger">
+                                        <button
+                                            class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
+                                            <span class="material-symbols-outlined">more_vert</span>
+                                        </button>
+                                    </x-slot>
+                                    <x-slot name="content">
+                                        <x-dropdown-link href="#">
+                                            Active
+                                        </x-dropdown-link>
+                                        <x-dropdown-link href="#">
+                                            Inactive
+                                        </x-dropdown-link>
+                                        <x-dropdown-link href="#">
+                                            Delete
+                                        </x-dropdown-link>
+                                    </x-slot>
+                                </x-dropdown>
                             </td>
                         </tr>
                     @else
@@ -75,30 +112,38 @@
                                         class="bg-success-light text-success text-xs font-medium px-1.5 py-0.5 rounded">{{ $member->status }}</span>
                                 </div>
                             </td>
-                            <td class="px-md py-md text-secondary text-sm">{{ $member->created_at->format('M d, Y') }}
+                            <td class="px-md py-md text-secondary text-sm">
+                                {{ $member->created_at->format('M d, Y') }}
                             </td>
                             <td class="px-md py-md text-right text-secondary">
-                                <button
-                                    class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
-                                    <button
-                                        class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
-                                        <span class="material-symbols-outlined">drag_indicator</span>
-                                    </button>
+                                <x-dropdown align="right" width="48">
+                                    <x-slot name="trigger">
+                                        <button
+                                            class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
+                                            <span class="material-symbols-outlined">more_vert</span>
+                                        </button>
+                                    </x-slot>
+                                    <x-slot name="content">
+                                        <x-dropdown-link href="#"
+                                            wire:click.prevent="updateStatus({{ $member->id }}, 'Active')">
+                                            Active
+                                        </x-dropdown-link>
+                                        <x-dropdown-link href="#"
+                                            wire:click.prevent="updateStatus({{ $member->id }}, 'Inactive')">
+                                            Inactive
+                                        </x-dropdown-link>
+                                        <x-dropdown-link href="#"
+                                            wire:click.prevent="deleteMember({{ $member->id }})">
+                                            Delete
+                                        </x-dropdown-link>
+                                    </x-slot>
+                                </x-dropdown>
                             </td>
                         </tr>
                     @endif
                 @endforeach
-            </tbody>
-        </table>
-    </div>
-    <!-- Pagination Footer -->
-    <div class="px-lg py-md bg-surface-container-low border-t border-neutral-300 flex items-center justify-between">
-        <span class="text-label-sm font-label-md text-neutral-700">Showing 1 to 4 of 4 results</span>
-        <div class="flex items-center gap-xs"><button
-                class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all"
-                disabled=""><span class="material-symbols-outlined">chevron_left</span></button><button
-                class="w-10 h-10 rounded bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center">1</button><button
-                class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all"
-                disabled=""><span class="material-symbols-outlined">chevron_right</span></button></div>
+                </tbody>
+            </table>
+        @endif
     </div>
 </div>
