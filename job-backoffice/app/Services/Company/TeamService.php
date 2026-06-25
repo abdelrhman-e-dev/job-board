@@ -27,7 +27,11 @@ class TeamService
   }
   public function canInviteMember()
   {
-    return $this->teamRepository->countHiringManagers() < 10;
+    return $this->teamRepository->countHiringManagers() >= 5;
+  }
+  public function countHiringManagers()
+  {
+    return $this->teamRepository->countHiringManagers();
   }
   public function inviteMember(array $data): User
   {

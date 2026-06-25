@@ -13,9 +13,7 @@ class TeamRepository
    */
   private $company_id = "";
   private $allowedRolles = [
-    'company-owner' => User::ROLES['company-owner'],
     'hiring-manager' => User::ROLES['hiring-manager'],
-    'recruiter' => User::ROLES['recruiter'],
   ];
   public function __construct()
   {
@@ -28,7 +26,6 @@ class TeamRepository
     return User::where('company_id', $this->company_id)
       ->with('role')
       ->whereIn('role_id', $this->allowedRolles)
-      ->orderByRaw("CASE WHEN user_id = '{$currentUserId}' THEN 0 ELSE 1 END")
       ->latest()
       ->paginate(10);
   }
