@@ -32,7 +32,7 @@
         </nav>
         {{-- Invite Member Button --}}
         <livewire:company.team.invite-member-modal />
-        <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+        <button x-data @click="$dispatch('open-invite-modal')"
             class="flex items-center justify-center gap-sm bg-primary text-on-primary px-[20px] py-[10px] rounded-lg font-label-md text-label-md hover:bg-primary-dark transition-all active:scale-95 shadow-md"
             type="button">
             <span class="material-symbols-outlined">person_add</span>

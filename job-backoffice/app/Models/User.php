@@ -259,4 +259,5 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
   {
     return $this->invitation_expires_at < now();
   }
+
 }
