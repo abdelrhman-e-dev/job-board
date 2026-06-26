@@ -27,11 +27,15 @@ class TeamService
   }
   public function canInviteMember()
   {
-    return $this->teamRepository->countHiringManagers() < 10;
+    return $this->teamRepository->countHiringManagers() >= 5;
+  }
+  public function countHiringManagers()
+  {
+    return $this->teamRepository->countHiringManagers();
   }
   public function inviteMember(array $data): User
   {
-    if (!$this->canInviteMember()) {
+    if ($this->canInviteMember()) {
       throw new TeamLimitReachedException();
     }
 
@@ -74,5 +78,33 @@ class TeamService
       throw new \Exception('Invalid invitation token');
     }
     return $this->teamRepository->acceptInvitation($id, $password);
+  }
+  public function resendInvitation($id)
+  {
+    $user = $this->teamRepository->findById($id);
+    if (!$user) {
+      throw new \Exception('User not found');
+    }
+    $token = Str::random(64);
+    $user->update([
+      'invitation_token' => $token,
+      'invitation_expires_at' => now()->addDays(7),
+    ]);
+    $this->sendInvitationMail($user, $token);
+  }
+  public function deactivateMember($id)
+  {
+    $user = $this->teamRepository->deactivateUser($id);
+    return $user;
+  }
+  public function reactivateMember($id)
+  {
+    $user = $this->teamRepository->reactivateUser($id);
+    return $user;
+  }
+  public function removeMember($id)
+  {
+    $user = $this->teamRepository->removeMember($id);
+    return $user;
   }
 }
