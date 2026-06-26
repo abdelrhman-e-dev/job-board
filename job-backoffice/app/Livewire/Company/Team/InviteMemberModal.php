@@ -53,6 +53,7 @@ class InviteMemberModal extends Component
       $this->teamService->inviteMember($data);
       Toaster::success('Member invited successfully!');
       $this->reset(['first_name', 'last_name', 'email']);
+      $this->dispatch('memberInvited');
       $this->dispatch('close-invite-modal');
     } catch (\Exception $e) {
       Toaster::error($e->getMessage());
