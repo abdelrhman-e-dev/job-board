@@ -22,12 +22,12 @@ class TeamRepository
 
   public function getCompanyMembers()
   {
-    $currentUserId = auth()->guard('company')->id();
+
     return User::where('company_id', $this->company_id)
       ->with('role')
       ->whereIn('role_id', $this->allowedRolles)
       ->latest()
-      ->paginate(10);
+      ->get();
   }
   public function countHiringManagers()
   {
@@ -37,7 +37,11 @@ class TeamRepository
   }
   public function findByEmail($email)
   {
-    return User::where('email', $email)->first();
+    return User::where('email', $email)->where('company_id', $this->company_id)->first();
+  }
+  public function findById($id)
+  {
+    return User::where('user_id', $id)->where('company_id', $this->company_id)->first();
   }
   public function findByInvitationToken($invitation_token)
   {
@@ -78,6 +82,11 @@ class TeamRepository
   }
   public function deactivateUser($user_id)
   {
+    /**
+     * before deactivation:
+     *  check if the hiring manager has any active jobs
+     *  check if the hiring manager has any active interviews
+     */
     $user = User::find($user_id);
     $user->status = 'inactive';
     $user->save();
@@ -85,17 +94,24 @@ class TeamRepository
   }
   public function reactivateUser($user_id)
   {
+
     $user = User::find($user_id);
     $user->status = 'active';
     $user->save();
     return $user;
   }
   // softDeleteUser($user_id)` — remove from team
-  public function softDeleteUser($user_id)
+  public function removeMember($user_id)
   {
-    $user = User::find($user_id);
-    $user->deleted_at = Carbon::now();
-    $user->save();
+    /**
+     * before removing:
+     *  check if the hiring manager has any active jobs
+     *  check if the hiring manager has any active interviews
+     */
+    $user = User::where('user_id', $user_id)->where('company_id', $this->company_id)->first();
+    if ($user) {
+      $user->forceDelete();
+    }
     return $user;
   }
 
