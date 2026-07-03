@@ -3,6 +3,8 @@
 namespace App\Repositories\Company;
 
 use App\Models\Company;
+use App\Models\Interview;
+use App\Models\JobVacancy;
 use App\Models\User;
 use Carbon\Carbon;
 use Str;
@@ -82,15 +84,14 @@ class TeamRepository
   }
   public function deactivateUser($user_id)
   {
-    /**
-     * before deactivation:
-     *  check if the hiring manager has any active jobs
-     *  check if the hiring manager has any active interviews
-     */
     $user = User::find($user_id);
     $user->status = 'inactive';
     $user->save();
     return $user;
+  }
+  public function hasActiveInterviews($user_id)
+  {
+    return Interview::where('interviewer_id', $user_id)->whereIn('status', ['active', 'pending'])->count();
   }
   public function reactivateUser($user_id)
   {
@@ -103,11 +104,6 @@ class TeamRepository
   // softDeleteUser($user_id)` — remove from team
   public function removeMember($user_id)
   {
-    /**
-     * before removing:
-     *  check if the hiring manager has any active jobs
-     *  check if the hiring manager has any active interviews
-     */
     $user = User::where('user_id', $user_id)->where('company_id', $this->company_id)->first();
     if ($user) {
       $user->forceDelete();

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Repositories\Company\TeamRepository;
 use DB;
 use Mail;
+use Masmerise\Toaster\Toaster;
 use Str;
 
 class TeamService
@@ -94,6 +95,13 @@ class TeamService
   }
   public function deactivateMember($id)
   {
+    /**
+     * before deactivation:
+     *  check if the hiring manager has any active interviews
+     */
+    if ($this->teamRepository->hasActiveInterviews($id)) {
+      throw new \Exception('Hiring manager has active interviews. Please reassign them before deactivating.');
+    }
     $user = $this->teamRepository->deactivateUser($id);
     return $user;
   }
@@ -104,6 +112,13 @@ class TeamService
   }
   public function removeMember($id)
   {
+    /**
+     * before removing: 
+     *  check if the hiring manager has any active interviews
+     */
+    if ($this->teamRepository->hasActiveInterviews($id)) {
+      throw new \Exception('Hiring manager has active interviews. Please reassign them before removing.');
+    }
     $user = $this->teamRepository->removeMember($id);
     return $user;
   }
