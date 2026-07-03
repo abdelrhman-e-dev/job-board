@@ -33,28 +33,50 @@ class MemberActions extends Component
   }
   public function resendInvite()
   {
-    $this->teamService->resendInvitation($this->member->user_id);
-    $this->confirmingResend = false;
-    $this->dispatch('inviteResent');
-    Toaster::success('Invitation resent to ' . $this->member->email);
+    try {
+      $this->teamService->resendInvitation($this->member->user_id);
+      Toaster::success('Invitation resent to ' . $this->member->email);
+    } catch (\Exception $e) {
+      Toaster::error($e->getMessage());
+    } finally {
+      $this->confirmingResend = false;
+      $this->dispatch('inviteResent');
+    }
   }
   public function reactivateMember()
   {
-    $this->teamService->reactivateMember($this->member->user_id);
-    $this->dispatch('memberReactivated'); // TeamList 
-    Toaster::success($this->member->first_name . ' has been reactivated');
+    try {
+      $this->teamService->reactivateMember($this->member->user_id);
+      Toaster::success($this->member->first_name . ' has been reactivated');
+    } catch (\Exception $e) {
+      Toaster::error($e->getMessage());
+    } finally {
+      $this->dispatch('memberReactivated'); // TeamList 
+    }
   }
   public function deactivateMember()
   {
-    $this->teamService->deactivateMember($this->member->user_id);
-    $this->dispatch('memberDeactivated'); // TeamList 
-    Toaster::success($this->member->first_name . ' has been deactivated');
+    try {
+      $this->teamService->deactivateMember($this->member->user_id);
+      Toaster::success($this->member->first_name . ' has been deactivated');
+    } catch (\Exception $e) {
+      Toaster::error($e->getMessage());
+    } finally {
+      $this->confirmingDeactivate = false;
+      $this->dispatch('memberDeactivated'); // TeamList 
+    }
   }
   public function removeMember()
   {
-    $this->teamService->removeMember($this->member->user_id);
-    $this->dispatch('memberRemoved'); // TeamList 
-    Toaster::success($this->member->first_name . ' has been removed');
+    try {
+      $this->teamService->removeMember($this->member->user_id);
+      Toaster::success($this->member->first_name . ' has been removed');
+    } catch (\Exception $e) {
+      Toaster::error($e->getMessage());
+    } finally {
+      $this->confirmingRemove = false;
+      $this->dispatch('memberRemoved'); // TeamList 
+    }
   }
   public function render()
   {
