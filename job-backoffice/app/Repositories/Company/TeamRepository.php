@@ -125,6 +125,10 @@ class TeamRepository
     return $user;
   }
 
+  public function getActiveInterviews($id)
+  {
+    return Interview::where('interviewer_id', $id)->whereIn('status', ['active', 'pending'])->get();
+  }
   //  move jobs/applications to owner
   // public function reassignAssets($from_user_id, $to_user_id)
   // {

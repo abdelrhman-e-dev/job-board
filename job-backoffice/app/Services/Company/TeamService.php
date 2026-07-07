@@ -3,6 +3,7 @@
 namespace App\Services\Company;
 
 use App\Exceptions\Company\EmailAlreadyExistsException;
+use App\Exceptions\Company\ReassignToMember;
 use App\Exceptions\Company\TeamLimitReachedException;
 use App\Mail\Company\InvitationEmail;
 use App\Models\User;
@@ -100,7 +101,9 @@ class TeamService
      *  check if the hiring manager has any active interviews , active jobs , sent offers , had applications reviews
      */
     if ($this->teamRepository->hasActiveInterviews($id)) {
-      throw new \Exception('Hiring manager has active interviews. Please reassign them before deactivating.');
+      throw new ReassignToMember('Hiring manager has active interviews. Please reassign them before deactivating.', [
+        'interviews' => $this->teamRepository->getActiveInterviews($id),
+      ]);
     }
     if ($this->teamRepository->hasActiveJobs($id)) {
       throw new \Exception('Hiring manager has active jobs. Please reassign them before deactivating.');
