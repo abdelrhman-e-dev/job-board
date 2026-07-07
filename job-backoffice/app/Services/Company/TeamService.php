@@ -97,10 +97,19 @@ class TeamService
   {
     /**
      * before deactivation:
-     *  check if the hiring manager has any active interviews
+     *  check if the hiring manager has any active interviews , active jobs , sent offers , had applications reviews
      */
     if ($this->teamRepository->hasActiveInterviews($id)) {
       throw new \Exception('Hiring manager has active interviews. Please reassign them before deactivating.');
+    }
+    if ($this->teamRepository->hasActiveJobs($id)) {
+      throw new \Exception('Hiring manager has active jobs. Please reassign them before deactivating.');
+    }
+    if ($this->teamRepository->hasSentOffers($id)) {
+      throw new \Exception('Hiring manager has sent offers. Please reassign them before deactivating.');
+    }
+    if ($this->teamRepository->hasActiveApplicationsReviewed($id)) {
+      throw new \Exception('Hiring manager has active applications reviews. Please reassign them before deactivating.');
     }
     $user = $this->teamRepository->deactivateUser($id);
     return $user;
