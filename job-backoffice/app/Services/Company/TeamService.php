@@ -3,12 +3,14 @@
 namespace App\Services\Company;
 
 use App\Exceptions\Company\EmailAlreadyExistsException;
+use App\Exceptions\Company\ReassignToMember;
 use App\Exceptions\Company\TeamLimitReachedException;
 use App\Mail\Company\InvitationEmail;
 use App\Models\User;
 use App\Repositories\Company\TeamRepository;
 use DB;
 use Mail;
+use Masmerise\Toaster\Toaster;
 use Str;
 
 class TeamService
@@ -94,6 +96,24 @@ class TeamService
   }
   public function deactivateMember($id)
   {
+    /**
+     * before deactivation:
+     *  check if the hiring manager has any active interviews , active jobs , sent offers , had applications reviews
+     */
+    if ($this->teamRepository->hasActiveInterviews($id)) {
+      throw new ReassignToMember('Hiring manager has active interviews. Please reassign them before deactivating.', [
+        'interviews' => $this->teamRepository->getActiveInterviews($id),
+      ]);
+    }
+    if ($this->teamRepository->hasActiveJobs($id)) {
+      throw new \Exception('Hiring manager has active jobs. Please reassign them before deactivating.');
+    }
+    if ($this->teamRepository->hasSentOffers($id)) {
+      throw new \Exception('Hiring manager has sent offers. Please reassign them before deactivating.');
+    }
+    if ($this->teamRepository->hasActiveApplicationsReviewed($id)) {
+      throw new \Exception('Hiring manager has active applications reviews. Please reassign them before deactivating.');
+    }
     $user = $this->teamRepository->deactivateUser($id);
     return $user;
   }
@@ -104,6 +124,13 @@ class TeamService
   }
   public function removeMember($id)
   {
+    /**
+     * before removing: 
+     *  check if the hiring manager has any active interviews
+     */
+    if ($this->teamRepository->hasActiveInterviews($id)) {
+      throw new \Exception('Hiring manager has active interviews. Please reassign them before removing.');
+    }
     $user = $this->teamRepository->removeMember($id);
     return $user;
   }
