@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Company\Team;
 
+use App\Exceptions\Company\ReassignToMember;
 use App\Models\User;
 use App\Services\Company\TeamService;
 use Livewire\Component;
@@ -13,6 +14,7 @@ class MemberActions extends Component
   public bool $confirmingResend = false;
   public bool $confirmingDeactivate = false;
   public bool $confirmingRemove = false;
+  public bool $reassign = false;
   private TeamService $teamService;
   public function boot(TeamService $teamService)
   {
@@ -30,6 +32,10 @@ class MemberActions extends Component
   public function cancelResend()
   {
     $this->confirmingResend = false;
+  }
+  public function cancelReassign()
+  {
+    $this->reassign = false;
   }
   public function resendInvite()
   {
@@ -59,6 +65,8 @@ class MemberActions extends Component
     try {
       $this->teamService->deactivateMember($this->member->user_id);
       Toaster::success($this->member->first_name . ' has been deactivated');
+    } catch (ReassignToMember $e) {
+      $this->reassign = true;
     } catch (\Exception $e) {
       Toaster::error($e->getMessage());
     } finally {
