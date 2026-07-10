@@ -6,6 +6,9 @@ use App\Exceptions\Company\EmailAlreadyExistsException;
 use App\Exceptions\Company\ReassignToMember;
 use App\Exceptions\Company\TeamLimitReachedException;
 use App\Mail\Company\InvitationEmail;
+use App\Models\Application;
+use App\Models\Interview;
+use App\Models\JobVacancy;
 use App\Models\User;
 use App\Repositories\Company\TeamRepository;
 use DB;
@@ -26,6 +29,77 @@ class TeamService
   public function getMembers()
   {
     return $this->teamRepository->getCompanyMembers();
+  }
+  public function getMemberProfile($userId): ?array
+  {
+    $member = $this->teamRepository->getMember($userId);
+
+    if (!$member) {
+      return null;
+    }
+
+    $applicationsCount = Application::query()
+      ->whereHas('job', function ($query) use ($userId) {
+        $query->where('posted_by', $userId);
+      })
+      ->count();
+
+    $interviewsCount = Interview::query()
+      ->whereHas('jobs', function ($query) use ($userId) {
+        $query->where('interviewer_id', $userId)->orWhere('created_by', $userId);
+      })
+      ->count();
+
+    $latestJobs = JobVacancy::query()
+      ->where('posted_by', $userId)
+      ->latest()
+      ->take(3)
+      ->get([
+        'job_id',
+        'title',
+        'status',
+        'level',
+        'type',
+        'created_at',
+      ]);
+
+    return [
+
+      'member' => [
+
+        'id' => $member->user_id,
+
+        'first_name' => $member->first_name,
+
+        'last_name' => $member->last_name,
+
+        'email' => $member->email,
+
+        'phone' => $member->phone,
+
+        'status' => $member->status,
+
+        'role' => $member->role,
+
+        'joined_at' => $member->created_at,
+
+      ],
+
+      'stats' => [
+
+        'jobs' => $member->jobs_count,
+
+        'active_jobs' => $member->active_jobs_count,
+
+        'applications' => $applicationsCount,
+
+        'interviews' => $interviewsCount,
+
+      ],
+
+      'latestJobs' => $latestJobs,
+
+    ];
   }
   public function canInviteMember()
   {

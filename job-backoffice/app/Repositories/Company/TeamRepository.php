@@ -44,6 +44,30 @@ class TeamRepository
   {
     return User::where('email', $email)->where('company_id', $this->company_id)->first();
   }
+  public function getMember($userId): ?User
+  {
+    return User::query()
+      ->where('user_id', $userId)
+      ->where('company_id', $this->company_id)
+      ->select([
+        'user_id',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'status',
+        'role_id',
+        'created_at',
+      ])
+      ->with('role:role_id,role_name')
+      ->withCount([
+        'jobs',
+        'jobs as active_jobs_count' => function ($query) {
+          $query->where('status', 'active');
+        }
+      ])
+      ->first();
+  }
   public function findById($id)
   {
     return User::where('user_id', $id)->where('company_id', $this->company_id)->first();
