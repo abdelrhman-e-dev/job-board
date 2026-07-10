@@ -8,7 +8,7 @@ use App\Services\Company\TeamService;
 class TeamController extends Controller
 {
 
-  public function __construct(private TeamService $tesmService)
+  public function __construct(private TeamService $teamService)
   {
 
   }
@@ -17,9 +17,17 @@ class TeamController extends Controller
     return view(
       'company.team.index',
       [
-        'reachLimit' => $this->tesmService->canInviteMember(),
-        'current' => $this->tesmService->countHiringManagers()
+        'reachLimit' => $this->teamService->canInviteMember(),
+        'current' => $this->teamService->countHiringManagers()
       ]
     );
+  }
+  public function member($id)
+  {
+    $data = $this->teamService->getMemberProfile($id);
+
+    abort_if(!$data, 404);
+
+    return view('company.team.member', compact('data'));
   }
 }
