@@ -1,5 +1,5 @@
-<div class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-visible h-full flex flex-col w-full"
-    id="limit-banner">
+<div
+    class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-visible h-full flex flex-col w-full">
     <div class="overflow-visible flex-1 h-full">
         {{-- empty state when no hiring managers exist --}}
         @if (!isset($members))
@@ -36,47 +36,51 @@
                 </thead>
                 <tbody>
                     @foreach ($members as $member)
-                        <tr class="hover:bg-surface-bright transition-colors">
-                            <td class="px-md py-md">
-                                <div class="flex items-center gap-md">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-title-md">
-                                        {{ $member->first_name[0] . $member->last_name[0] }}
+                        @if (auth()->guard('company')->user()->user_id == $member->user_id)
+                            @continue
+                        @else
+                            <tr class="hover:bg-surface-bright transition-colors">
+                                <td class="px-md py-md">
+                                    <div class="flex items-center gap-md">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-title-md">
+                                            {{ $member->first_name[0] . $member->last_name[0] }}
+                                        </div>
+                                        <div>
+                                            <span
+                                                class="text-body-md font-semibold text-on-surface">{{ $member->first_name . ' ' . $member->last_name }}</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span
-                                            class="text-body-md font-semibold text-on-surface">{{ $member->first_name . ' ' . $member->last_name }}</span>
+                                </td>
+                                <td class="px-md py-md text-body-md text-secondary">{{ $member->email }}</td>
+                                <td class="px-md py-md">
+                                    <span
+                                        class="bg-primary-light text-primary-container text-xs font-medium px-1.5 py-0.5 rounded">{{ $member->role->role_name }}</span>
+                                </td>
+                                <td class="px-md py-md">
+                                    <div class="flex items-center gap-xs">
+                                        @if ($member->status == 'active')
+                                            <span
+                                                class="bg-success-light text-success text-xs font-medium px-1.5 py-0.5 rounded">
+                                                {{ $member->status }}
+                                            </span>
+                                        @else
+                                            <span
+                                                class="bg-danger-light text-danger text-xs font-medium px-1.5 py-0.5 rounded">
+                                                {{ $member->status }}
+                                            </span>
+                                        @endif
                                     </div>
-                                </div>
-                            </td>
-                            <td class="px-md py-md text-body-md text-secondary">{{ $member->email }}</td>
-                            <td class="px-md py-md">
-                                <span
-                                    class="bg-primary-light text-primary-container text-xs font-medium px-1.5 py-0.5 rounded">{{ $member->role->role_name }}</span>
-                            </td>
-                            <td class="px-md py-md">
-                                <div class="flex items-center gap-xs">
-                                    @if ($member->status == 'active')
-                                        <span
-                                            class="bg-success-light text-success text-xs font-medium px-1.5 py-0.5 rounded">
-                                            {{ $member->status }}
-                                        </span>
-                                    @else
-                                        <span
-                                            class="bg-danger-light text-danger text-xs font-medium px-1.5 py-0.5 rounded">
-                                            {{ $member->status }}
-                                        </span>
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="px-md py-md text-secondary text-sm">
-                                {{ $member->created_at->format('M d, Y') }}
-                            </td>
-                            <td class="px-md py-md text-right text-secondary">
-                                {{-- هنا بنستدعي MemberActions ونديه بيانات العضو --}}
-                                <livewire:company.team.member-actions :member="$member" :key="'member-actions-' . $member->user_id" />
-                            </td>
-                        </tr>
+                                </td>
+                                <td class="px-md py-md text-secondary text-sm">
+                                    {{ $member->created_at->format('M d, Y') }}
+                                </td>
+                                <td class="px-md py-md text-right text-secondary">
+                                    {{-- هنا بنستدعي MemberActions ونديه بيانات العضو --}}
+                                    <livewire:company.team.member-actions :member="$member" :key="'member-actions-' . $member->user_id" />
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
