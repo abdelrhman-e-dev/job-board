@@ -1,40 +1,41 @@
 {{-- member-actions.blade.php --}}
 <div>
-    <x-dropdown align="right">
-        <x-slot name="trigger">
-            <button class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
-                <span class="material-symbols-outlined">more_vert</span>
-            </button>
-        </x-slot>
+    @if ($member->user_id !== auth()->guard('company')->user()->user_id)
+        <x-dropdown align="right">
+            <x-slot name="trigger">
+                <button class="p-2 rounded-lg text-secondary hover:bg-neutral-100 disabled:opacity-50 transition-all">
+                    <span class="material-symbols-outlined">more_vert</span>
+                </button>
+            </x-slot>
 
-        <x-slot name="content">
-            @if ($member->InvitationIsPending())
-                <button wire:click="confirmResend"
-                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:bg-neutral-100 transition duration-150 ease-in-out">
-                    <span class="material-symbols-outlined text-[18px]">outgoing_mail</span> Resend Invite
-                </button>
-                <button wire:click="$set('confirmingRemove', true)"
-                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
-                    <span class="material-symbols-outlined text-[18px]">delete</span> Remove
-                </button>
-            @elseif ($member->status === 'active')
-                <button wire:click="$set('confirmingDeactivate', true)"
-                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
-                    <span class="material-symbols-outlined text-[18px]">block</span> Deactivate
-                </button>
-            @else
-                <button wire:click="reactivateMember"
-                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-success hover:bg-success-light focus:outline-none focus:bg-success-light transition duration-150 ease-in-out">
-                    <span class="material-symbols-outlined text-[18px]">check_circle</span> Reactivate
-                </button>
-                <button wire:click="$set('confirmingRemove', true)"
-                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
-                    <span class="material-symbols-outlined text-[18px]">delete</span> Remove
-                </button>
-            @endif
-        </x-slot>
-    </x-dropdown>
-
+            <x-slot name="content">
+                @if ($member->InvitationIsPending())
+                    <button wire:click="confirmResend"
+                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:bg-neutral-100 transition duration-150 ease-in-out">
+                        <span class="material-symbols-outlined text-[18px]">outgoing_mail</span> Resend Invite
+                    </button>
+                    <button wire:click="$set('confirmingRemove', true)"
+                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
+                        <span class="material-symbols-outlined text-[18px]">delete</span> Remove
+                    </button>
+                @elseif ($member->status === 'active')
+                    <button wire:click="$set('confirmingDeactivate', true); $set('modalLable', 'Deactivate')"
+                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
+                        <span class="material-symbols-outlined text-[18px]">block</span> Deactivate
+                    </button>
+                @else
+                    <button wire:click="reactivateMember"
+                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-success hover:bg-success-light focus:outline-none focus:bg-success-light transition duration-150 ease-in-out">
+                        <span class="material-symbols-outlined text-[18px]">check_circle</span> Reactivate
+                    </button>
+                    <button wire:click="$set('confirmingRemove', true , $modalLable = 'Remove')"
+                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-danger hover:bg-danger-light focus:outline-none focus:bg-danger-light transition duration-150 ease-in-out">
+                        <span class="material-symbols-outlined text-[18px]">delete</span> Remove
+                    </button>
+                @endif
+            </x-slot>
+        </x-dropdown>
+    @endif
     {{-- Deactivate Confirmation Modal --}}
     @if ($confirmingDeactivate)
         <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-md" x-cloak>
@@ -129,16 +130,19 @@
         <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-md" x-cloak>
             <div @click.outside="$wire.cancelReassign()"
                 class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl shadow-xl flex flex-col text-left overflow-hidden">
-                
+
                 {{-- Header --}}
                 <div class="px-6 pt-6 pb-4">
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-full bg-danger-light flex items-center justify-center flex-shrink-0">
+                        <div
+                            class="w-12 h-12 rounded-full bg-danger-light flex items-center justify-center flex-shrink-0">
                             <span class="material-symbols-outlined text-danger text-[26px]">warning</span>
                         </div>
                         <div class="flex flex-col pt-1">
-                            <h2 class="text-[18px] font-bold text-neutral-900 leading-tight">Reassign & Deactivate Member</h2>
-                            <p class="text-[14px] text-neutral-500 mt-1">Member: {{ $member->first_name }} {{ $member->last_name }}</p>
+                            <h2 class="text-[18px] font-bold text-neutral-900 leading-tight">Reassign &
+                                {{ $modalLable }}</h2>
+                            <p class="text-[14px] text-neutral-500 mt-1">Member: {{ $member->first_name }}
+                                {{ $member->last_name }}</p>
                         </div>
                     </div>
                 </div>
@@ -150,19 +154,22 @@
                         <div class="grid grid-cols-2 gap-y-3 gap-x-4">
                             <div class="flex items-center gap-2 text-neutral-600">
                                 <span class="material-symbols-outlined text-neutral-500 text-[18px]">description</span>
-                                <span class="text-[13px]"><strong>3</strong> Job Postings</span>
+                                <span class="text-[13px]"><strong>{{ $activeJobs }}</strong> Job Postings</span>
                             </div>
                             <div class="flex items-center gap-2 text-neutral-600">
                                 <span class="material-symbols-outlined text-neutral-500 text-[18px]">task</span>
-                                <span class="text-[13px]"><strong>12</strong> Reviewed Applications</span>
+                                <span class="text-[13px]"><strong>{{ $activeApplicationsReviewedCount }}</strong>
+                                    Reviewed Applications</span>
                             </div>
                             <div class="flex items-center gap-2 text-neutral-600">
                                 <span class="material-symbols-outlined text-neutral-500 text-[18px]">event_note</span>
-                                <span class="text-[13px]"><strong>4</strong> Active Interviews</span>
+                                <span
+                                    class="text-[13px]"><strong>{{ $activeInterviewsCount }} </strong>Interviews</span>
                             </div>
                             <div class="flex items-center gap-2 text-neutral-600">
-                                <span class="material-symbols-outlined text-neutral-500 text-[18px]">assignment_late</span>
-                                <span class="text-[13px]"><strong>1</strong> Pending Offer</span>
+                                <span
+                                    class="material-symbols-outlined text-neutral-500 text-[18px]">assignment_late</span>
+                                <span class="text-[13px]"><strong>{{ $offersCount }}</strong> Offer</span>
                             </div>
                         </div>
                     </div>
@@ -171,10 +178,22 @@
                     <div>
                         <label class="block text-[13px] font-medium text-neutral-600 mb-2">Reassign work to</label>
                         <div class="relative">
-                            <select class="w-full appearance-none bg-white border border-neutral-300 text-neutral-900 text-sm rounded-md px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
-                                <option>Sarah Jenkins (Company Owner)</option>
+                            <select wire:model.live="assignTo"
+                                class="w-full appearance-none bg-white border border-neutral-300 text-neutral-900 text-sm rounded-md px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                                <option value="" disabled>Select a member</option>
+                                @foreach ($comapnyMemebers as $companyMember)
+                                    @if ($companyMember->user_id != $member->user_id)
+                                        <option value="{{ $companyMember->user_id }}">
+                                            {{ $companyMember->first_name }} {{ $companyMember->last_name }}
+                                            @if ($companyMember->user_id == auth()->guard('company')->user()->user_id)
+                                                (You)
+                                            @endif
+                                        </option>
+                                    @endif
+                                @endforeach
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
                                 <span class="material-symbols-outlined text-[20px]">expand_more</span>
                             </div>
                         </div>
@@ -182,9 +201,21 @@
 
                     {{-- Info box --}}
                     <div class="bg-[#F0F9FF] border border-[#B9E6FE] p-3 rounded-md flex items-start gap-3">
-                        <span class="material-symbols-outlined text-[#0284C7] text-[18px] shrink-0 mt-[1px]">info</span>
+                        <span
+                            class="material-symbols-outlined text-[#0284C7] text-[18px] shrink-0 mt-[1px]">info</span>
                         <p class="text-[13px] text-neutral-700 leading-relaxed">
-                            Deactivating this member will revoke their access immediately. All historical data, notes, and the workload listed above will be transferred to <strong class="font-semibold text-neutral-900">Sarah Jenkins</strong>.
+                            Deactivating this member will revoke their access immediately. All historical data, notes,
+                            and the workload listed above will be transferred to <strong
+                                class="font-semibold text-neutral-900">
+                                @php
+                                    $selectedMember = collect($comapnyMemebers)->firstWhere('user_id', $assignTo);
+                                @endphp
+                                @if ($selectedMember)
+                                    {{ $selectedMember->first_name }} {{ $selectedMember->last_name }}
+                                @else
+                                    the selected member
+                                @endif
+                            </strong>.
                         </p>
                     </div>
 
@@ -193,9 +224,10 @@
                         <button type="button" wire:click="cancelReassign"
                             class="text-[14px] font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Cancel</button>
                         <button type="button" wire:click="reassignAssets" wire:loading.attr="disabled"
-                            wire:target="reassignAssets"
+                            wire:target="reassignAssets" @if (empty($assignTo)) disabled @endif
                             class="flex justify-center items-center gap-2 bg-danger text-white px-5 py-2.5 rounded-md text-[14px] font-medium hover:bg-danger-dark transition-all active:scale-95 shadow-sm disabled:opacity-75 disabled:pointer-events-none">
-                            <span wire:loading.remove wire:target="reassignAssets">Reassign & Deactivate</span>
+                            <span wire:loading.remove wire:target="reassignAssets">Reassign &
+                                {{ $modalLable }}</span>
                             <span wire:loading wire:target="reassignAssets"
                                 class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
                             <span wire:loading wire:target="reassignAssets">Processing...</span>
