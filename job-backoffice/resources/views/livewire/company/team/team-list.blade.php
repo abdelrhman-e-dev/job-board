@@ -1,5 +1,5 @@
-<div class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-visible h-full flex flex-col w-full"
-    id="limit-banner">
+<div
+    class="bg-surface-container-lowest rounded-xl custom-shadow border border-neutral-300 overflow-visible h-full flex flex-col w-full">
     <div class="overflow-visible flex-1 h-full">
         {{-- empty state when no hiring managers exist --}}
         @if (!isset($members))

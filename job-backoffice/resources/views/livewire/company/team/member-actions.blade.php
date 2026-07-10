@@ -9,6 +9,10 @@
             </x-slot>
 
             <x-slot name="content">
+                <button wire:click="goToMember"
+                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:bg-neutral-100 transition duration-150 ease-in-out">
+                    <span class="material-symbols-outlined text-[18px]">person</span> View Profile
+                </button>
                 @if ($member->InvitationIsPending())
                     <button wire:click="confirmResend"
                         class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm leading-5 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:bg-neutral-100 transition duration-150 ease-in-out">
@@ -163,8 +167,8 @@
                             </div>
                             <div class="flex items-center gap-2 text-neutral-600">
                                 <span class="material-symbols-outlined text-neutral-500 text-[18px]">event_note</span>
-                                <span
-                                    class="text-[13px]"><strong>{{ $activeInterviewsCount }} </strong>Interviews</span>
+                                <span class="text-[13px]"><strong>{{ $activeInterviewsCount }}
+                                    </strong>Interviews</span>
                             </div>
                             <div class="flex items-center gap-2 text-neutral-600">
                                 <span
