@@ -32,7 +32,6 @@ class TeamRepository
     return User::where('company_id', $this->company_id)
       ->with('role')
       ->whereIn('role_id', $this->allowedRolles)
-      ->latest()
       ->get();
   }
   public function countHiringManagers()
