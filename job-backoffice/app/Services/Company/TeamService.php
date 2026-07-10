@@ -134,4 +134,25 @@ class TeamService
     $user = $this->teamRepository->removeMember($id);
     return $user;
   }
+  // get active jobs
+  public function getActiveJobsCount($id)
+  {
+    return $this->teamRepository->getActiveJobsCount($id);
+  }
+  public function getOffersCount($id)
+  {
+    return $this->teamRepository->getOffersCount($id);
+  }
+  public function getActiveInterviewsCount($id)
+  {
+    return $this->teamRepository->getActiveInterviewsCount($id);
+  }
+  public function getActiveApplicationsReviewedCount($id)
+  {
+    return $this->teamRepository->getActiveApplicationsReviewedCount($id);
+  }
+  public function reassignAssets($from_user_id, $to_user_id)
+  {
+    return $this->teamRepository->reassignAssets($from_user_id, $to_user_id);
+  }
 }

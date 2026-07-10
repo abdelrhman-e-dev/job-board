@@ -9,6 +9,7 @@ use App\Models\JobVacancy;
 use App\Models\Offer;
 use App\Models\User;
 use Carbon\Carbon;
+use DB;
 use Str;
 class TeamRepository
 {
@@ -17,6 +18,7 @@ class TeamRepository
    */
   private $company_id = "";
   private $allowedRolles = [
+    'company-owner' => User::ROLES['company-owner'],
     'hiring-manager' => User::ROLES['hiring-manager'],
   ];
   public function __construct()
@@ -129,12 +131,45 @@ class TeamRepository
   {
     return Interview::where('interviewer_id', $id)->whereIn('status', ['active', 'pending'])->get();
   }
-  //  move jobs/applications to owner
-  // public function reassignAssets($from_user_id, $to_user_id)
-  // {
-  //   $user = User::find($from_user_id);
-  //   $user->company_id = $to_user_id;
-  //   $user->save();
-  //   return $user;
-  // }
+  public function getActiveJobsCount($id)
+  {
+    return JobVacancy::where('posted_by', $id)->orWhere('closed_by', $id)->get()->count();
+  }
+  public function getOffersCount($id)
+  {
+    return Offer::where('created_by', $id)->orWhere('updated_by', $id)->get()->count();
+  }
+  public function getActiveInterviewsCount($id)
+  {
+    return Interview::where('interviewer_id', $id)->whereIn('status', ['active', 'pending'])->get()->count();
+  }
+  public function getActiveApplicationsReviewedCount($id)
+  {
+    return ApplicationReview::where('reviewer_id', $id)->get()->count();
+  }
+  //  move jobs/applications/offers/interviews to another hiring manager or owner
+  public function reassignAssets($from_user_id, $to_user_id)
+  {
+    $user = User::find($from_user_id);
+    DB::beginTransaction();
+    try {
+      // update posted_by
+      JobVacancy::where('posted_by', $from_user_id)->update(['posted_by' => $to_user_id]);
+      // update closed_by
+      JobVacancy::where('closed_by', $from_user_id)->update(['closed_by' => $to_user_id]);
+      // update interviewer_id
+      Interview::where('interviewer_id', $from_user_id)->update(['interviewer_id' => $to_user_id]);
+      // update reviewer_id
+      ApplicationReview::where('reviewer_id', $from_user_id)->update(['reviewer_id' => $to_user_id]);
+      // update created_by
+      Offer::where('created_by', $from_user_id)->update(['created_by' => $to_user_id]);
+      // update updated_by
+      Offer::where('updated_by', $from_user_id)->update(['updated_by' => $to_user_id]);
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      throw $e;
+    }
+    return $user;
+  }
 }
