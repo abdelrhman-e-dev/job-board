@@ -80,4 +80,5 @@ Route::middleware(['company.auth', 'company.role', 'company.approved', 'company.
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
   Route::get('/team', [TeamController::class, 'index'])->name('team');
+  Route::get('/team/member/{id}', [TeamController::class, 'member'])->name('team.member');
 });

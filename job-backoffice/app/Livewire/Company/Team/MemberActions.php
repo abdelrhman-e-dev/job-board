@@ -121,11 +121,14 @@ class MemberActions extends Component
   #[On('memberReactivated')]
   public function refreshMemberData($payload)
   {
-      if (isset($payload['userId']) && $payload['userId'] == $this->member->user_id) {
-          $this->member->refresh();
-      }
+    if (isset($payload['userId']) && $payload['userId'] == $this->member->user_id) {
+      $this->member->refresh();
+    }
   }
-
+  public function goToMember()
+  {
+    return $this->redirect(route('company.team.member', $this->member->user_id), navigate: true);
+  }
   public function render()
   {
     return view('livewire.company.team.member-actions');
