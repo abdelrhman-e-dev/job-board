@@ -174,8 +174,7 @@
                                         <p class="text-label-sm text-neutral-500">{{ $job['level'] }} • {{ $job['type'] }}</p>
                                     </div>
                                 </div>
-                                <span
-                                    class="bg-success-light text-success text-[10px] font-bold px-sm py-[2px] rounded uppercase">{{ $job['status'] }}</span>
+                                <x-company.status-badge :status="$job['status']" />
                             </div>
                             @endforeach
                         </div>
