@@ -11,4 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (main) main.classList.toggle('sidebar-collapsed-padding');
     });
   }
+  const trigger = document.getElementById('user-menu-trigger');
+  const dropdown = document.getElementById('user-dropdown');
+
+  if (trigger && dropdown) {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && e.target !== trigger) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  }
 });
