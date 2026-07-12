@@ -20,6 +20,14 @@ class statusBadge extends Component
     'hired' => 'bg-badge-approved-bg text-success',
     'rejected' => 'bg-badge-rejected-bg text-danger',
     'withdraw' => 'bg-neutral-100 text-neutral-500',
+    // job status 
+    'draft' => 'bg-neutral-100 text-neutral-500',
+    'active' => 'bg-success-light text-success',
+    'closed' => 'bg-danger-light text-danger',
+    'expired' => 'bg-danger-light text-danger',
+    'blocked' => 'bg-danger-light text-danger',
+    'archive' => 'bg-neutral-100 text-neutral-500',
+    'trashed' => 'bg-danger-light text-danger',
   ];
   public string $colorClasses;
   public string $label;
