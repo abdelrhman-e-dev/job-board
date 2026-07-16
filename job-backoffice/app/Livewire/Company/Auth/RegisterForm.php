@@ -2,8 +2,12 @@
 
 namespace App\Livewire\Company\Auth;
 
+use App\DTO\Company\CompanyDTO;
+use App\DTO\Company\UserDTO;
+use App\Exceptions\Company\Auth\RegistrationFailed;
 use App\Models\Company;
 use App\Models\User;
+use App\Services\Company\RegisterService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +16,11 @@ use Livewire\Component;
 
 class RegisterForm extends Component
 {
+  private RegisterService $registerService;
+  public function boot(RegisterService $registerService)
+  {
+    $this->registerService = $registerService;
+  }
   public $step = 1;
   // step 1 properties
   public $first_name = '';
@@ -60,35 +69,35 @@ class RegisterForm extends Component
   public function submit()
   {
     $this->validate();
-    DB::transaction(function () {
-      $user = User::create([
-        'first_name' => $this->first_name,
-        'last_name' => $this->last_name,
-        'email' => $this->email,
-        'password' => Hash::make($this->password),
-        'role_id' => User::ROLES['company-owner'],
-      ]);
-
-      $company = Company::create([
-        'name' => $this->company_name,
-        'slug' => Str::slug($this->company_name),
-        'industry' => $this->industry,
-        'size' => $this->size,
-        'city' => $this->city,
-        'country' => $this->country,
-        'owner_id' => $user->user_id,
-        'status' => 'pending', // Default status
-      ]);
-      // Link company to user
-      $user->update(['company_id' => $company->company_id]);
-      // Send verification email
-      Auth::guard('company')->login($user);
-      $user->sendEmailVerificationNotification();
-    });
-
+    try {
+      $this->registerService->register($this->getUserdata(), $this->getCompanydata());
+    } catch (RegistrationFailed $e) {
+      session()->flash('error', $e->getMessage());
+    }
     return redirect()->route('company.verification.notice');
   }
 
+  public function getUserdata()
+  {
+    return new UserDTO(
+      $this->first_name,
+      $this->last_name,
+      $this->email,
+      $this->password,
+    );
+  }
+  public function getCompanydata()
+  {
+    return new CompanyDTO(
+      company_name: $this->company_name,
+      company_slug: $this->company_name,
+      industry: $this->industry,
+      size: $this->size,
+      city: $this->city,
+      country: $this->country,
+      status: 'pending',
+    );
+  }
   public function render()
   {
     return view('livewire.company.auth.register-form');

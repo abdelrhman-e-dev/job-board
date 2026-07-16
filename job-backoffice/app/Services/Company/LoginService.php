@@ -6,8 +6,8 @@ use App\Exceptions\Company\Auth\CompanyPendingException;
 use App\Exceptions\Company\Auth\CompanyRejectedException;
 use App\Exceptions\Company\Auth\CompanySuspendedException;
 use App\Exceptions\Company\Auth\InactiveUserException;
+use App\Exceptions\Company\Auth\UnauthorizedRoleException;
 use Auth;
-use Illuminate\Validation\UnauthorizedException;
 use Log;
 use Illuminate\Support\Facades\RateLimiter;
 class LoginService
@@ -42,7 +42,7 @@ public function attempt($credentials, $remember, $throttleKey)
   public function checkRole($user)
   {
     if (!in_array($user->role->role_name, ['company-owner', 'hiring-manager'])) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedRoleException();
     }
   }
   public function checkStatus($user)
