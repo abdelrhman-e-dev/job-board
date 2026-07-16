@@ -6,13 +6,12 @@ use App\Exceptions\Company\Auth\CompanyPendingException;
 use App\Exceptions\Company\Auth\CompanyRejectedException;
 use App\Exceptions\Company\Auth\CompanySuspendedException;
 use App\Exceptions\Company\Auth\InactiveUserException;
+use App\Exceptions\Company\Auth\UnauthorizedRoleException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\Auth\LoginRequest;
 use App\Services\Company\LoginService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\UnauthorizedException;
+
 
 class LoginController extends Controller
 {
@@ -39,12 +38,12 @@ class LoginController extends Controller
       $this->loginService->checkRole($user);
       $this->loginService->checkStatus($user);
       $this->loginService->checkCompanyStatus($user);
-    } catch (UnauthorizedException $e) {
+    } catch (UnauthorizedRoleException $e) {
       $this->destroy();
-      return back()->withErrors(['email' => 'You are not authorized']);
+      return back()->withErrors(['error' => $e->getMessage()]);
     } catch (InactiveUserException $e) {
       $this->destroy();
-      return back()->withErrors(['email' => 'Your account is deactivated']);
+      return back()->withErrors(['error' => $e->getMessage()]);
     } catch (CompanyPendingException $e) {
       $this->destroy();
       return view('company.auth.status.pending');
