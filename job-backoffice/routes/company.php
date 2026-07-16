@@ -25,7 +25,6 @@ Route::middleware('company.guest')->group(function () {
   Route::get('/login', [LoginController::class, 'show'])->name('login');
   Route::post('/login', [LoginController::class, 'store'])->name('login.store');
   Route::get('/register', [RegisterController::class, 'show'])->name('register');
-  Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
   Route::get('/forget-password', [ForgotPasswordController::class, 'show'])->name('forget-password');
   Route::post('/forget-password', [ForgotPasswordController::class, 'store'])->name('forget-password.store');
   Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
