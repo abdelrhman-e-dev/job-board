@@ -62,8 +62,8 @@ class TeamRepository
       ->with('role:role_id,role_name')
       ->withCount([
         'jobs',
-        'jobs as active_jobs_count' => function ($query) {
-          $query->where('status', 'active');
+        'jobs as active_jobs_count' => function ($query) use ($userId) {
+          $query->where('status', 'active')->where('posted_by', $userId);
         }
       ])
       ->first();

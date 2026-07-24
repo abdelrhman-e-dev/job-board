@@ -201,14 +201,6 @@
                             </div>
                             <div>
                                 <p class="text-label-sm text-neutral-500 mb-xs uppercase tracking-tighter font-bold">
-                                    Two-Factor Auth</p>
-                                <div class="flex items-center gap-sm">
-                                    <span class="material-symbols-outlined text-success">check_circle</span>
-                                    <p class="text-body-md font-medium text-success">Enabled</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-label-sm text-neutral-500 mb-xs uppercase tracking-tighter font-bold">
                                     Permissions Level</p>
                                 <p class="text-body-md font-medium text-neutral-900">Standard Manager</p>
                             </div>
