@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Company\Profile;
 use App\Services\Company\ProfileService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
