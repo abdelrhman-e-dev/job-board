@@ -4,6 +4,7 @@ use App\Http\Controllers\Company\Auth\InvitationController;
 use App\Http\Controllers\Company\Auth\LoginController;
 use App\Http\Controllers\Company\Auth\RegisterController;
 use App\Http\Controllers\Company\DashboardController;
+use App\Http\Controllers\Company\JobController;
 use App\Http\Controllers\Company\ProfileController;
 use App\Http\Controllers\Company\TeamController;
 use App\Models\User;
@@ -80,4 +81,6 @@ Route::middleware(['company.auth', 'company.role', 'company.approved', 'company.
   Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
   Route::get('/team', [TeamController::class, 'index'])->name('team');
   Route::get('/team/member/{id}', [TeamController::class, 'member'])->name('team.member');
+  Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
+
 });
