@@ -4,7 +4,7 @@
     {{-- Icon --}}
     <div @class([
         'w-10 h-10 rounded-lg flex items-center
-                 justify-center mb-md',
+        justify-center mb-md',
         'bg-primary-light text-primary' => $color === 'primary',
         'bg-info-light text-info' => $color === 'info',
         'bg-success-light text-success' => $color === 'success',
