@@ -14,8 +14,8 @@
             <span class="font-label-md text-label-md nav-text">Dashboard</span>
         </a>
         <!-- Job Listings -->
-        <a class="flex items-center gap-md py-sm px-sm text-neutral-300 hover:text-white hover:bg-neutral-700 rounded-lg mx-2 transition-all duration-200"
-            href="#">
+        <a class="flex items-center gap-md py-sm px-sm {{ Route::is('company.jobs') ? 'bg-primary-container text-on-primary-container' : 'text-neutral-300 hover:text-white hover:bg-neutral-700' }} rounded-lg mx-2 transition-all duration-200"
+            href="{{ route('company.jobs') }}">
             <span class="material-symbols-outlined">work</span>
             <span class="font-label-md text-label-md nav-text">Job Listings</span>
         </a>
