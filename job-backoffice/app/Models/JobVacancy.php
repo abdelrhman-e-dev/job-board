@@ -171,4 +171,16 @@ class JobVacancy extends Model
   {
     return $this->hasMany(Offer::class, 'job_id', 'job_id');
   }
+  public function scopeActive($query)
+  {
+    return $query->where('status', 'active');
+  }
+  public function scopeDraft($query)
+  {
+    return $query->where('status', 'draft');
+  }
+  public function scopeClosed($query)
+  {
+    return $query->where('status', 'closed');
+  }
 }
