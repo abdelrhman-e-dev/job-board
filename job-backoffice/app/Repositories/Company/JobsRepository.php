@@ -3,6 +3,7 @@
 namespace App\Repositories\Company;
 
 use App\Models\JobVacancy;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class JobsRepository
@@ -41,6 +42,11 @@ class JobsRepository
       ->count();
   }
 
-  // get jobs with pagination
-  
+  // get all jobs 
+  public function getAllJobs($perPage = 10): LengthAwarePaginator
+  {
+    return JobVacancy::query()
+      ->where('company_id', $this->company_id)
+      ->paginate($perPage);
+  }
 }
