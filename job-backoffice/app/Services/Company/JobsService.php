@@ -27,9 +27,14 @@ class JobsService
     ];
   }
   // get all jobs
-  public function getAllJobs(int $perPage, User $user)
+  public function getAllJobs(int $perPage, User $user, ?string $search, ?string $status)
   {
     $managerId = $user->isOwner() ? null : $user->user_id;
-    return $this->jobsRepo->getAllJobs($perPage, hiringManagerID: $managerId);
+    return $this->jobsRepo->getAllJobs($perPage, $managerId, $search, $status);
+  }
+  // get jobs status 
+  public function getJobsStatus()
+  {
+    return $this->jobsRepo->getStatus();
   }
 }

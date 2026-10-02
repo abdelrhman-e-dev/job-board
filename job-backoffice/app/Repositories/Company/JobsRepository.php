@@ -51,13 +51,20 @@ class JobsRepository
   }
 
   // get all jobs 
-  public function getAllJobs($perPage = 10, ?string $hiringManagerID = null): LengthAwarePaginator
+  public function getAllJobs($perPage = 10, ?string $hiringManagerID = null, ?string $search = null, ?string $status = null): LengthAwarePaginator
   {
     return JobVacancy::query()
       ->where('company_id', $this->company_id)
+      ->when($search, fn($q) => $q->where('title', 'like', "%{$search}%"))
+      ->when($status, fn($q) => $q->where('status', $status))
       ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
       ->when(!$hiringManagerID, fn($q) => $q->with('creator:user_id,first_name,last_name,email'))
       ->latest()
       ->paginate($perPage);
+  }
+  // get jobs status 
+  public function getStatus()
+  {
+    return JobVacancy::STATUS_OPTIONS_FOR_ADMIN;
   }
 }
