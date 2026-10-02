@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Str;
@@ -100,6 +101,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
   // implementing FilamentUser interface
 
+  public function isOwner()
+  {
+    return Auth::guard('company')->user()->role_id === self::ROLES['company-owner'];
+  }
   public function canAccessPanel(Panel $panel): bool
   {
     return $this->role->role_name === 'system-admin' && $this->role->active;

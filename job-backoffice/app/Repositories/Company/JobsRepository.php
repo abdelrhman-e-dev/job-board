@@ -16,37 +16,48 @@ class JobsRepository
       ->company_id;
   }
   // total jobs posted
-  public function totalJobsCount(): int
+  public function totalJobsCount(?string $hiringManagerID = null): int
   {
-    return JobVacancy::where('company_id', $this->company_id)->count();
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)->count();
   }
   // Active jobs
-  public function activeJobsCount(): int
+  public function activeJobsCount(?string $hiringManagerID = null): int
   {
-    return JobVacancy::where('company_id', $this->company_id)
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
       ->active()
       ->count();
   }
   // Draft jobs
-  public function draftJobsCount(): int
+  public function draftJobsCount(?string $hiringManagerID = null): int
   {
-    return JobVacancy::where('company_id', $this->company_id)
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
       ->draft()
       ->count();
   }
   // Closed jobs
-  public function closedJobsCount(): int
+  public function closedJobsCount(?string $hiringManagerID = null): int
   {
-    return JobVacancy::where('company_id', $this->company_id)
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
       ->closed()
       ->count();
   }
 
   // get all jobs 
-  public function getAllJobs($perPage = 10): LengthAwarePaginator
+  public function getAllJobs($perPage = 10, ?string $hiringManagerID = null): LengthAwarePaginator
   {
     return JobVacancy::query()
       ->where('company_id', $this->company_id)
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->when(!$hiringManagerID, fn($q) => $q->with('creator:user_id,first_name,last_name,email'))
+      ->latest()
       ->paginate($perPage);
   }
 }
