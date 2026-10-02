@@ -39,12 +39,19 @@
                         <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
                             Applications
                         </th>
+                        @if (Auth::guard('company')->user()->isOwner())
+                            <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
+                                Posted
+                                By
+                            </th>
+                        @endif
                         <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Posted
                             Date
                         </th>
                         <th
                             class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider text-right">
-                            Actions</th>
+                            Actions
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-neutral-300">
@@ -57,21 +64,20 @@
                                 </div>
                             </td>
                             <td class="px-lg py-lg text-body-md text-on-surface">{{ $job->jobCategory->name }}</td>
-                            <td class="px-lg py-lg">
-                                <x-company.status-badge :status="$job['status']" />
-                                {{-- <span
-                                    class="px-3 py-1 rounded-full bg-success-light text-success text-label-sm font-medium">
-                                    {{ $job->status }}
-                                </span> --}}
-                            </td>
+                            <td class="px-lg py-lg"> <x-company.status-badge :status="$job['status']" /> </td>
                             <td class="px-lg py-lg">
                                 <div class="flex items-center gap-sm">
                                     <span class="font-title-md text-title-md">{{ $job->applications_count }}</span>
                                 </div>
                             </td>
+                            @if (Auth::guard('company')->user()->isOwner())
+                                <td class="px-lg py-lg text-body-md text-on-surface">
+                                    {{ $job->creator->first_name }} {{ $job->creator->last_name }}</td>
+                                </td>
+                            @endif
                             <td class="px-lg py-lg text-body-md text-on-surface">
                                 {{ \Carbon\Carbon::parse($job->published_at)->format('M, D y') }}</td>
-                            <td class="px-lg py-lg text-right">
+                            <td class="px-lg py-lg text-body-md text-on-surface">
                                 <div class="flex items-center justify-end gap-xs  transition-opacity">
                                     <button class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
                                         title="Edit"><span class="material-symbols-outlined">edit</span></button>
