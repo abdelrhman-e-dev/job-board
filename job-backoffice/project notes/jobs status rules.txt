@@ -1,0 +1,23 @@
+Status	          Actions
+Draft	            Edit, Publish, Duplicate, Delete
+Active	          View applications, Edit (0 applications), Close, Archive, Duplicate, Delete
+Closed	          View applications, Edit (0 applications), Reopen, Duplicate, Delete
+Expired	          View applications, Duplicate, Delete
+Archived          View applications, Edit (0 applications), Restore, Duplicate, Delete
+Blocked	          View applications, Edit, Submit for review (no Duplicate, no Delete)
+Blocked(final)	  View only, no applications, no actions
+
+Anything that makes a job live again (Publish, Reopen, Restore) needs the deadline not passed and the job not blocked.
+Edit on active, closed, and archived needs zero applications and the deadline not passed.
+The deadline field is editable only on drafts.
+Delete is a soft delete, with a stronger warning when applications exist.
+Every check runs again at the moment of the click.
+
+Confirmations: dialogs for Publish, Close, Reopen, Delete; toasts for Duplicate and Submit for review; Archive and Restore are your choice.
+
+Build order
+The service that returns the available actions per job (read-only, nothing executes yet).
+Navigation actions: View applications and Edit.
+The simple state changes: Close, Reopen, Archive, Restore.
+Publish, Duplicate, Delete (the ones with the most side effects).
+The blocked flow, last, since it depends on admin features that may not exist yet.
