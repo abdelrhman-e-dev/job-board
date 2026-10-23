@@ -26,6 +26,7 @@ class statusBadge extends Component
     'closed' => 'bg-danger-light text-danger',
     'expired' => 'bg-danger-light text-danger',
     'blocked' => 'bg-danger-light text-danger',
+    'final_blocked' => 'bg-danger-light text-danger',
     'archive' => 'bg-neutral-100 text-neutral-500',
     'trashed' => 'bg-danger-light text-danger',
   ];

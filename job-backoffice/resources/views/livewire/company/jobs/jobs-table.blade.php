@@ -55,6 +55,9 @@
                     <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Posted
                         Date
                     </th>
+                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Created
+                        Date
+                    </th>
                     <th
                         class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider text-right">
                         Actions
@@ -71,7 +74,14 @@
                             </div>
                         </td>
                         <td class="px-lg py-lg text-body-md text-on-surface">{{ $job->jobCategory->name }}</td>
-                        <td class="px-lg py-lg"> <x-company.status-badge :status="$job['status']" /> </td>
+                        <td class="px-lg py-lg">
+                            <div class="inline-flex max-w-full flex-wrap items-center gap-xs">
+                                <x-company.status-badge :status="$job['status']" />
+                                @if ($job->block_is_final)
+                                    <x-company.status-badge status="final_blocked" />
+                                @endif
+                            </div>
+                        </td>
                         <td class="px-lg py-lg">
                             <div class="flex items-center gap-sm">
                                 <span class="font-title-md text-title-md">{{ $job->applications_count }}</span>
@@ -83,16 +93,43 @@
                             </td>
                         @endif
                         <td class="px-lg py-lg text-body-md text-on-surface">
-                            {{ \Carbon\Carbon::parse($job->published_at)->format('M, d y') }}</td>
+                            {{ $job->published_at ? \Carbon\Carbon::parse($job->published_at)->format('M, d y') : '-' }}
+                        </td>
                         <td class="px-lg py-lg text-body-md text-on-surface">
-                            <div class="flex items-center justify-end gap-xs  transition-opacity">
-                                <button class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
-                                    title="Edit"><span class="material-symbols-outlined">edit</span></button>
-                                <button class="p-2 hover:bg-neutral-100 rounded-full text-primary"
-                                    title="View Applications"><span
-                                        class="material-symbols-outlined">visibility</span></button>
-                                <button class="p-2 hover:bg-neutral-100 rounded-full text-danger" title="Close"><span
-                                        class="material-symbols-outlined">block</span></button>
+                            {{ \Carbon\Carbon::parse($job->created_at)->format('M, d y') }}</td>
+                        <td class="px-lg py-lg text-body-md text-on-surface">
+                            <div class="flex items-center justify-end gap-xs transition-opacity">
+                                @php($jobActions = $job->available_actions)
+                                @foreach (array_slice($jobActions, 0, 3) as $action)
+                                    <button wire:click="handleAction('{{ $action['action'] }}', {{ $job->id }})"
+                                        class="p-2 hover:bg-neutral-100 rounded-full {{ $action['class'] }}"
+                                        title="{{ $action['label'] }}">
+                                        <span class="material-symbols-outlined">{{ $action['icon'] }}</span>
+                                    </button>
+                                @endforeach
+                                @if (count($jobActions) > 3)
+                                    <x-dropdown align="right" width="56">
+                                        <x-slot name="trigger">
+                                            <button type="button"
+                                                class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
+                                                title="Show more actions" aria-label="Show more actions">
+                                                <span class="material-symbols-outlined">more_vert</span>
+                                            </button>
+                                        </x-slot>
+
+                                        <x-slot name="content">
+                                            @foreach (array_slice($jobActions, 3) as $action)
+                                                <button
+                                                    wire:click="handleAction('{{ $action['action'] }}', {{ $job->id }})"
+                                                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm text-neutral-200 hover:bg-neutral-600 focus:outline-none transition duration-150 ease-in-out {{ $action['class'] }}">
+                                                    <span
+                                                        class="material-symbols-outlined text-[18px]">{{ $action['icon'] }}</span>
+                                                    {{ $action['label'] }}
+                                                </button>
+                                            @endforeach
+                                        </x-slot>
+                                    </x-dropdown>
+                                @endif
                             </div>
                         </td>
                     </tr>
