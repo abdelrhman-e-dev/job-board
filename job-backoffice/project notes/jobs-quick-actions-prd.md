@@ -129,7 +129,7 @@ Rejected, hired and withdrawn candidates are not notified. A normal (non-final) 
 
 ## 7. Permissions
 
-**To decide.** The rules above describe job state. Which roles (company owner, hiring manager) can use each action is a separate layer, and the existing docs disagree: `design.md` limits hiring managers to view/applications, while the role docs let them create, edit and close their own jobs. Resolve this before implementation and add a role-by-action table here.
+**To decide.** The rules above describe job state. Which roles (company owner, hiring manager) can use each action is a separate layer, the role docs let them create, edit and close their own jobs. Resolve this before implementation and add a role-by-action table here.
 
 ---
 
