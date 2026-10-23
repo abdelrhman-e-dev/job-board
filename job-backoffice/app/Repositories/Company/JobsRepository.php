@@ -49,6 +49,42 @@ class JobsRepository
       ->closed()
       ->count();
   }
+  // expired jobs
+  public function expiredJobsCount(?string $hiringManagerID = null): int
+  {
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
+      ->expired()
+      ->count();
+  }
+  // blocked jobs
+  public function blockedJobsCount(?string $hiringManagerID = null): int
+  {
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
+      ->blocked()
+      ->count();
+  }
+  // archived jobs
+  public function archivedJobsCount(?string $hiringManagerID = null): int
+  {
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
+      ->archived()
+      ->count();
+  }
+  // trashed jobs
+  public function trashedJobsCount(?string $hiringManagerID = null): int
+  {
+    return JobVacancy::query()
+      ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->where('company_id', $this->company_id)
+      ->trashed()
+      ->count();
+  }
 
   // get all jobs 
   public function getAllJobs($perPage = 10, ?string $hiringManagerID = null, ?string $search = null, ?string $status = null): LengthAwarePaginator

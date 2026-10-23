@@ -24,6 +24,10 @@ class JobsService
       'active_jobs' => $this->jobsRepo->activeJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
       'draft_jobs' => $this->jobsRepo->draftJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
       'closed_jobs' => $this->jobsRepo->closedJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
+      'expired_jobs' => $this->jobsRepo->expiredJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
+      'blocked_jobs' => $this->jobsRepo->blockedJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
+      'archived_jobs' => $this->jobsRepo->archivedJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
+      'trashed_jobs' => $this->jobsRepo->trashedJobsCount($this->getHiringManagerId(Auth::guard('company')->user())),
     ];
   }
   // get all jobs

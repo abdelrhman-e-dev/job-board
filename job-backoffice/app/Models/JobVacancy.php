@@ -183,4 +183,20 @@ class JobVacancy extends Model
   {
     return $query->where('status', 'closed');
   }
+  public function scopeExpired($query)
+  {
+    return $query->where('status', 'expired');
+  }
+  public function scopeBlocked($query)
+  {
+    return $query->where('status', 'blocked');
+  }
+  public function scopeArchived($query)
+  {
+    return $query->where('status', 'archive');
+  }
+  public function scopeTrashed($query)
+  {
+    return $query->where('status', 'trashed');
+  }
 }

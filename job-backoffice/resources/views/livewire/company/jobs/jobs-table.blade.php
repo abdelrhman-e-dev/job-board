@@ -83,7 +83,7 @@
                             </td>
                         @endif
                         <td class="px-lg py-lg text-body-md text-on-surface">
-                            {{ \Carbon\Carbon::parse($job->published_at)->format('M, D y') }}</td>
+                            {{ \Carbon\Carbon::parse($job->published_at)->format('M, d y') }}</td>
                         <td class="px-lg py-lg text-body-md text-on-surface">
                             <div class="flex items-center justify-end gap-xs  transition-opacity">
                                 <button class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
