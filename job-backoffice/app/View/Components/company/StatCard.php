@@ -12,7 +12,7 @@ class StatCard extends Component
    * Create a new component instance.
    */
   public function __construct(
-    public string $lable,
+    public string $label,
     public int $value,
     public string $icon,
     public string $color = 'primary',

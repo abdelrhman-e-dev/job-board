@@ -20,6 +20,12 @@ class JobVacancy extends Model
     'category_id',
     'posted_by',
     'closed_by',
+    'blocked_by',
+    'blocked_at',
+    'block_note',
+    'block_is_final',
+    'resubmitted_at',
+    'status_before_block',
     'title',
     'slug',
     'description',
@@ -58,6 +64,10 @@ class JobVacancy extends Model
     'deadline' => 'datetime',
     'published_at' => 'datetime',
     'deleted_at' => 'datetime',
+    'blocked_at' => 'datetime',
+    'resubmitted_at' => 'datetime',
+    'approved_at' => 'datetime',
+    'closed_at' => 'datetime',
   ];
   protected $casts = [
 
@@ -68,7 +78,9 @@ class JobVacancy extends Model
     'deadline' => 'datetime',
     'published_at' => 'datetime',
     'deleted_at' => 'datetime',
-
+    'blocked_at' => 'datetime',
+    'resubmitted_at' => 'datetime',
+    'approved_at' => 'datetime',
   ];
 
 
@@ -182,5 +194,84 @@ class JobVacancy extends Model
   public function scopeClosed($query)
   {
     return $query->where('status', 'closed');
+  }
+  public function scopeExpired($query)
+  {
+    return $query->where('status', 'expired');
+  }
+  public function scopeBlocked($query)
+  {
+    return $query->where('status', 'blocked');
+  }
+  public function scopeArchived($query)
+  {
+    return $query->where('status', 'archive');
+  }
+  public function scopeTrashed($query)
+  {
+    return $query->where('status', 'trashed');
+  }
+  // Action Matrix
+  public function getAvailableActionsAttribute(): array
+  {
+    $actions = [
+      ['label' => 'View', 'action' => 'view', 'icon' => 'visibility', 'class' => 'text-secondary']
+    ];
+
+    $hasNoApplications = $this->applications_count === 0;
+    $deadlineNotPassed = $this->deadline && Carbon::now()->lt($this->deadline);
+    $canEdit = $hasNoApplications && $deadlineNotPassed;
+    $isNotBlocked = $this->status !== 'blocked' && $this->block_is_final !== false;
+    $canReopenOrRestore = $deadlineNotPassed && $isNotBlocked;
+
+
+    $editAction = $canEdit ? [['label' => 'Edit', 'action' => 'edit', 'icon' => 'edit', 'class' => 'text-secondary']] : [];
+    $reopenAction = $canReopenOrRestore ? [['label' => 'Reopen', 'action' => 'reopen', 'icon' => 'lock_open', 'class' => 'text-success']] : [];
+    $restoreAction = $canReopenOrRestore ? [['label' => 'Restore', 'action' => 'restore', 'icon' => 'restore', 'class' => 'text-success']] : [];
+
+    $actions = array_merge($actions, match ($this->status) {
+      'draft' => [
+        ['label' => 'Edit', 'action' => 'edit', 'icon' => 'edit', 'class' => 'text-secondary'],
+        ['label' => 'Publish', 'action' => 'publish', 'icon' => 'publish', 'class' => 'text-success'],
+        ['label' => 'Duplicate', 'action' => 'duplicate', 'icon' => 'content_copy', 'class' => 'text-secondary'],
+        ['label' => 'Delete', 'action' => 'delete', 'icon' => 'delete', 'class' => 'text-danger']
+      ],
+      'active' => [
+        ['label' => 'View Applications', 'action' => 'view-applications', 'icon' => 'group', 'class' => 'text-primary'],
+        ...$editAction,
+        ['label' => 'Close', 'action' => 'close', 'icon' => 'block', 'class' => 'text-danger'],
+        ['label' => 'Archive', 'action' => 'archive', 'icon' => 'archive', 'class' => 'text-warning'],
+        ['label' => 'Duplicate', 'action' => 'duplicate', 'icon' => 'content_copy', 'class' => 'text-secondary'],
+        ['label' => 'Delete', 'action' => 'delete', 'icon' => 'delete', 'class' => 'text-danger']
+      ],
+      'closed' => [
+        ['label' => 'View Applications', 'action' => 'view-applications', 'icon' => 'group', 'class' => 'text-primary'],
+        ...$editAction,
+        ...$reopenAction,
+        ['label' => 'Duplicate', 'action' => 'duplicate', 'icon' => 'content_copy', 'class' => 'text-secondary'],
+        ['label' => 'Delete', 'action' => 'delete', 'icon' => 'delete', 'class' => 'text-danger']
+      ],
+      'expired' => [
+        ['label' => 'View Applications', 'action' => 'view-applications', 'icon' => 'group', 'class' => 'text-primary'],
+        ['label' => 'Duplicate', 'action' => 'duplicate', 'icon' => 'content_copy', 'class' => 'text-secondary'],
+        ['label' => 'Delete', 'action' => 'delete', 'icon' => 'delete', 'class' => 'text-danger']
+      ],
+      'archive' => [
+        ['label' => 'View Applications', 'action' => 'view-applications', 'icon' => 'group', 'class' => 'text-primary'],
+        ...$editAction,
+        ...$restoreAction,
+        ['label' => 'Duplicate', 'action' => 'duplicate', 'icon' => 'content_copy', 'class' => 'text-secondary'],
+        ['label' => 'Delete', 'action' => 'delete', 'icon' => 'delete', 'class' => 'text-danger']
+      ],
+      'blocked' => [
+        ['label' => 'View Applications', 'action' => 'view-applications', 'icon' => 'group', 'class' => 'text-primary'],
+        ['label' => 'Edit', 'action' => 'edit', 'icon' => 'edit', 'class' => 'text-secondary'],
+        ['label' => 'Submit for review', 'action' => 'submit-review', 'icon' => 'rate_review', 'class' => 'text-info']
+      ],
+      'blocked_final' => [],
+      default => [],
+    });
+
+    return $actions;
   }
 }

@@ -22,6 +22,18 @@
         <!-- Closed Listings -->
         <x-company.jobs.jobs-stat-card label="Closed Listings" :value="$stats['closed_jobs']" icon="block" color="danger"
             description="Archived historical data" />
+        <!-- Expired Listings -->
+        <x-company.jobs.jobs-stat-card label="Expired Listings" :value="$stats['expired_jobs']" icon="timer" color="warning"
+            description="Jobs that have expired" />
+        <!-- Blocked Listings -->
+        <x-company.jobs.jobs-stat-card label="Blocked Listings" :value="$stats['blocked_jobs']" icon="block" color="danger"
+            description="Jobs that have been blocked" />
+        <!-- Archived Listings -->
+        <x-company.jobs.jobs-stat-card label="Archived Listings" :value="$stats['archived_jobs']" icon="archive" color="secondary"
+            description="Jobs that have been archived" />
+        <!-- Trashed Listings -->
+        <x-company.jobs.jobs-stat-card label="Trashed Listings" :value="$stats['trashed_jobs']" icon="delete" color="danger"
+            description="Jobs that have been deleted" />
     </div>
     <!-- Main Listing Section -->
     <livewire:company.jobs.jobs-table />
