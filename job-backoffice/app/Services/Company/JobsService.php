@@ -4,7 +4,6 @@ namespace App\Services\Company;
 
 use App\Models\User;
 use App\Repositories\Company\JobsRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class JobsService

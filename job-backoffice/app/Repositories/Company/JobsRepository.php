@@ -95,9 +95,12 @@ class JobsRepository
       ->when($status, fn($q) => $q->where('status', $status))
       ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
       ->when(!$hiringManagerID, fn($q) => $q->with('creator:user_id,first_name,last_name,email'))
+      ->withCount('applications')
       ->latest()
       ->paginate($perPage);
   }
+    // get all table  action
+
   // get jobs status 
   public function getStatus()
   {
