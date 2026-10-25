@@ -3,11 +3,12 @@
 namespace App\Livewire\Company\Jobs;
 
 use App\Services\Company\JobsService;
+use App\Exceptions\Company\Jobs\JobActionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use Masmerise\Toaster\Toaster;
 class JobsTable extends Component
 {
   use WithPagination;
@@ -27,6 +28,16 @@ class JobsTable extends Component
   {
     $this->updateSearch();
     $this->updateStatus();
+  }
+  public function handleAction(string $action, string $jobId, JobsService $jobsService)
+  {
+    $user_id = Auth::guard('company')->user()->user_id;
+    try {
+      $jobsService->handleActionService($action, $jobId, $user_id);
+      Toaster::success('job posted successfully');
+    } catch (JobActionException $e) {
+      Toaster::error($e->getMessage());
+    }
   }
   public function render(JobsService $jobsService)
   {
