@@ -16,10 +16,11 @@ class JobsRepository
       ->company_id;
   }
   // total jobs posted
-  public function totalJobsCount(?string $hiringManagerID = null): int
+  public function totalJobsCount(?string $hiringManagerID = null, ?string $status = null): int
   {
     return JobVacancy::query()
       ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
+      ->when($status, fn($q) => $q->where('status',"!=", $status))
       ->where('company_id', $this->company_id)->count();
   }
   // Active jobs
@@ -99,11 +100,37 @@ class JobsRepository
       ->latest()
       ->paginate($perPage);
   }
-    // get all table  action
+  // get all table  action
 
   // get jobs status 
   public function getStatus()
   {
     return JobVacancy::STATUS_OPTIONS_FOR_ADMIN;
+  }
+  // all jobs  had been published today
+  public function totalJobsPublishedPerDay(): int
+  {
+    return JobVacancy::query()
+      ->where('company_id', $this->company_id)
+      ->whereDate('published_at', \Carbon\Carbon::today()) 
+      ->count();
+  }
+  public function companyPublishLimit(): int
+  {
+    return Auth::guard('company')->user()->company->job_posting_limit;
+  }
+  public function getJobById(string $jobId): ?JobVacancy
+  {
+    return JobVacancy::query()
+      ->where('company_id', $this->company_id)
+      ->where('job_id', $jobId)
+      ->first();
+  }
+  // handle job publish action
+  public function publishJob(string $jobId, string $user_id): void
+  {
+    // check if this job belong to current company or not
+    // 
+  
   }
 }

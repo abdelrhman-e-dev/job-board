@@ -101,7 +101,7 @@
                             <div class="flex items-center justify-end gap-xs transition-opacity">
                                 @php($jobActions = $job->available_actions)
                                 @foreach (array_slice($jobActions, 0, 3) as $action)
-                                    <button wire:click="handleAction('{{ $action['action'] }}', {{ $job->id }})"
+                                    <button wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
                                         class="p-2 hover:bg-neutral-100 rounded-full {{ $action['class'] }}"
                                         title="{{ $action['label'] }}">
                                         <span class="material-symbols-outlined">{{ $action['icon'] }}</span>
@@ -120,7 +120,7 @@
                                         <x-slot name="content">
                                             @foreach (array_slice($jobActions, 3) as $action)
                                                 <button
-                                                    wire:click="handleAction('{{ $action['action'] }}', {{ $job->id }})"
+                                                    wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
                                                     class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm text-neutral-200 hover:bg-neutral-600 focus:outline-none transition duration-150 ease-in-out {{ $action['class'] }}">
                                                     <span
                                                         class="material-symbols-outlined text-[18px]">{{ $action['icon'] }}</span>
