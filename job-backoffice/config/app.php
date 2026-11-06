@@ -141,4 +141,5 @@ return [
     ],
 
   ],
+  'daily_jobs_publish_limit' => env('DAILY_JOBS_PUBLISH_LIMIT', 4),
 ];
