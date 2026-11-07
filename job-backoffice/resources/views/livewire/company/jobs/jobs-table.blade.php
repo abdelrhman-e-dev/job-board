@@ -1,151 +1,157 @@
-<div class="bg-white rounded-xl shadow-md border border-neutral-300 overflow-hidden">
-    <!-- Search & Filter Bar -->
-    <div class="p-lg border-b border-neutral-300 flex flex-col md:flex-row gap-md items-center justify-between">
-        <div class="flex flex-1 gap-md w-full">
-            <div class="relative flex-1">
-                <span
-                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500">search</span>
-                <input wire:model.live.debounce.200ms="search"
-                    class="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-lg text-body-md focus:ring-2 focus:ring-primary focus:border-primary"
-                    placeholder="Search by job title" type="text" />
-            </div>
-            <select wire:model.live="status"
-                class="border border-neutral-300 rounded-lg text-body-md py-2 px-md focus:ring-2  focus:ring-primary focus:border-primary">
-                <option value="">All Statuses</option>
-                @foreach ($JobsStatus as $key => $item)
-                    <option value="{{ $key }}">{{ $item }}</option>
-                @endforeach
-            </select>
-            @if (strlen($search) > 0 || strlen($status) > 0)
-                <button wire:click="resetFilters"
-                    class="inline-flex items-center justify-center gap-sm whitespace-nowrap rounded-lg px-md py-2 text-label-md text-neutral-700 hover:bg-neutral-100 transition-all">
-                    <span class="material-symbols-outlined">refresh</span>
-                    Reset Filters
-                </button>
-            @endif
-        </div>
-        <button
-            class="w-full md:w-auto bg-primary text-white py-2 px-lg rounded-lg font-label-md text-label-md hover:bg-primary-dark transition-all flex items-center justify-center gap-sm">
-            <span class="material-symbols-outlined">add</span>
-            Post a Job
-        </button>
-    </div>
-    <!-- Jobs Table -->
-    <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead class="bg-neutral-100">
-                <tr>
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Job
-                        Title
-                    </th>
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
-                        Department
-                    </th>
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Status
-                    </th>
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
-                        Applications
-                    </th>
-                    @if (Auth::guard('company')->user()->isOwner())
-                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
-                            Posted
-                            By
-                        </th>
-                    @endif
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Posted
-                        Date
-                    </th>
-                    <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Created
-                        Date
-                    </th>
-                    <th
-                        class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider text-right">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-300">
-                <!-- Rows -->
-                @foreach ($jobs as $job)
-                    <tr class="hover:bg-surface-container-low transition-colors group">
-                        <td class="px-lg py-lg">
-                            <div class="flex flex-col">
-                                <span class="font-title-md text-title-md text-on-surface">{{ $job->title }}</span>
-                            </div>
-                        </td>
-                        <td class="px-lg py-lg text-body-md text-on-surface">{{ $job->jobCategory->name }}</td>
-                        <td class="px-lg py-lg">
-                            <div class="inline-flex max-w-full flex-wrap items-center gap-xs">
-                                <x-company.status-badge :status="$job['status']" />
-                                @if ($job->block_is_final)
-                                    <x-company.status-badge status="final_blocked" />
-                                @endif
-                            </div>
-                        </td>
-                        <td class="px-lg py-lg">
-                            <div class="flex items-center gap-sm">
-                                <span class="font-title-md text-title-md">{{ $job->applications_count }}</span>
-                            </div>
-                        </td>
-                        @if (Auth::guard('company')->user()->isOwner())
-                            <td class="px-lg py-lg text-body-md text-on-surface">
-                                {{ $job->creator->first_name }} {{ $job->creator->last_name }}</td>
-                            </td>
-                        @endif
-                        <td class="px-lg py-lg text-body-md text-on-surface">
-                            {{ $job->published_at ? \Carbon\Carbon::parse($job->published_at)->format('M, d y') : '-' }}
-                        </td>
-                        <td class="px-lg py-lg text-body-md text-on-surface">
-                            {{ \Carbon\Carbon::parse($job->created_at)->format('M, d y') }}</td>
-                        <td class="px-lg py-lg text-body-md text-on-surface">
-                            <div class="flex items-center justify-end gap-xs transition-opacity">
-                                @php($jobActions = $job->available_actions)
-                                @foreach (array_slice($jobActions, 0, 3) as $action)
-                                    <button wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
-                                        class="p-2 hover:bg-neutral-100 rounded-full {{ $action['class'] }}"
-                                        title="{{ $action['label'] }}">
-                                        <span class="material-symbols-outlined">{{ $action['icon'] }}</span>
-                                    </button>
-                                @endforeach
-                                @if (count($jobActions) > 3)
-                                    <x-dropdown align="right" width="56">
-                                        <x-slot name="trigger">
-                                            <button type="button"
-                                                class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
-                                                title="Show more actions" aria-label="Show more actions">
-                                                <span class="material-symbols-outlined">more_vert</span>
-                                            </button>
-                                        </x-slot>
-
-                                        <x-slot name="content">
-                                            @foreach (array_slice($jobActions, 3) as $action)
-                                                <button
-                                                    wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
-                                                    class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm text-neutral-200 hover:bg-neutral-600 focus:outline-none transition duration-150 ease-in-out {{ $action['class'] }}">
-                                                    <span
-                                                        class="material-symbols-outlined text-[18px]">{{ $action['icon'] }}</span>
-                                                    {{ $action['label'] }}
-                                                </button>
-                                            @endforeach
-                                        </x-slot>
-                                    </x-dropdown>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-                <!-- no data row -->
-                @if ($jobs->isEmpty())
-                    <tr>
-                        <td colspan="6" class="px-lg py-lg text-center text-body-md text-on-surface">
-                            No jobs found.
-                        </td>
-                    </tr>
+<div>
+    <div class="bg-white rounded-xl shadow-md border border-neutral-300 overflow-hidden">
+        <!-- Search & Filter Bar -->
+        <div class="p-lg border-b border-neutral-300 flex flex-col md:flex-row gap-md items-center justify-between">
+            <div class="flex flex-1 gap-md w-full">
+                <div class="relative flex-1">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500">search</span>
+                    <input wire:model.live.debounce.200ms="search"
+                        class="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-lg text-body-md focus:ring-2 focus:ring-primary focus:border-primary"
+                        placeholder="Search by job title" type="text" />
+                </div>
+                <select wire:model.live="status"
+                    class="border border-neutral-300 rounded-lg text-body-md py-2 px-md focus:ring-2  focus:ring-primary focus:border-primary">
+                    <option value="">All Statuses</option>
+                    @foreach ($JobsStatus as $key => $item)
+                        <option value="{{ $key }}">{{ $item }}</option>
+                    @endforeach
+                </select>
+                @if (strlen($search) > 0 || strlen($status) > 0)
+                    <button wire:click="resetFilters"
+                        class="inline-flex items-center justify-center gap-sm whitespace-nowrap rounded-lg px-md py-2 text-label-md text-neutral-700 hover:bg-neutral-100 transition-all">
+                        <span class="material-symbols-outlined">refresh</span>
+                        Reset Filters
+                    </button>
                 @endif
+            </div>
+            <button
+                class="w-full md:w-auto bg-primary text-white py-2 px-lg rounded-lg font-label-md text-label-md hover:bg-primary-dark transition-all flex items-center justify-center gap-sm">
+                <span class="material-symbols-outlined">add</span>
+                Post a Job
+            </button>
+        </div>
+        <!-- Jobs Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-neutral-100">
+                    <tr>
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Job
+                            Title
+                        </th>
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
+                            Department
+                        </th>
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Status
+                        </th>
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
+                            Applications
+                        </th>
+                        @if (Auth::guard('company')->user()->isOwner())
+                            <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
+                                Posted
+                                By
+                            </th>
+                        @endif
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">Posted
+                            Date
+                        </th>
+                        <th class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider">
+                            Created
+                            Date
+                        </th>
+                        <th
+                            class="px-lg py-md text-label-sm font-bold text-neutral-700 uppercase tracking-wider text-right">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-neutral-300">
+                    <!-- Rows -->
+                    @foreach ($jobs as $job)
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                            <td class="px-lg py-lg">
+                                <div class="flex flex-col">
+                                    <span class="font-title-md text-title-md text-on-surface">{{ $job->title }}</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-lg text-body-md text-on-surface">{{ $job->jobCategory->name }}</td>
+                            <td class="px-lg py-lg">
+                                <div class="inline-flex max-w-full flex-wrap items-center gap-xs">
+                                    <x-company.status-badge :status="$job['status']" />
+                                    @if ($job->block_is_final)
+                                        <x-company.status-badge status="final_blocked" />
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-lg py-lg">
+                                <div class="flex items-center gap-sm">
+                                    <span class="font-title-md text-title-md">{{ $job->applications_count }}</span>
+                                </div>
+                            </td>
+                            @if (Auth::guard('company')->user()->isOwner())
+                                <td class="px-lg py-lg text-body-md text-on-surface">
+                                    {{ $job->creator->first_name }} {{ $job->creator->last_name }}</td>
+                                </td>
+                            @endif
+                            <td class="px-lg py-lg text-body-md text-on-surface">
+                                {{ $job->published_at ? \Carbon\Carbon::parse($job->published_at)->format('M, d y') : '-' }}
+                            </td>
+                            <td class="px-lg py-lg text-body-md text-on-surface">
+                                {{ \Carbon\Carbon::parse($job->created_at)->format('M, d y') }}</td>
+                            <td class="px-lg py-lg text-body-md text-on-surface">
+                                <div class="flex items-center justify-end gap-xs transition-opacity">
+                                    @php($jobActions = $job->available_actions)
+                                    @foreach (array_slice($jobActions, 0, 3) as $action)
+                                        <button
+                                            wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
+                                            class="p-2 hover:bg-neutral-100 rounded-full {{ $action['class'] }}"
+                                            title="{{ $action['label'] }}">
+                                            <span class="material-symbols-outlined">{{ $action['icon'] }}</span>
+                                        </button>
+                                    @endforeach
+                                    @if (count($jobActions) > 3)
+                                        <x-dropdown align="right" width="56">
+                                            <x-slot name="trigger">
+                                                <button type="button"
+                                                    class="p-2 hover:bg-neutral-100 rounded-full text-secondary"
+                                                    title="Show more actions" aria-label="Show more actions">
+                                                    <span class="material-symbols-outlined">more_vert</span>
+                                                </button>
+                                            </x-slot>
 
-            </tbody>
-        </table>
+                                            <x-slot name="content">
+                                                @foreach (array_slice($jobActions, 3) as $action)
+                                                    <button
+                                                        wire:click="handleAction('{{ $action['action'] }}', '{{ $job->job_id }}')"
+                                                        class="flex items-center gap-xs w-full px-4 py-2 text-start text-sm text-neutral-200 hover:bg-neutral-600 focus:outline-none transition duration-150 ease-in-out {{ $action['class'] }}">
+                                                        <span
+                                                            class="material-symbols-outlined text-[18px]">{{ $action['icon'] }}</span>
+                                                        {{ $action['label'] }}
+                                                    </button>
+                                                @endforeach
+                                            </x-slot>
+                                        </x-dropdown>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    <!-- no data row -->
+                    @if ($jobs->isEmpty())
+                        <tr>
+                            <td colspan="6" class="px-lg py-lg text-center text-body-md text-on-surface">
+                                No jobs found.
+                            </td>
+                        </tr>
+                    @endif
+
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination -->
+        {{ $jobs->links('vendor.livewire.custom-pagination') }}
+        <x-alert-modal :alert="$currentAlert" />
     </div>
-    <!-- Pagination -->
-    {{ $jobs->links('vendor.livewire.custom-pagination') }}
+    <livewire:company.jobs.job-confirmation-model />
 </div>
