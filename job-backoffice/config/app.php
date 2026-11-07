@@ -142,4 +142,5 @@ return [
 
   ],
   'daily_jobs_publish_limit' => env('DAILY_JOBS_PUBLISH_LIMIT', 4),
+  'min_deadline_days' => env('MIN_DEADLINE_DAYS', 2),
 ];
