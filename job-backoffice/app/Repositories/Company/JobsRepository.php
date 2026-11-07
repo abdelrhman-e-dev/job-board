@@ -16,11 +16,11 @@ class JobsRepository
       ->company_id;
   }
   // total jobs posted
-  public function totalJobsCount(?string $hiringManagerID = null, ?string $status = null): int
+  public function totalJobsCount(?string $hiringManagerID = null, ?string $excludeStatus = null): int
   {
     return JobVacancy::query()
       ->when($hiringManagerID, fn($q) => $q->where('posted_by', $hiringManagerID))
-      ->when($status, fn($q) => $q->where('status',"!=", $status))
+      ->when($excludeStatus, fn($q) => $q->where('status',"!=", $excludeStatus))
       ->where('company_id', $this->company_id)->count();
   }
   // Active jobs
@@ -128,9 +128,6 @@ class JobsRepository
   }
   // handle job publish action
   public function publishJob(string $jobId, string $user_id): void
-  {
-    // check if this job belong to current company or not
-    // 
-  
+  {  
   }
 }

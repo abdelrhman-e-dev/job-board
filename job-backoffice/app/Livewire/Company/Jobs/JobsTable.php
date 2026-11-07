@@ -4,13 +4,17 @@ namespace App\Livewire\Company\Jobs;
 
 use App\Services\Company\JobsService;
 use App\Exceptions\Company\Jobs\JobActionException;
+use App\Exceptions\Company\Jobs\InvalidDeadlineException;
+use App\WithAlert;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Services\Alert\Alert;
 use Masmerise\Toaster\Toaster;
 class JobsTable extends Component
 {
+  use WithAlert;
   use WithPagination;
   public string $search = "";
   public string $status = "";
@@ -37,6 +41,8 @@ class JobsTable extends Component
       Toaster::success('job posted successfully');
     } catch (JobActionException $e) {
       Toaster::error($e->getMessage());
+    } catch (InvalidDeadlineException $e) {
+      $this->dispatch('show-deadline-modal', jobId: $jobId);
     }
   }
   public function render(JobsService $jobsService)

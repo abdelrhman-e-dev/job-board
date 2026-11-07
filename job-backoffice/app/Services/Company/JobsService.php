@@ -6,7 +6,12 @@ use App\Models\User;
 use App\Repositories\Company\JobsRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\Company\Jobs\JobNotFoundException;
+use App\Models\JobVacancy;
 use App\Exceptions\Company\Jobs\ActionNotAvailableException;
+use App\Exceptions\Company\Jobs\DailyPublishLimitReachedException;
+use App\Exceptions\Company\Jobs\PublishLimitReachedException;
+use App\Exceptions\Company\Jobs\InvalidDeadlineException;
+
 class JobsService
 {
   public function __construct(private JobsRepository $jobsRepo)
@@ -42,7 +47,7 @@ class JobsService
     return $this->jobsRepo->getStatus();
   }
   //jobs actions 
-  public function canPublish(): bool
+  private function canPublish(): bool
   {
     // total jobs count
     $totalJobsCount = $this->jobsRepo->totalJobsCount(null, 'draft');
@@ -50,19 +55,23 @@ class JobsService
     $publishLimit = $this->jobsRepo->companyPublishLimit();
     return $totalJobsCount < $publishLimit;
   }
-  public function canPublishDaily()
+  private function canPublishDaily(): bool
   {
     $totalJobsPerDay = $this->jobsRepo->totalJobsPublishedPerDay();
-    return $totalJobsPerDay < 4;
+    return $totalJobsPerDay < config('app.daily_jobs_publish_limit');
   }
 
+  public function hasValidPublishDeadline(JobVacancy $job): bool
+  {
+    return $job->deadline && $job->deadline >= now()->addDays(config('app.min_deadline_days'));
+  }
   public function handleActionService(string $action, string $jobId, string $user_id)
   {
 
-    // check if the action available for the job or not $job->available_actions
+
     $job = $this->jobsRepo->getJobById($jobId);
     if (!$job) {
-      // trow exception error message "Job not found"
+
       throw new JobNotFoundException;
     }
     $availableActions = $job->available_actions;
@@ -71,6 +80,20 @@ class JobsService
     if (!in_array($action, $actions, true)) {
       // trow exception error message "This action is not allowed for this job"
       throw new ActionNotAvailableException;
+    }
+    // check if the action is publish
+    if ($action === 'publish') {
+      if (!$this->hasValidPublishDeadline($job)) {
+        throw new InvalidDeadlineException();
+      }
+      // check if the company can publish the job or not
+      if (!$this->canPublish()) {
+        throw new PublishLimitReachedException();
+      }
+      // check if the company can publish daily or not
+      if (!$this->canPublishDaily()) {
+        throw new DailyPublishLimitReachedException();
+      }
     }
 
   }
