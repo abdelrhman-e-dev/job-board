@@ -37,5 +37,4 @@
     </div>
     <!-- Main Listing Section -->
     <livewire:company.jobs.jobs-table />
-
 @endsection
